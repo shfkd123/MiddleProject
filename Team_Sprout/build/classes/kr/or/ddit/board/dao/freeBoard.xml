@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="freeBoard">
+	<select id="getFreeBoardInfo" resultClass="kr.or.ddit.board.vo.FreeBoardVO">
+		SELECT   FREE_NM      freeNm
+				,FREE_TITLE   freeTitle
+				,FREE_CONTENT freeContent
+				,FREE_DATE    freeDate
+				,USER_ID      userId
+				,ATCH_FILE_ID atchFileId
+		FROM FREE_BOARD
+		WHERE FREE_NM = #freeNm#
+	</select>
+
+	<select id="getFreeBoardList" resultClass="kr.or.ddit.board.vo.FreeBoardVO">
+		SELECT   FREE_NM      freeNm
+				,FREE_TITLE   freeTitle
+				,FREE_CONTENT freeContent
+				,FREE_DATE    freeDate
+				,USER_ID      userId
+				,ATCH_FILE_ID atchFileId
+		FROM     FREE_BOARD
+		ORDER BY 1 DESC	
+	</select>
+	
+	<select id="getsearchFreeBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.FreeBoardVO">
+		SELECT   FREE_NM      freeNm
+				,FREE_TITLE   freeTitle
+				,FREE_CONTENT freeContent
+				,FREE_DATE    freeDate
+				,USER_ID      userId
+				,ATCH_FILE_ID atchFileId
+		FROM     FREE_BOARD
+		WHERE FREE_TITLE LIKE '%' || #freeTitle# || '%'
+		OR FREE_CONTENT LIKE '%' || #freeContent# || '%'
+		OR USER_ID '%' || #userId# || '%'	
+	</select>
+	
+	<insert id="insertFreeBoard" parameterClass="kr.or.ddit.board.vo.FreeBoardVO">
+		INSERT INTO FREE_BOARD(
+			 FREE_NM
+			,FREE_TITLE
+			,FREE_CONTENT
+			,FREE_DATE
+			,USER_ID
+			,ATCH_FILE_ID 
+		)
+		VALUES (
+			FREE_BOARD_SEQ.NEXTVAL
+		  , #freeTitle#
+		  , #freeContent#
+		  , SYSDATE
+		  , #userId#
+		  , #atchFileId#
+		)
+	</insert>
+	
+	<update id="updateFreeBoard" parameterClass="kr.or.ddit.board.vo.FreeBoardVO">
+		UPDATE  FREE_BOARD
+		SET	    FREE_TITLE   = #freeTitle#
+			   ,FREE_CONTENT = #freeContent#
+			   ,FREE_DATE    = SYSDATE
+			   ,USER_ID      = #userId#
+			   ,ATCH_FILE_ID = #atchFileId# 
+			              
+		WHERE   FREE_NM = #freeNm#
+	</update>
+	
+	<delete id="deleteFreeBoard" parameterClass="String">
+		DELETE FROM FREE_BOARD
+		WHERE  FREE_NM = #freeNm#
+	</delete>
+</sqlMap>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+    <meta charset="utf-8">
+   <!----<title>Login Form Design | CodeLab</title>---->
+    <link rel="stylesheet" href="../../css/main/register.css">
+  </head>
+  <body>
+  	<br>
+  	<br>
+    <div class="wrapper">
+      <div class="title">
+	 	<img src="../../images/logo.png" width="100px">
+	 </div>
+      <form action="#">
+      
+        <!-- 아이디 -->
+	        <div class="field">
+	          <input type="text" id="userId" name="userId" required>
+	          <label>아이디를 입력해주세요.</label>
+	        </div>
+	        <div class="field">
+	          <input type="button" value="ID 중복검사">
+	        </div>
+	        
+	        <!-- 비밀번호 -->
+	        <div class="field">
+	          <input type="password" id="userPw" name="userPw" required>
+	          <label>비밀번호를 입력해주세요.</label>
+	        </div>
+	        
+	        <!-- 닉네임 -->
+	        <div class="field">
+	          <input type="text" id="userNickName" name="userNickName" required>
+	          <label>닉네임을 입력해주세요.</label>
+	        </div>
+
+        <br>
+
+        <!-- 생년월일 -->
+        <div id="birth">
+       	<br>
+        <h3>생년월일</h3>
+	        <div class="field">
+	          <input type="text" id="year" required>
+	          <label>년</label>
+	        </div>
+	        <div class="field">
+	          <input type="text" id="month" required>
+	          <label>월 </label>
+	        </div>
+	        <div class="field">
+	          <input type="text" id="day" required>
+	          <label>일 </label>
+	        </div>
+        </div>
+        
+        <br>
+        
+        <!-- 성별 -->
+        <div>
+        <br>
+        <h3>성별</h3>
+	        <div class="content">
+				<label><input type="radio" name="gender" id="male" checked="checked"> 남자</label>
+				<label><input type="radio" name="gender" id="female"> 여자</label>       
+	        </div>
+        </div>
+        
+        
+        <!-- 주소 -->
+        <div>
+       	<br>
+        <h3>주소</h3>
+	        <div class="field">
+		        <input type="text" id="sample6_postcode" name="userZip" placeholder="우편번호를 검색하세요." readonly="readonly">
+	        </div>
+	        
+	        <div class="field">
+		        <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
+	        </div>
+	 
+	        <div class="field">
+		        <input type="text" id="sample6_address" name="userAdd1" placeholder="우편번호를 검색하세요." readonly="readonly">
+	        </div>
+	 
+	        <div class="field">
+		        <input type="text" id="sample6_detailAddress" name="userAdd2" required>
+		        <label>상세 주소 </label>
+	        </div>
+		</div>
+
+      </form>
+        <!-- 회원가입 버튼 -->
+        <div class="field">	
+          <input type="button" value="JOIN">
+        </div>
+    </div>
+    <br>
+  	<br>
+  </body>
+</html>

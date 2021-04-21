@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="user">
+
+	<select id="retrieveUserList" parameterClass="kr.or.ddit.user.vo.UserVO" resultClass="kr.or.ddit.user.vo.UserVO">
+		SELECT USER_ID       userId
+			 , USER_NAME     userName
+			 , USER_PW       userPw
+			 , USER_NICKNAME userNickName
+			 , USER_GENDER   userGender
+			 , USER_BIR      userBir
+			 , USER_TEL      userTel
+			 , USER_EMAIL    userEmail
+			 , LIKEY_CODE    likeyCode
+			 , USER_ZIP      userZip
+			 , USER_ADD1     userAdd1
+			 , USER_ADD2     userAdd2
+			 , USER_MONEY    userMoney
+			 , ADMIN_CK      adminCk
+		FROM   TB_USER;
+	</select>
+	
+	<select id="retrieveUser" parameterClass="String" resultClass="kr.or.ddit.user.vo.UserVO">
+		SELECT USER_ID       userId
+			 , USER_NAME     userName
+			 , USER_PW       userPw
+			 , USER_NICKNAME userNickName
+			 , USER_GENDER   userGender
+			 , USER_BIR      userBir
+			 , USER_TEL      userTel
+			 , USER_EMAIL    userEmail
+			 , LIKEY_CODE    likeyCode
+			 , USER_ZIP      userZip
+			 , USER_ADD1     userAdd1
+			 , USER_ADD2     userAdd2
+			 , USER_MONEY    userMoney
+			 , ADMIN_CK      adminCk
+		FROM   TB_USER
+		WHERE  1=1
+		AND    USER_ID = #userId#
+	</select>
+	
+	<insert id="insertUser" parameterClass="kr.or.ddit.user.vo.UserVO">
+		INSERT INTO TB_USER(
+			USER_ID
+		  , USER_NAME
+		  , USER_PW
+		  , USER_NICKNAME
+		  , USER_GENDER
+		  , USER_BIR
+		  , USER_TEL
+		  , USER_EMAIL
+		  , LIKEY_CODE
+		  , USER_ZIP
+		  , USER_ADD1
+		  , USER_ADD2
+		  , USER_MONEY
+		  , ADMIN_CK
+		)
+		VALUES (
+			#userId#
+		  , #userName#
+		  , #userPw#
+		  , #userNickName#
+		  , #userGender#
+		  , #userBir#
+		  , #userTel#
+		  , #userEmail#
+		  , #likeyCode#
+		  , #userZip#
+		  , #userAdd1#
+		  , #userAdd2#
+		  , 0
+		  , 'N'
+		)
+	</insert>
+	
+	<update id="updateUser" parameterClass="kr.or.ddit.user.vo.UserVO">
+		UPDATE TB_USER
+		SET	   USER_ID       = #userId#       
+			 , USER_NAME     = #userName#     
+			 , USER_PW       = #userPw#       
+			 , USER_NICKNAME = #userNickName# 
+			 , USER_GENDER   = #userGender#   
+			 , USER_BIR      = #userBir#      
+			 , USER_TEL      = #userTel#      
+			 , USER_EMAIL    = #userEmail#    
+			 , LIKEY_CODE    = #likeyCode#    
+			 , USER_ZIP      = #userZip#      
+			 , USER_ADD1     = #userAdd1#     
+			 , USER_ADD2     = #userAdd2#     
+			 , USER_MONEY    = #userMoney#            
+			 , ADMIN_CK      = #adminCk#            
+		WHERE  USER_ID = #userId#
+	</update>
+	
+	<delete id="deleteUser" parameterClass="kr.or.ddit.user.vo.UserVO">
+		DELETE FROM TB_USER
+		WHERE  USER_ID = #userId#
+	</delete>
+</sqlMap>
