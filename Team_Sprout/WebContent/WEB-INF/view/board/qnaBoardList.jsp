@@ -33,17 +33,14 @@
 			<tbody>
 			<%
 			List<QnaBoardVO> list = (List<QnaBoardVO>)request.getAttribute("list");
-			
-			int cnt = list.size() / 10;
-			
-			int tmp = 0;
-			
+			String qnaNm = "";
 			for(int i = 0; i < list.size(); i++) {
+				qnaNm = list.get(i).getQnaNm();
 			%>
 			<tr>
 				<td><%=list.size() - i %></td>
 				<td>
-					<a href="qnaBoard.do?qnaNm=<%=list.get(i).getQnaNm() %>&flag=SEL">
+					<a href="#" onclick="boardSelect()">
 						<%=list.get(i).getQnaTitle() %>
 					</a>
 				</td>
@@ -68,31 +65,44 @@
 		<hr>
 		<!-- 등록 버튼  -->
 		<div id="btn" style="text-align: right">
-			<button type="button" class="btn btn-success" id="insert">등록</button>
+			<button type="button" class="btn btn-success" onclick="insertBoard()">등록</button>
 		</div>
 		<!-- 검색 창 -->
 		<div class="text-center">
-			<input type="text" id="schInput">
-			<button type="button" class="btn btn-success" id="search">검색</button>
+			<input type="text" id="schInput" name="search">
+			<button type="button" class="btn btn-success" onclick="searchBoard()">검색</button>
 		</div>
 		<form id="fm">
-			<input type="hidden" name="targetUrl" id="targetUrl">
+			<input type="hidden" name="qnaNm" id="qnaNm">
+			<input type="hidden" name="flag" id="flag">
 		</form>
 	</div>
 </body>
 <script type="text/javascript">
-	$("#insert").click(function(){
-		document.getElementById("targetUrl").value = "board/qnaBoardInsert";
+	function boardSelect(){
+		document.getElementById("qnaNm").value = "<%=qnaNm %>";
+		document.getElementById("flag").value = "SEL";
+		var fm = document.getElementById("fm");
+		fm.method = "post";
+		fm.action = "qnaBoard.do";
+		fm.submit();
+	}
+
+	function insertBoard(){
+		document.getElementById("flag").value = "INS";
+		var fm = document.getElementById("fm");
+		fm.method = "post";
+		fm.action = "qnaBoard.do";
+		fm.submit();
+	}
+	
+	function searchBoard() {
+		document.getElementById("flag").value = "SCH";
 		
 		var fm = document.getElementById("fm");
 		fm.method = "post";
-		fm.action = "Team_Sprout/PageServlet";
+		fm.action = "qnaBoard.do";
 		fm.submit();
-	});
-	
-	$("#search").click(function(){
-		location.href = "qnaBoard.do?flag=SCH&qnaTitle=" + $("#schInput").val() 
-						+ "&qnaWriter=" + $("#schInput").val();
-	});
+	}
 </script>
 </html>

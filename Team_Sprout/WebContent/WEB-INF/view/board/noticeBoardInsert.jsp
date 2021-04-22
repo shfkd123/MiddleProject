@@ -22,45 +22,46 @@
 </style>
 </head>
 <body>
-<form action="noticeInsert.do" method="post" enctype="multipart/form-data">
 	<!-- 테이블 -->
 	<div class="container">
-		<h4><b><span>작성</span></b></h4>
-		<table class="table">
-			<thead>
-			</thead>
-			<tbody>
-				<tr>
-					<th>제목</th>
-					<td colspan="3">
-						<input type="text" class="form-control" placeholder="제목을 입력해주세요.">
-					</td>
+		<form id="fm" method="post" enctype="multipart/form-data">
+			<h4><b><span>작성</span></b></h4>
+			<table class="table">
+				<thead>
+				</thead>
+				<tbody>
+					<tr>
+						<th>제목</th>
+						<td colspan="3">
+							<input type="text" name="noticeTitle" class="form-control" placeholder="제목을 입력해주세요.">
+						</td>
+					</tr>
+					<tr>
+						<td>작성자:</td>
+						<td><input type="text" name="userId" value=""></td>
+					</tr>
+					<tr>
+						<th>내용</th>
+						<td colspan="3">
+							<textarea name="noticeContent" class="form-control" rows="20" placeholder="내용을 입력해주세요."></textarea>
+						</td>
+					</tr>
+					<tr>
+						<th>첨부파일</th>
+						<td>
+							<input type="file" name="atchFile">
+						</td>
 				</tr>
-				<tr>
-					<td>작성자:</td>
-					<td><input type="text" name="userId" value=""></td>
-				</tr>
-				<tr>
-					<th>내용</th>
-					<td colspan="3"><textarea class="form-control" rows="20"
-							placeholder="내용을 입력해주세요."></textarea></td>
-				</tr>
-				<tr>
-					<th>첨부파일</th>
-					<td>
-						<input type="file" name="atchFile">
-					</td>
-			</tr>
-			</tbody>
-		</table>
-		<hr>
-		<!-- 등록 수정 삭제 버튼  -->
-		<div id="btn">
-			<button type="button" class="btn btn-success" id="noticeList">목록</button>
-			<input type="submit"  id="noticeInsert" value="저장">
-		</div>	
+				</tbody>
+			</table>
+			<hr>
+			<!-- 등록 수정 삭제 버튼  -->
+			<div id="btn">
+				<button type="button" class="btn btn-success" id="noticeList">목록</button>
+				<button type="button" class="btn btn-success" id="noticeInsert">저장</button>
+			</div>	
+		</form>
 	</div>
-	</form>
 </body>
 <script type="text/javascript">
 $("#noticeList").click(function(){
@@ -68,7 +69,12 @@ $("#noticeList").click(function(){
 });
 
  $("#noticeInsert").click(function(){
-	location.href = "noticeInsert.do";
+// 	location.href = "noticeInsert.do";
+	
+	var fm = document.getElementById("fm");
+	fm.action = "noticeInsert.do";
+	fm.submit();
+	
 });
 
 

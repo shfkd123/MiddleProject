@@ -24,11 +24,11 @@ public class NoticeSelectHandler implements  CommandHandler{
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		
-		String noticeNm = req.getParameter("noticeNm");
+		String notice_nm = req.getParameter("notice_nm");
 		
 		//
 		INoticeService noticeService = NoticeServiceImpl.getInstance(); 
-		NoticeBoardVO nv = noticeService.getNoticeBoard(noticeNm);
+		NoticeBoardVO nv = noticeService.getNoticeBoard(notice_nm);
 		
 		if(nv.getAtchFileId() > 0) { //첨부파일 존재하면...
 			//첨부파일 정보 조회
@@ -40,6 +40,7 @@ public class NoticeSelectHandler implements  CommandHandler{
 			List<AtchFileVO> atchFileList = atchFileService.getAtchFileList(fileVO);
 			
 			req.setAttribute("atchFileList", atchFileList);
+			req.setAttribute("noticeVO", nv);
 			
 		}
 		return "/WEB-INF/view/board/noticeBoardSelect.jsp";

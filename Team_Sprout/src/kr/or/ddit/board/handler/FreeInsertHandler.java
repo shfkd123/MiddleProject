@@ -35,12 +35,12 @@ public class FreeInsertHandler implements CommandHandler {
 
 			return VIEW_PAGE;
 
-		}else { 
+		}else{ 
+			
 			
 			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
-			String userId = req.getParameter("userId");
-			
 			AtchFileVO atchFileVO = new AtchFileVO();
+			String userId = req.getParameter("userId");
 			
 			IAtchFileService fileService = AtchFileServiceImpl.getInstance();
 			atchFileVO = fileService.saveAtchFile(item, userId);

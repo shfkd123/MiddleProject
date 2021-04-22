@@ -28,9 +28,9 @@
 </style>
 </head>
 <body>
-<form action="noticeInsert.do" method="post" enctype="multipart/form-data">
 	<!-- 테이블 -->
 	<div class="container">
+	<form id="fm" method="post" enctype="multipart/form-data">
 		<h4><b><span>작성</span></b></h4>
 		<table class="table">
 			<thead>
@@ -39,13 +39,15 @@
 				<tr>
 					<th>제목</th>
 					<td colspan="3">
-						<input type="text" class="form-control" placeholder="제목을 입력해주세요.">
+						<input type="text" class="form-control" value="<%=noticeVO.getNoticeTitle()%>">
 					</td>
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td colspan="3"><textarea class="form-control" rows="20"
-							placeholder="내용을 입력해주세요."></textarea></td>
+					<td colspan="3">
+						<textarea class="form-control" rows="20"><%=noticeVO.getNoticeContent()%>
+						</textarea>
+					</td>
 				</tr>
 				<tr>
 					<th>첨부파일</th>
@@ -77,18 +79,27 @@
 		<!-- 등록 수정 삭제 버튼  -->
 		<div id="btn">
 			<button type="button" class="btn btn-success" id="noticeList">목록</button>
-			<button type="submit" class="btn btn-success" id="noticeUpdate">수정</button>
+			<button type="button" class="btn btn-success" id="noticeUpdate">저장</button>
+ 
 		</div>	
-	</div>
 	</form>
+	</div>	
 </body>
 <script type="text/javascript">
 $("#noticeList").click(function(){
-	location.href = "noticeList.do";
+	if(confirm("목록으로 돌아가면 수정하시던 글이 사라집니다.")){
+		location.href = "noticeList.do";		
+	}else {
+		return;
+	}
 });
 
  $("#noticeUpdate").click(function(){
-	location.href = "noticeUpdate.do";
+	//location.href = "noticeUpdate.do";
+	if(confirm("게시글 수정 하시겠습니까>"))
+	 var fm = document.getElementById("fm");
+		fm.action = "noticeList.do";
+		fm.submit();
 });
 
 

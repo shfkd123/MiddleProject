@@ -32,11 +32,12 @@ public class NoticeInsertHandler implements CommandHandler {
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+		System.out.println("method : " + req.getMethod());
 		if (req.getMethod().equals("GET")) { // GET
 			return VIEW_PAGE;
 		} else { //Post방식인 경우isRedirect를 한다.
-			
-			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFile");
+			System.out.println("왔다1");
+			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFile")==null?null:((FileUploadRequestWrapper)req).getFileItem("atchFile");
 
 			//String userId = (String) req.getSession().getAttribute("userId"); //로그인시 저장되어있는 아이디를 가져온다. 
 			//String userId = "mem001"; //테스트
@@ -45,8 +46,10 @@ public class NoticeInsertHandler implements CommandHandler {
 			AtchFileVO atchFileVO = new AtchFileVO();
 			
 			IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-			atchFileVO = fileService.saveAtchFile(item, userId);
 			
+			if(item!=null) {
+				atchFileVO = fileService.saveAtchFile(item, userId);
+			}
 			// 1. 요청파라미터 정보 가져오기
 			String noticeTitle = req.getParameter("noticeTitle");
 			String noticeContent = req.getParameter("noticeContent");
@@ -60,8 +63,11 @@ public class NoticeInsertHandler implements CommandHandler {
 			nv.setNoticeTitle(noticeTitle);
 			nv.setUserId(userId);
 			nv.setNoticeContent(noticeContent);
-			nv.setAtchFileId(atchFileVO.getAtchFileId());
-
+			
+			if(atchFileVO!=null) {
+				nv.setAtchFileId(atchFileVO.getAtchFileId());
+			}
+			
 			int cnt = noticeService.insertNoticeBoard(nv);
 
 			String msg = "";

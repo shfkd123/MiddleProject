@@ -19,7 +19,7 @@ import kr.or.ddit.util.FileUploadRequestWrapper;
 
 public class NoticeUpdateHandler implements CommandHandler {
 
-	private static final String VIEW_PAGE = "/WEB-INF/view/board/updateForm.jsp";
+	private static final String VIEW_PAGE = "/WEB-INF/view/board/noticeBoardUpdate.jsp";
 
 	@Override
 	public boolean isRedirect(HttpServletRequest req) {
@@ -104,6 +104,5 @@ public class NoticeUpdateHandler implements CommandHandler {
 
 			return redirectUrl;
 		}
-
 	}
 }

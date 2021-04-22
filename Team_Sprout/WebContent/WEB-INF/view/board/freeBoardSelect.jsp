@@ -68,6 +68,10 @@ List<FreeBoardVO> freeList = (List<FreeBoardVO>)request.getAttribute("freeList")
 			</tr>
 			<tbody>
 		</table>
+		<div style="height: 700px">
+		<div id="imgPrint" style="width: 500px;"></div>
+			<img src="~~~/">
+		</div>
 		<hr>
 	</div>
 	<!-- 등록 수정 삭제 버튼  -->

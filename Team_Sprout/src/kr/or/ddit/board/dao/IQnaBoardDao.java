@@ -55,5 +55,5 @@ public interface IQnaBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<QnaBoardVO> searchQnaBoard(SqlMapClient smc, QnaBoardVO qbv) throws SQLException;
+	public List<QnaBoardVO> searchQnaBoard(SqlMapClient smc, String str) throws SQLException;
 }

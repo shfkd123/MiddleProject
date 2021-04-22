@@ -85,11 +85,11 @@ public class QnaServiceImpl implements IQnaService{
 	}
 
 	@Override
-	public List<QnaBoardVO> searchQnaBoard(QnaBoardVO qbv) {
+	public List<QnaBoardVO> searchQnaBoard(String str) {
 		List<QnaBoardVO> list = new ArrayList<>();
 		
 		try {
-			list = boardDao.searchQnaBoard(smc, qbv);
+			list = boardDao.searchQnaBoard(smc, str);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

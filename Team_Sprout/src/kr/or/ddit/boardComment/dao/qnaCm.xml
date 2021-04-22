@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="qnaCm">
+
+<!-- 댓글 전체 출력 -->
+<select id="getAllQnaCm" resultClass="kr.or.ddit.boardComment.vo.qnaCmVO" parameterClass="kr.or.ddit.boardComment.vo.qnaCmVO">
+	SELECT QC_NM      qcNm
+		 , QC_CONTENT qcContent
+		 , QC_DATE    qcDate
+		 , QC_TYPE    qcType
+		 , QNA_NM     qnaNm
+		 (
+			SELECT USER_NICKNAME 
+			FROM   TB_USER
+			WHERE  USER_ID = A.USER_ID
+		)			  qcWriter
+	FROM   QNA_COMMENT
+</select>
+
+<!-- 댓글 작성 -->
+<insert id="insertQnaCm" parameterClass="kr.or.ddit.boardComment.vo.qnaCmVO">
+	INSERT INTO QNA_COMMENT(
+		 QC_NM      
+	   , QC_CONTENT 
+	   , QC_DATE    
+	   , QC_TYPE    
+	   , QNA_NM     
+	   , USER_ID   
+	VALUES (
+		#qcNm#
+		#qcContent#
+		#qcDate#
+		#qcType#
+		#qnaNm#
+		#userId#
+	)
+</insert>
+
+<!-- 댓글 수정 -->
+<update id="updateQnaCm" parameterClass="kr.or.ddit.boardComment.vo.qnaCmVO">
+	UPDATE QNA_COMMENT 
+	SET    QC_COMMENT
+		 , QC_DATE
+		 , QC_TYPE
+	WHERE  QC_NM = #qcNm#
+	AND    QNA_NM = #qnaNm#
+</update>
+
+<!-- 댓글 삭제 -->
+<delete id="deleteQnaCm" parameterClass="String">
+	DELETE FROM QNA_COMMENT
+	WHERE  QC_NM = #qcNm#
+</delete>
+
+</sqlMap>

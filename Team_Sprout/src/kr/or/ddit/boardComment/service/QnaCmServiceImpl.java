@@ -1,0 +1,76 @@
+package kr.or.ddit.boardComment.service;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.ibatis.sqlmap.client.SqlMapClient;
+
+import kr.or.ddit.boardComment.dao.IQnaCmDao;
+import kr.or.ddit.boardComment.dao.QnaCmDaoImpl;
+import kr.or.ddit.boardComment.vo.QnaCmVO;
+import kr.or.ddit.util.SqlMapClientUtil;
+
+public class QnaCmServiceImpl implements IQnaCmService{
+	private IQnaCmDao qnaCmDao;
+	private SqlMapClient smc;
+	
+	private static IQnaCmService qnaCmService;
+	
+	public QnaCmServiceImpl() {
+		qnaCmDao = QnaCmDaoImpl.getInstance();
+		smc = SqlMapClientUtil.getInstance();
+	}
+	
+	public static IQnaCmService getInstance() {
+		if(qnaCmService == null) {
+			qnaCmService = new QnaCmServiceImpl();
+		}
+		return qnaCmService;
+	}
+	
+	@Override
+	public List<QnaCmVO> getAllQnaCm() {
+		List<QnaCmVO> list = new ArrayList<>();
+		try {
+			list = qnaCmDao.getAllQnaCm(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public int insertQnaCm(QnaCmVO qcv) {
+		int cnt = 0;
+		try {
+			cnt = qnaCmDao.insertQnaCm(smc, qcv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public int updateQnaCm(QnaCmVO qcv) {
+		int cnt = 0;
+		try {
+			cnt = qnaCmDao.updateQnaCm(smc, qcv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public int deleteQnaCm(String qcNm) {
+		int cnt = 0;
+		try {
+			cnt = qnaCmDao.deleteQnaCm(smc, qcNm);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+}

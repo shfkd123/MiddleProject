@@ -1,9 +1,6 @@
 <%@page import="kr.or.ddit.user.vo.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%
-	UserVO uv = (UserVO) request.getSession().getAttribute("userVO");
-%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,19 +28,20 @@
 <script type="text/javascript">
 	function LogOut(){
 		if(confirm("로그아웃 하시겠습니까?")){
-			<%
-			HttpSession session2 = request.getSession();
-			session2.invalidate();
-			%>
 			alert("로그아웃 되었습니다.");
-			location.href = "main.jsp";
-			return;
+			location.href = "/Team_Sprout/user/logOut.do";
 		}
 		return;
 	}
 </script>
 </head>
 <body>
+<%
+	UserVO uv = null;
+	if(session != null && session.getAttribute("userVO") != null){
+		uv = (UserVO)session.getAttribute("userVO");
+	}
+%>
 	<nav class="navbar">
 		<!-- 왼쪽 여백 -->
 		<div class="col-sm-2"></div>
@@ -57,44 +55,31 @@
 				</button>
 				<a class="navbar-brand" href="#"><img src="../../images/logo.png" width="100px"></a>
 			</div>
-
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
 					<li><a href="#" class="a_title">인기펀딩</a></li>
 					<li><a href="#" class="a_title">마감임박펀딩</a></li>
 					<li><a href="#" class="a_title">어쩌구펀딩</a></li>
-					<li><a href="/Team_Sprout/board/freeBoardList.do" class="a_title">자유게시판</a></li>
-				</ul>
-				
-<script type="text/javascript">
-	$(document).ready(function(){
-		<%
-		if(uv != null){
-		%>
-		document.getElementById("notlog").style.display = "none";
-		document.getElementById("userInfo").style.display = "inline";
-		$("#mypage").text("<%=uv.getUserNickName() %> 님");
-		document.getElementById("yeslog").style.display = "inline";
-		<%
-		} else {
-		%>
-		document.getElementById("notlog").style.display = "inline";
-		document.getElementById("userInfo").style.display = "none";
-		document.getElementById("yeslog").style.display = "none";
-		<%
-		}
-		%>
-	});
-</script>				
+					<li><a href="#" class="a_title">저쩌구펀딩</a></li>
+				</ul>				
 				<ul class="nav navbar-nav navbar-right">
+					<%
+					if(uv == null) {
+					%>
 					<li><a href="#" class="btn-lg"><span
 							class="glyphicon glyphicon-search"></span></a></li>
 					<li id="notlog"><a href="../login/login.jsp" class="btn-lg"><span
 							class="glyphicon glyphicon-user"></span></a></li>
-					<li id="userInfo" style="display: none;"><a href="#" class="btn-lg"><span
-							class="glyphicon" id="mypage"></span></a></li>
-					<li id="yeslog" style="display: none;"><a href="javascript:LogOut()" class="btn-lg"><span
+					<%
+					} else {
+					%>
+					<li id="userInfo"><a href="#" class="btn-lg"><span
+							class="glyphicon" id="mypage"><%=uv.getUserNickName() %></span></a></li>
+					<li id="yeslog"><a href="#" onclick="LogOut()" class="btn-lg"><span
 							class="glyphicon">LOGOUT</span></a></li>
+					<%	
+					}
+					%>
 				</ul>
 			</div>
 		</div>

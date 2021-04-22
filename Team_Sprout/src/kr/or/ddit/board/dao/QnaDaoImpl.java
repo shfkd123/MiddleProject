@@ -70,7 +70,7 @@ public class QnaDaoImpl implements IQnaBoardDao {
 	}
 
 	@Override
-	public List<QnaBoardVO> searchQnaBoard(SqlMapClient smc, QnaBoardVO qbv) throws SQLException {
-		return smc.queryForList("qnaBoard.searchQnaBoard", qbv);
+	public List<QnaBoardVO> searchQnaBoard(SqlMapClient smc, String str) throws SQLException {
+		return smc.queryForList("qnaBoard.searchQnaBoard", str);
 	}
 }

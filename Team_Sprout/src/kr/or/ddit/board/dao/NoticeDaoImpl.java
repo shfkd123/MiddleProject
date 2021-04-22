@@ -53,10 +53,10 @@ private static INoticeBoardDao noticeDao;
 
 	
 
-	@Override //공지사항 게시글 검색 (제목, 내용, 작성자)
-	public List<NoticeBoardVO> getSearchNoticeBoard(SqlMapClient smc, NoticeBoardVO nv) throws SQLException {
+	@Override //공지사항 게시글 검색 (제목)
+	public List<NoticeBoardVO> getSearchNoticeBoard(SqlMapClient smc, String notice_title) throws SQLException {
 		
-		List<NoticeBoardVO> noticeList = smc.queryForList("noticeBoard.getsearchNoticeBoard", nv);
+		List<NoticeBoardVO> noticeList = smc.queryForList("noticeBoard.getsearchNoticeBoard", notice_title);
 		return noticeList;
 	}
 

@@ -10,7 +10,7 @@ import kr.or.ddit.board.service.FreeServiceImpl;
 import kr.or.ddit.board.vo.FreeBoardVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 
-public class FreeListHandler implements CommandHandler{
+public class FreeListHandler implements CommandHandler {
 
 	private static final String VIEW_PAGE = "/WEB-INF/view/board/freeBoardList.jsp";
 	

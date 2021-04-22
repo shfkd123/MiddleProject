@@ -18,3 +18,13 @@ p {
 #btn {
 	text-align: right;
 }
+
+select.selectpicker {
+	width: 150px;
+	height: 34px;
+}
+
+input.form-control {
+	width: 300px;
+	
+}

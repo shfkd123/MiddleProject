@@ -45,7 +45,7 @@ public interface INoticeBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoticeBoardVO> getSearchNoticeBoard(SqlMapClient smc, NoticeBoardVO nv) throws SQLException;
+	public List<NoticeBoardVO> getSearchNoticeBoard(SqlMapClient smc, String notice_title) throws SQLException;
 	
 	/**
 	 * 공지사항 삭제

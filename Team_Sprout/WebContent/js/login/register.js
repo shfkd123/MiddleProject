@@ -42,8 +42,8 @@ $(document).ready(function(){
 		
 		// DB에서 중복검사 실행
 		$.ajax({
-			url : "/Team_Sprout/user/register.do"
-			, tpye : "post"
+			url : "/Team_Sprout/UserServlet"
+			, type : "post"
 			, data : {
 				"userId" : userId
 				, "flag" : "CHKID"
@@ -52,13 +52,14 @@ $(document).ready(function(){
 			, success : function(data){
 				$("#spUserIdCk").hide();
 				$("#spUserIdReq").hide();
+				$("#spUserIdDntUse").hide();
 				$("#spUserIdUse").val("\'" + userId + "\' 사용 가능");
 				$("#spUserIdUse").show();
 				id = userId;
 			}
 			, error : function(xhr){
 				console.log(xhr);
-				alert("ID 중복검사 중 오류가 발생하였습니다!");
+				$("#spUserIdDntUse").show();
 			}
 		});
 	});

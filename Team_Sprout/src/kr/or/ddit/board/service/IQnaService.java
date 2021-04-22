@@ -41,6 +41,6 @@ public interface IQnaService {
 	 * @param qbv
 	 * @return List<QnaBoardVO>
 	 */
-	public List<QnaBoardVO> searchQnaBoard(QnaBoardVO qbv);
+	public List<QnaBoardVO> searchQnaBoard(String str);
 	
 }

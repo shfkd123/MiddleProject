@@ -16,6 +16,28 @@
 </style>
 </head>
 <body>
+
+ <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- 수정 Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">댓글 수정하기</h4>
+        </div>
+        <div class="modal-body">
+          <textarea class="form-control" rows="3"></textarea>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+      
 	<!-- 테이블 -->
 	<div class="container">
 		<table class="table">
@@ -65,7 +87,7 @@
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu">
-								<li><a href="#">수정</a></li>
+								<li><a data-toggle="modal" data-target="#myModal">수정</a></li>
 								<li><a href="#">삭제</a></li>
 							</ul>
 						</div>

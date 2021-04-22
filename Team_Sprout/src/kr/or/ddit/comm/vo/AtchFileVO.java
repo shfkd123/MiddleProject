@@ -15,6 +15,8 @@ public class AtchFileVO {
 	private long fileSize = 0;
 	private String userId;
 	
+	private String tempPath;//임시경로
+	
 	public long getAtchFileId() {
 		return atchFileId;
 	}
@@ -74,6 +76,12 @@ public class AtchFileVO {
 	}
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	public String getTempPath() {
+		return tempPath;
+	}
+	public void setTempPath(String tempPath) {
+		this.tempPath = tempPath;
 	}
 	
 	

@@ -22,7 +22,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
  * (HttpServletRequest에 기반한 API를 사용하면서 멀티파트처리 기능이 추가되었음.)
  */
 public class FileUploadRequestWrapper extends HttpServletRequestWrapper {
-    public static final String UPLOAD_DIRECTORY = "d:/D_Other/upload_files";// 업로드 경로 설정
+    public static final String UPLOAD_DIRECTORY = "D:/A_TeachingMaterial/4.MiddleProject/workspace/Team_Sprout/WebContent/attachfile";// 업로드 경로 설정
     private boolean multipart = false;// 멀티파트여부
 
     private Map<String, String[]> parameterMap;	// 폼필드(파라미터) 데이터를 담기 위한 맵

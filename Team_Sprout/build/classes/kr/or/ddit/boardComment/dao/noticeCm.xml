@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap
+   PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+   "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="noticeCm">
+
+<!-- 공지사항 댓글 등록 -->
+<insert id="insertNoticeCm" parameterClass="kr.or.ddit.boardComment.vo.NoticeCmVO">
+	INSERT INTO NOTICE_COMMENT (
+	NC_NM
+	,NC_CONTENT
+	,NC_DATE
+	,NC_TYPE
+	,NOTICE_NM
+	,USER_ID
+	
+	) VALUES(
+	NOTICE_BOARD_COMMENT_SEQ.NEXTVAL
+	,#ncNm#
+	,#ncContent#
+	,#ncDate#
+	,#ncType#
+	,#noticeNm#
+	,#userId#
+	)
+</insert>
+
+
+<!-- 공지사항 댓글 수정 -->
+<update id="updateNoticeCm" parameterClass="kr.or.ddit.boardComment.vo.NoticeCmVO">
+	UPDATE NOTICE_COMMENT
+	SET NC_NM = #ncNm#
+	, NC_CONTENT = #ncContent#
+	, NC_DATE = #ncDate#
+	, NC_TYPE = #ncType#
+	, NOTICE_NM = #noticeNm#
+	, USER_ID = #userId#
+	WHERE NC_NM = #ncNm#
+
+</update>
+
+
+<!-- 공지사항 댓글 조회 -->
+<select id="getNoticeCmList" resultClass="kr.or.ddit.boardComment.vo.NoticeCmVO">
+	SELECT NC_NM        ncNm
+	       , NC_CONTENT   ncContent
+	       , NC_DATE      ncDate
+	       , NC_TYPE      ncType
+	       , NOTICE_NM    noticeNm
+	       , USER_ID      userId
+	FROM NOTICE_COMMENT
+	ORDER BY 1 DESC
+</select>
+
+
+<!-- 공지사항 댓글 삭제 -->
+<delete id="deleteNoticeCm" parameterClass="String">
+DELETE FROM NOTICE_COMMENT WHERE NC_NM = #ncNm#
+</delete>
+
+
+</sqlMap>

@@ -37,15 +37,16 @@ public class SignUpServlet extends HttpServlet {
 			
 			chk = service.signUpUser(sv);
 			
-			
 			if(chk == true) {
-				HttpSession session = req.getSession();
+				HttpSession session = req.getSession(true);
 				
 				UserService userService = new UserService();
+				
 				UserVO uv = userService.retrieveUser(req.getParameter("userId"));
 				
 				session.setAttribute("userVO", uv);
-				
+				session.setMaxInactiveInterval(60 * 60);
+
 				req.setAttribute("chk", "T");
 			}
 			else if(chk == false) {

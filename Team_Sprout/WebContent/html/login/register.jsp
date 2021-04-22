@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,10 +27,13 @@
 			<!-- 아이디 -->
 			<div class="field">
 				<input type="text" id="userId" name="userId" required> <label>아이디</label>
-				<span id="spUserIdCk" style="display: none; color: red">중복된
-					ID 입니다</span> <span id="spUserIdUse" style="display: none; color: green"></span>
-				<span id="spUserIdReq" style="display: none; color: red"> 영문
-					소문자는 반드시 포함하고, 영문 소문자와 숫자의 조합으로 4~12 글자 </span>
+			</div>
+
+			<div class="span">		
+				<span id="spUserIdCk" style="display: none; color: red">중복된 ID 입니다</span>
+				<span id="spUserIdUse" style="display: none; color: green"></span>
+				<span id="spUserIdReq" style="display: none; color: red"> 영문 소문자는 반드시 포함하고, 영문 소문자와 숫자의 조합으로 4~12 글자 </span>
+				<span id="spUserIdDntUse" style="display: none; color: red"> 중복된 ID입니다. </span>
 			</div>
 
 			<div class="field">
@@ -40,9 +43,13 @@
 			<!-- 비밀번호 -->
 			<div class="field">
 				<input type="password" id="userPw" name="userPw" required> <label>비밀번호</label>
+			</div>
+
+			<div class="span">
 				<span id="spUserPassReq" style="display: none; color: red">
 					영문 소문자, 영문 대문자, 숫자, 특수문자가 각각 1개 이상씩 포함된 8~12 글자 </span>
 			</div>
+
 
 			<!-- 비밀번호 확인 -->
 			<div class="field">
@@ -53,10 +60,15 @@
 			<!-- 닉네임 -->
 			<div class="field">
 				<input type="text" id="userNickName" name="userNickName" required>
-				<label>닉네임</label> <span id="spUserNickNameReq"
+				<label>닉네임</label>
+			</div>
+
+			<div class="span">
+				<span id="spUserNickNameReq"
 					style="display: none; color: red"> 숫자, 영어, 한국어와 언더스코어, 공백을
 					허용하며 최소 2자 이상 </span>
 			</div>
+
 
 			<!-- 생년월일 -->
 			<div id="birth">
@@ -88,7 +100,7 @@
 			<!-- 관심분야  -->
 			<h3>관심분야</h3>
 			<div id="likey"></div>
-			
+
 			<!-- 주소 -->
 			<div>
 				<br>
@@ -119,15 +131,17 @@
 				</div>
 			</div>
 			<br>
-			
+
 			<!-- 구글 리캡챠(로봇이 아닙니다) -->
-	      	<div class="g-recaptcha" data-sitekey="6LeODLMaAAAAADZ6qbdrcHwUvZ-_ZvwfJZhTk28l" align="center"></div>
-			
+			<div class="g-recaptcha"
+				data-sitekey="6LeODLMaAAAAADZ6qbdrcHwUvZ-_ZvwfJZhTk28l"
+				align="center"></div>
+
 			<!-- 저장 , 초기화 버튼  -->
 			<div class="field">
 				<button type="reset" id="resetbtn">초기화</button>
 			</div>
-			
+
 			<div class="field">
 				<input type="text" style="display: none" id="flag" value="C">
 				<input type="button" onclick="save()" value="회원가입">
