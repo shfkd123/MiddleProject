@@ -1,6 +1,10 @@
 package kr.or.ddit.comm.service;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +53,7 @@ public class AtchFileServiceImpl implements IAtchFileService{
 			// 저장 파일명 생성
 			storeFileName = UUID.randomUUID().toString().replace("-", "");
 			filePath = FileUploadRequestWrapper.UPLOAD_DIRECTORY 
-					+ File.separator + storeFileName;
+					+ "/" + storeFileName;
 			storeFile = new File(filePath);
 		}while(storeFile.exists()); // 파일명이 중복되지 않을때까지...
 		
@@ -58,6 +62,9 @@ public class AtchFileServiceImpl implements IAtchFileService{
 				orignFileName.lastIndexOf(".") < 0 ? "" 
 						: orignFileName.substring(orignFileName.lastIndexOf(".") + 1);
 		
+		filePath += "." + fileExtension;
+		
+		storeFile = new File(filePath);
 		item.write(storeFile); // 업로드 파일 저장
 		
 		// 파일 저장 서비스 호출

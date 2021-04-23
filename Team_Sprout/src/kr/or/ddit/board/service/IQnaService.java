@@ -3,6 +3,7 @@ package kr.or.ddit.board.service;
 import java.util.List;
 
 import kr.or.ddit.board.vo.QnaBoardVO;
+import kr.or.ddit.boardComment.vo.QnaCmVO;
 
 public interface IQnaService {
 
@@ -16,7 +17,7 @@ public interface IQnaService {
 	 * QnA 게시글 조회 메서드
 	 * @return QnaBoardVO
 	 */
-	public QnaBoardVO getQnaBoard(QnaBoardVO qbv);
+	public QnaBoardVO getQnaBoard(String qnaNm);
 	
 	/**
 	 * QnA 게시글 등록 메서드

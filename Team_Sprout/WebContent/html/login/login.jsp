@@ -13,7 +13,7 @@
 <meta charset="UTF-8">
     <meta charset="utf-8">
    <!----<title>Login Form Design | CodeLab</title>---->
-    <link rel="stylesheet" href="../../css/login/login.css">
+    <link rel="stylesheet" href="/Team_Sprout/css/login/login.css">
 	<script type="text/javascript">
 		$(document).ready(function(){
 			<%
@@ -35,7 +35,7 @@
 <body>
     <div class="wrapper">
 	    <div class="title">
-		<img src="../../images/logo.png" width="100px">
+		<img src="/Team_Sprout/images/logo.png" width="100px">
 	</div>
 		<form action="/Team_Sprout/SignUpServlet">
 	      	<div class="field">

@@ -38,13 +38,13 @@ public interface INoticeService {
 	 * @param nv
 	 * @return 검색된 결과를 담은 List
 	 */
-	public List<NoticeBoardVO> getSearchNoticeBoardList(String notice_title);
+	public List<NoticeBoardVO> getSearchNoticeBoardList(String noticeTitle);
 	
 	/**
 	 * 공지사항 번호로 해당 공지사항 조회 
 	 * @param noticeNm
 	 * @return 해당 공지사항 정보
 	 */
-	public NoticeBoardVO getNoticeBoard(String notice_nm);
+	public NoticeBoardVO getNoticeBoard(String noticNm);
 	
 }

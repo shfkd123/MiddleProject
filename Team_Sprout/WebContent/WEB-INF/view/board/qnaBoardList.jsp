@@ -33,14 +33,13 @@
 			<tbody>
 			<%
 			List<QnaBoardVO> list = (List<QnaBoardVO>)request.getAttribute("list");
-			String qnaNm = "";
 			for(int i = 0; i < list.size(); i++) {
-				qnaNm = list.get(i).getQnaNm();
+				String qnaNm = list.get(i).getQnaNm();
 			%>
 			<tr>
 				<td><%=list.size() - i %></td>
 				<td>
-					<a href="#" onclick="boardSelect()">
+					<a href="#" onclick="boardSelect('<%=qnaNm %>')">
 						<%=list.get(i).getQnaTitle() %>
 					</a>
 				</td>
@@ -62,15 +61,15 @@
 				<li><a href="">5</a></li>
 			</ul>
 		</div>
-		<hr>
-		<!-- 등록 버튼  -->
-		<div id="btn" style="text-align: right">
-			<button type="button" class="btn btn-success" onclick="insertBoard()">등록</button>
-		</div>
 		<!-- 검색 창 -->
 		<div class="text-center">
 			<input type="text" id="schInput" name="search">
 			<button type="button" class="btn btn-success" onclick="searchBoard()">검색</button>
+		</div>
+		<hr>
+		<!-- 등록 버튼  -->
+		<div id="btn" style="text-align: right">
+			<button type="button" class="btn btn-success" id="insertBtn" onclick="insertBoard()">등록</button>
 		</div>
 		<form id="fm">
 			<input type="hidden" name="qnaNm" id="qnaNm">
@@ -79,8 +78,15 @@
 	</div>
 </body>
 <script type="text/javascript">
-	function boardSelect(){
-		document.getElementById("qnaNm").value = "<%=qnaNm %>";
+	$(document).ready(function(){
+		<%if(session.getAttribute("userVO") == null){ %>
+			$("#insertBtn").hide();
+		<%} else {%>
+			$("#insertBtn").show();
+		<%}%>
+	});
+	function boardSelect(qnaNm){
+		document.getElementById("qnaNm").value = qnaNm;
 		document.getElementById("flag").value = "SEL";
 		var fm = document.getElementById("fm");
 		fm.method = "post";

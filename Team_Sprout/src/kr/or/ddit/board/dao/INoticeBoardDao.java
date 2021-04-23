@@ -45,7 +45,7 @@ public interface INoticeBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoticeBoardVO> getSearchNoticeBoard(SqlMapClient smc, String notice_title) throws SQLException;
+	public List<NoticeBoardVO> getSearchNoticeBoard(SqlMapClient smc, String noticeTitle) throws SQLException;
 	
 	/**
 	 * 공지사항 삭제
@@ -54,7 +54,7 @@ public interface INoticeBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int deleteNoticeBoard(SqlMapClient smc, String notice_nm) throws SQLException;
+	public int deleteNoticeBoard(SqlMapClient smc, String noticeNm) throws SQLException;
 	
 	/**
 	 * 해당 번호 공지사항 조회 
@@ -63,5 +63,5 @@ public interface INoticeBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public NoticeBoardVO getNoticeBoard(SqlMapClient smc, String notice_nm) throws SQLException;
+	public NoticeBoardVO getNoticeBoard(SqlMapClient smc, String noticeNm) throws SQLException;
 }

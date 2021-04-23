@@ -10,12 +10,12 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.fileupload.FileItem;
 
-import kr.or.ddit.board.service.FreeServiceImpl;
-import kr.or.ddit.board.service.IFreeService;
 import kr.or.ddit.board.service.IQnaService;
 import kr.or.ddit.board.service.QnaServiceImpl;
-import kr.or.ddit.board.vo.FreeBoardVO;
 import kr.or.ddit.board.vo.QnaBoardVO;
+import kr.or.ddit.boardComment.service.IQnaCmService;
+import kr.or.ddit.boardComment.service.QnaCmServiceImpl;
+import kr.or.ddit.boardComment.vo.QnaCmVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
@@ -48,13 +48,14 @@ public class QnaBoardHandler implements CommandHandler {
 		String flag = (String) req.getParameter("flag");
 		
 		HttpSession session = req.getSession();
+		
 		UserVO uv = (UserVO) session.getAttribute("userVO");
-		String userId = uv.getUserId();
 		
 		if("C".equals(flag)) { // 게시글 작성
 			if(req.getMethod().equals("GET")) {
-				return "/WEB-INF/view/board/qnaBoardInsert";
+				return "/WEB-INF/view/board/qnaBoardInsert.jsp";
 			} else {
+				String userId = uv.getUserId();
 				
 				QnaBoardVO qbv = new QnaBoardVO();
 				
@@ -92,6 +93,8 @@ public class QnaBoardHandler implements CommandHandler {
 			}
 			
 		} else if("U".equals(flag)) { // 게시글 수정
+			
+			String userId = uv.getUserId();
 			
 			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
 			
@@ -145,11 +148,10 @@ public class QnaBoardHandler implements CommandHandler {
 			return redirectUrl;
 		} else if("SEL".equals(flag)) { // 한 게시글 조회
 			String qnaNm = req.getParameter("qnaNm");
-			QnaBoardVO boardVO = new QnaBoardVO();
-			boardVO.setQnaNm(qnaNm);
+			
 			IQnaService service = QnaServiceImpl.getInstance();
 			
-			QnaBoardVO qbv = service.getQnaBoard(boardVO);
+			QnaBoardVO qbv = service.getQnaBoard(qnaNm);
 			
 			if(qbv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
 				AtchFileVO fileVO = new AtchFileVO();
@@ -162,7 +164,15 @@ public class QnaBoardHandler implements CommandHandler {
 				
 				req.setAttribute("atchFileList", atchFileList);
 			}
+			
 			req.setAttribute("qbv", qbv);
+
+			// 댓글 전부 보여줌
+			IQnaCmService cmService = QnaCmServiceImpl.getInstance();
+			
+			List<QnaCmVO> cmList = cmService.getAllQnaCm(qnaNm);
+			
+			req.setAttribute("qnaCmList", cmList);
 			
 			return "/WEB-INF/view/board/qnaBoardSelect.jsp";
 			
@@ -185,10 +195,7 @@ public class QnaBoardHandler implements CommandHandler {
 			
 			IQnaService service = QnaServiceImpl.getInstance();
 			
-			QnaBoardVO boardVO = new QnaBoardVO();
-			boardVO.setQnaNm(qnaNm);
-			
-			QnaBoardVO qbv = service.getQnaBoard(boardVO);
+			QnaBoardVO qbv = service.getQnaBoard(qnaNm);
 			
 			if(qbv.getAtchFileId() > 0) {
 				AtchFileVO fileVO = new AtchFileVO();

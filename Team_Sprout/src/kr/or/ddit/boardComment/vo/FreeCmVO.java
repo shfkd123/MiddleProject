@@ -6,7 +6,7 @@ public class FreeCmVO {
 	private String fcDate;
 	private String fcType;
 	private String freeNm;
-	private String userId;
+	private String fcWriter;
 	
 	public String getFcNm() {
 		return fcNm;
@@ -38,11 +38,11 @@ public class FreeCmVO {
 	public void setFreeNm(String freeNm) {
 		this.freeNm = freeNm;
 	}
-	public String getUserId() {
-		return userId;
+	public String getFcWriter() {
+		return fcWriter;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setFcWriter(String fcWriter) {
+		this.fcWriter = fcWriter;
 	}
 	
 	

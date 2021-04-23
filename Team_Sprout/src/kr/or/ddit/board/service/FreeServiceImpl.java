@@ -6,86 +6,56 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import kr.or.ddit.board.dao.FreeBoardDaoImpl;
 import kr.or.ddit.board.dao.IFreeBoardDao;
-import kr.or.ddit.board.dao.FreeDaoImpl;
 import kr.or.ddit.board.vo.FreeBoardVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class FreeServiceImpl implements IFreeService{
 
-	private IFreeBoardDao freeDao;
+	private IFreeBoardDao boardDao;
 	private SqlMapClient smc;
 	
-	public static FreeServiceImpl freeService;
+	private static IFreeService freeService;
 	
-	private FreeServiceImpl() {
-		freeDao = FreeDaoImpl.getInstance();
+	public FreeServiceImpl() {
+		boardDao = FreeBoardDaoImpl.getInstance();
 		smc = SqlMapClientUtil.getInstance();
 	}
 	
-	public static FreeServiceImpl getInstance() {
-		if (freeService == null) {
+	public static IFreeService getInstance() {
+		if(freeService == null) {
 			freeService = new FreeServiceImpl();
 		}
 		return freeService;
-		
 	}
-	
-	//공지글 등록
+
+	@Override
+	public List<FreeBoardVO> getAllFreeBoardList() {
+		List<FreeBoardVO> list = new ArrayList<>();
+		try {
+			list = boardDao.getAllFreeBoard(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public FreeBoardVO getFreeBoard(FreeBoardVO fv) {
+		try {
+			fv = boardDao.getFreeBoard(smc, fv.getFreeNm());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return fv;
+	}
+
 	@Override
 	public int insertFreeBoard(FreeBoardVO fv) {
 		int cnt = 0;
-		
 		try {
-			smc.startTransaction();
-			cnt = freeDao.insertFreeBoard(smc, fv);
-			smc.commitTransaction();
-		} catch (SQLException e) {
-			try {
-				smc.endTransaction();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-		return cnt;
-	}
-	
-	//공지글 조회
-	@Override
-	public List<FreeBoardVO> getFreeBoardList() {
-		List<FreeBoardVO> freeList = new ArrayList<>();
-
-		try {
-			freeList = freeDao.getFreeBoardList(smc);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return freeList;
-	}
-	
-	//공지글 검색
-	@Override
-	public List<FreeBoardVO> getSearchFreeBoardList(FreeBoardVO fv) {
-		List<FreeBoardVO> freeList = new ArrayList<>();
-
-		try {
-			freeList = freeDao.getSearchFreeBoard(smc, fv);
-
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-		}
-		return freeList;
-	}
-
-	//공지글 삭제
-	@Override
-	public int deleteFreeBoard(String freeNm) {
-		
-		int cnt = 0;
-
-		try {
-			cnt = freeDao.deleteFreeBoard(smc, freeNm);
+			cnt = boardDao.insertFreeBoard(smc, fv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -95,9 +65,8 @@ public class FreeServiceImpl implements IFreeService{
 	@Override
 	public int updateFreeBoard(FreeBoardVO fv) {
 		int cnt = 0;
-
 		try {
-			cnt = freeDao.updateFreeBoard(smc, fv);
+			cnt = boardDao.updateFreeBoard(smc, fv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -105,14 +74,25 @@ public class FreeServiceImpl implements IFreeService{
 	}
 
 	@Override
-	public FreeBoardVO getFreeBoard(String freeNm) {
-		FreeBoardVO fv = null;
-
+	public int deleteFreeBoard(FreeBoardVO fv) {
+		int cnt = 0;
 		try {
-			fv = freeDao.getFreeBoard(smc, freeNm);
-		} catch (SQLException ex) {
-			ex.printStackTrace();
+			cnt = boardDao.deleteFreeBoard(smc, fv);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		return fv;
+		return cnt;
+	}
+
+	@Override
+	public List<FreeBoardVO> searchFreeBoard(String str) {
+		List<FreeBoardVO> list = new ArrayList<>();
+		
+		try {
+			list = boardDao.searchFreeBoard(smc, str);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

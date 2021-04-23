@@ -13,8 +13,7 @@
 	List<QnaCmVO> qnaCmList = (List<QnaCmVO>)request.getAttribute("qnaCmList");
 	
 	UserVO uv = (UserVO)session.getAttribute("userVO");
-	
-	String userNick = uv.getUserNickName();
+
 %>
 <!DOCTYPE html>
 <html>
@@ -29,26 +28,10 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src=""></script>
 <link rel="stylesheet" href="../../css/main/boardDetail.css">
 <style type="text/css">
 </style>
-<script type="text/javascript">
-	$(document).ready(function(){
-		<%
-		if(userNick != qbv.getQnaWriter()){
-		%>
-			$("#updateWrite").hide();
-			$("#deleteWrite").hide();
-		<%
-		} else if(userNick == qbv.getQnaWriter()){
-		%>
-			$("#updateWrite").show();
-			$("#deleteWrite").show();
-		<%
-		}
-		%>
-	});
-</script>
 </head>
 <body>
 	<!-- 테이블 -->
@@ -107,41 +90,10 @@
 			<button type="button" id="deleteWrite" class="btn btn-success" onclick="deleteBoard()">삭제</button>
 		</div>	
 		<hr>
-		
-<script type="text/javascript">
-	function goList(){
-		location.href = "qnaBoard.do";
-	}
-	function updateBoard(){
-		document.getElementById("qnaNm").value = "<%=qbv.getQnaNm() %>";
-		document.getElementById("flag").value = "UPD";
-		var fm = document.getElementById("fm");
-		fm.method = "post";
-		fm.action = "qnaBoard.do";
-		fm.submit();
-	}
-	function deleteBoard(){
-		if(confirm("정말로 삭제하시겠습니까?")){
-			alert("삭제되었습니다.");
-			document.getElementById("qnaNm").value = "<%=qbv.getQnaNm() %>";
-			document.getElementById("flag").value = "D";
-			var fm = document.getElementById("fm");
-			fm.method = "post";
-			fm.action = "qnaBoard.do";
-			fm.submit();
-		} else {
-			return;
-		}
-	}
-</script>
 		<!-- 댓글 조회 -->
-		<%
-		
-		%>
 		<h4><b><span>댓글 총 <%=qnaCmList.size() %>개</span></b></h4>
 		<table class="table">
 			<thead>
-				
 				<tr>
 					<th>작성자</th>
 					<th style="text-align: left;">댓글</th>
@@ -151,9 +103,36 @@
 			<tbody>
 			<%
 			for(int i = 0; i < qnaCmList.size(); i++){
-			%>
+				if(qnaCmList.size() == 0){
+				%>
 				<tr>
-					<td style="text-align: left;"><%=qnaCmList.get(i).getqcWriter() %></td>
+					<td colspan="3" align="left">댓글이 없습니다.</td>
+				</tr>
+				<%	
+				} else {
+			%><!-- 댓글 수정 Modal -->
+				<div class="modal fade" id="myModal" role="dialog">
+					<div class="modal-dialog">
+				      <!-- 수정 Modal content-->
+				      <div class="modal-content">
+				        <div class="modal-header">
+				          <button type="button" class="close" data-dismiss="modal">&times;</button>
+				          <h4 class="modal-title">댓글 수정하기</h4>
+				        </div>
+				        <div class="modal-body">
+				          <textarea class="form-control" rows="3" id="editCm"></textarea>
+				        </div>
+				        <div class="modal-footer">
+				          <button type="button" class="btn btn-default" onclick="cmUpdate('<%=qnaCmList.get(i).getQcNm() %>')">저장</button>
+				          <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+				        </div>
+				      </div>
+				 	</div>
+		  		</div>
+				<tr>
+					<td style="text-align: left;">
+					<%=qnaCmList.get(i).getqcWriter() %>
+					</td>
 					<td style="text-align: right;"><%=qnaCmList.get(i).getQcContent() %></td>
 					<td><%=qnaCmList.get(i).getQcDate() %>
 						<div class="btn-group"  style="float: right;">
@@ -162,13 +141,15 @@
 								<span class="caret"></span>
 							</button>
 							<ul class="dropdown-menu" role="menu" id="cmtMenu">
-								<li><a href="#" onclick="cmUpdate()">수정</a></li>
-								<li><a href="#" onclick="cmDelete()">삭제</a></li>
+								<li><a data-toggle="modal" data-target="#myModal">수정</a>
+								</li>
+								<li><a href="#" onclick="cmDelete('<%=qnaCmList.get(i).getQcNm() %>')">삭제</a></li>
 							</ul>
 						</div>
 					</td>
 				</tr>
 			<%
+				}
 			}
 			%>
 			</tbody>
@@ -188,13 +169,16 @@
 				<tr>
 					<td colspan="3">
 						<%
-						if(userNick == null)  {
+						if(uv == null)  {
 						%>
 						<textarea class="form-control" readonly="readonly" rows="5" placeholder="댓글은 회원만 작성할 수 있습니다."></textarea>
 						<%
 						} else {
 						%>
-						<textarea class="form-control" rows="5" id="comment"></textarea>
+						<textarea class="form-control" rows="5" id="commentWrite"></textarea>
+<!-- 						<div class="checkbox"> -->
+<!-- 							<label><input type="checkbox" id="secret">비공개</label> -->
+<!-- 						</div> -->
 						<%
 						}
 						%>
@@ -202,27 +186,123 @@
 				</tr>
 				<tr>
 					<td colspan="3" style="text-align: right;">
-						<button type="button" class="btn btn-success" onclick="cmUpdate()">댓글 등록</button>
+						<button type="button" class="btn btn-success" onclick="cmCreate()">댓글 등록</button>
 					</td>
 				</tr>	
 				
 			</tbody>
 		</table>
 		<form id="fmCm">
-			<input type="hidden" id="comment" name="comment">
+			<input type="hidden" id="qnaNmCm" name="qnaNmCm">
+			<input type="hidden" id="fmQcNm" name="qcNmCm">
+			<input type="hidden" id="comment" name="qcContent">
 			<input type="hidden" id="userId" name="userId">
-			<input type="hidden" id="flag" name="flag">
+			<input type="hidden" id="cmType" name="qcType">
+			<input type="hidden" id="flagCm" name="flagCm">
 		</form>
 	</div>
-</body>
 <script type="text/javascript">
-	function cmUpdate(){
+	$(document).ready(function(){
+		<%
+		if(uv != null){
+			if(!uv.getUserNickName().equals(qbv.getQnaWriter())){
+			%>
+				$("#updateWrite").hide();
+				$("#deleteWrite").hide();
+			<%
+			} else if(uv.getUserNickName().equals(qbv.getQnaWriter())){
+			%>
+				$("#updateWrite").show();
+				$("#deleteWrite").show();
+			<%
+			}
+		}
+		%>
+	});
+	
+	function goList(){
+		location.href = "qnaBoard.do";
+	}
+	
+	function updateBoard(){
 		document.getElementById("qnaNm").value = "<%=qbv.getQnaNm() %>";
 		document.getElementById("flag").value = "UPD";
 		var fm = document.getElementById("fm");
-		fmCm.method = "post";
+		fm.method = "post";
 		fm.action = "qnaBoard.do";
 		fm.submit();
 	}
+	
+	function deleteBoard(){
+		if(confirm("정말로 삭제하시겠습니까?")){
+			alert("삭제되었습니다.");
+			document.getElementById("qnaNm").value = "<%=qbv.getQnaNm() %>";
+			document.getElementById("flag").value = "D";
+			var fm = document.getElementById("fm");
+			fm.method = "post";
+			fm.action = "qnaBoard.do";
+			fm.submit();
+		} else {
+			return;
+		}
+	}
+	function cmCreate(){
+		<%if(uv == null){%>
+			alert("댓글은 회원만 작성 가능합니다.");
+			return;
+		<%}%>
+		document.getElementById("qnaNmCm").value = "<%=qbv.getQnaNm() %>";
+		<%
+		if(uv != null){
+		%>
+		document.getElementById("userId").value = "<%=uv.getUserId() %>";
+		<%}%>
+		document.getElementById("comment").value = $("#commentWrite").val();
+		document.getElementById("flagCm").value = "C";
+		var fmCm = document.getElementById("fmCm");
+		fmCm.method = "post";
+		fmCm.action = "qnaBoardComment.do";
+		fmCm.submit();
+	}
+	
+	function cmUpdate(qcNm){
+		if(confirm("수정하시겠습니까?")){
+			alert("수정이 완료되었습니다.");
+			document.getElementById("qnaNmCm").value = "<%=qbv.getQnaNm() %>";
+			document.getElementById("fmQcNm").value = qcNm;
+			<%
+			if(uv != null){
+			%>
+			document.getElementById("userId").value = "<%=uv.getUserId() %>";
+			<%}%>
+			document.getElementById("comment").value = $("#editCm").val();
+			document.getElementById("flagCm").value = "U";
+			var fmCm = document.getElementById("fmCm");
+			fmCm.method = "post";
+			fmCm.action = "qnaBoardComment.do";
+			fmCm.submit();
+		}
+		return;
+	}
+	
+	function cmDelete(qcNm){
+		if(confirm("정말 댓글을 삭제하시겠습니까?")){
+			alert("댓글이 삭제되었습니다.");
+			<%
+			if(uv != null){
+			%>
+			document.getElementById("userId").value = "<%=uv.getUserId() %>";
+			<%}%>
+			document.getElementById("qnaNmCm").value = "<%=qbv.getQnaNm() %>";
+			document.getElementById("fmQcNm").value = qcNm;
+			document.getElementById("flagCm").value = "D";
+			var fmCm = document.getElementById("fmCm");
+			fmCm.method = "post";
+			fmCm.action = "qnaBoardComment.do";
+			fmCm.submit();
+		}
+		return;
+	}
 </script>
+</body>
 </html>

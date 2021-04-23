@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
-import kr.or.ddit.board.vo.NoticeBoardVO;
 import kr.or.ddit.boardComment.vo.NoticeCmVO;
 
 public interface INoticeCmDao {
@@ -21,12 +20,13 @@ public interface INoticeCmDao {
 	
 	/**
 	 * 공지사항 댓글 조회
-	 * @param smc
+	 * @param ncNm
 	 * @param nv
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<NoticeCmVO> getNoticeCmList(SqlMapClient smc) throws SQLException;
+	public List<NoticeCmVO> getNoticeCmList(SqlMapClient smc, String ncNm) throws SQLException;
+	public List<NoticeCmVO> getNoticeCmListByNoticeNm(SqlMapClient smc, String noticeNm) throws SQLException;
 	
 	/**
 	 * 공지사항 댓글 수정

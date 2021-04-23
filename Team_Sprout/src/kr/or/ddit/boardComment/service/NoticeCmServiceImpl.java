@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
-import kr.or.ddit.board.service.NoticeServiceImpl;
-import kr.or.ddit.board.vo.NoticeBoardVO;
 import kr.or.ddit.boardComment.dao.INoticeCmDao;
 import kr.or.ddit.boardComment.dao.NoticeCmDaoImpl;
 import kr.or.ddit.boardComment.vo.NoticeCmVO;
@@ -54,11 +52,22 @@ public class NoticeCmServiceImpl implements INoticeCmService{
 	}
 
 	@Override
-	public List<NoticeCmVO> getNoticeCmList() {
+	public List<NoticeCmVO> getNoticeCmList(String ncNm) {
 		List<NoticeCmVO> noticeCmList = new ArrayList<>();
 
 		try {
-			noticeCmList = NoticeCmDao.getNoticeCmList(smc);
+			noticeCmList = NoticeCmDao.getNoticeCmList(smc, ncNm);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return noticeCmList;
+	}
+	@Override
+	public List<NoticeCmVO> getNoticeCmListByNoticeNm(String noticeNm) {
+		List<NoticeCmVO> noticeCmList = new ArrayList<>();
+		
+		try {
+			noticeCmList = NoticeCmDao.getNoticeCmListByNoticeNm(smc, noticeNm);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

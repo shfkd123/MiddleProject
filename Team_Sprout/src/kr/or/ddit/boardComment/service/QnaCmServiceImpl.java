@@ -30,10 +30,10 @@ public class QnaCmServiceImpl implements IQnaCmService{
 	}
 	
 	@Override
-	public List<QnaCmVO> getAllQnaCm() {
+	public List<QnaCmVO> getAllQnaCm(String qnaNm) {
 		List<QnaCmVO> list = new ArrayList<>();
 		try {
-			list = qnaCmDao.getAllQnaCm(smc);
+			list = qnaCmDao.getAllQnaCm(smc, qnaNm);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -63,14 +63,25 @@ public class QnaCmServiceImpl implements IQnaCmService{
 	}
 
 	@Override
-	public int deleteQnaCm(String qcNm) {
+	public int deleteQnaCm(QnaCmVO qcv) {
 		int cnt = 0;
 		try {
-			cnt = qnaCmDao.deleteQnaCm(smc, qcNm);
+			cnt = qnaCmDao.deleteQnaCm(smc, qcv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return cnt;
+	}
+
+	@Override
+	public QnaCmVO getQnaCm(QnaCmVO qcv) {
+		QnaCmVO cmVO = new QnaCmVO();
+		try {
+			cmVO = qnaCmDao.getQnaCm(smc, qcv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cmVO;
 	}
 
 }

@@ -9,7 +9,7 @@
 <!-- 공지사항 댓글 등록 -->
 <insert id="insertNoticeCm" parameterClass="kr.or.ddit.boardComment.vo.NoticeCmVO">
 	INSERT INTO NOTICE_COMMENT (
-	NC_NM
+	 NC_NM
 	,NC_CONTENT
 	,NC_DATE
 	,NC_TYPE
@@ -17,10 +17,9 @@
 	,USER_ID
 	
 	) VALUES(
-	NOTICE_BOARD_COMMENT_SEQ.NEXTVAL
-	,#ncNm#
+	 NOTICE_BOARD_COMMENT_SEQ.NEXTVAL
 	,#ncContent#
-	,#ncDate#
+	,SYSDATE
 	,#ncType#
 	,#noticeNm#
 	,#userId#
@@ -31,19 +30,17 @@
 <!-- 공지사항 댓글 수정 -->
 <update id="updateNoticeCm" parameterClass="kr.or.ddit.boardComment.vo.NoticeCmVO">
 	UPDATE NOTICE_COMMENT
-	SET NC_NM = #ncNm#
-	, NC_CONTENT = #ncContent#
-	, NC_DATE = #ncDate#
-	, NC_TYPE = #ncType#
-	, NOTICE_NM = #noticeNm#
-	, USER_ID = #userId#
+	SET NC_CONTENT = #ncContent#
+		, NC_DATE = SYSDATE
+		, NC_TYPE = #ncType#
 	WHERE NC_NM = #ncNm#
+	AND NOTICE_NM = #noticeNm#
 
 </update>
 
 
 <!-- 공지사항 댓글 조회 -->
-<select id="getNoticeCmList" resultClass="kr.or.ddit.boardComment.vo.NoticeCmVO">
+<select id="getNoticeCmList" resultClass="kr.or.ddit.boardComment.vo.NoticeCmVO" parameterClass="String">
 	SELECT NC_NM        ncNm
 	       , NC_CONTENT   ncContent
 	       , NC_DATE      ncDate
@@ -51,13 +48,28 @@
 	       , NOTICE_NM    noticeNm
 	       , USER_ID      userId
 	FROM NOTICE_COMMENT
+	WHERE NC_NM = #ncNm#
+	ORDER BY 1 DESC
+</select>
+
+<select id="getNoticeCmListByNoticeNm" resultClass="kr.or.ddit.boardComment.vo.NoticeCmVO" parameterClass="String">
+	SELECT TO_CHAR(NC_NM)        ncNm
+	       , NC_CONTENT   ncContent
+	       , TO_CHAR(NC_DATE, 'YYYYMMDDHH24MISS')      ncDate
+	       , NC_TYPE      ncType
+	       , TO_CHAR(NOTICE_NM)    noticeNm
+	       , USER_ID      userId
+	FROM NOTICE_COMMENT
+	WHERE NOTICE_NM = TO_NUMBER( #noticeNm# )
 	ORDER BY 1 DESC
 </select>
 
 
 <!-- 공지사항 댓글 삭제 -->
 <delete id="deleteNoticeCm" parameterClass="String">
-DELETE FROM NOTICE_COMMENT WHERE NC_NM = #ncNm#
+	DELETE FROM NOTICE_COMMENT 
+	WHERE NC_NM = #ncNm#
+	AND NOTICE_NM = #noticeNm#
 </delete>
 
 

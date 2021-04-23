@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
-import kr.or.ddit.board.dao.NoticeDaoImpl;
+import kr.or.ddit.board.dao.NoticeBoardDaoImpl;
 import kr.or.ddit.board.vo.NoticeBoardVO;
 import kr.or.ddit.boardComment.vo.NoticeCmVO;
 
@@ -35,10 +35,13 @@ public class NoticeCmDaoImpl implements INoticeCmDao{
 
 	//공지사항 댓글 조회
 	@Override
-	public List<NoticeCmVO> getNoticeCmList(SqlMapClient smc) throws SQLException {
-		List<NoticeCmVO> noticeCmList = smc.queryForList("noticeCm.getNoticeCmList");
-		
-		return noticeCmList;
+	public List<NoticeCmVO> getNoticeCmList(SqlMapClient smc, String ncNm) throws SQLException {
+		return smc.queryForList("noticeCm.getNoticeCmList", ncNm);
+	}
+	
+	@Override
+	public List<NoticeCmVO> getNoticeCmListByNoticeNm(SqlMapClient smc, String noticeNm) throws SQLException {
+		return smc.queryForList("noticeCm.getNoticeCmListByNoticeNm", noticeNm);
 	}
 
 	//공지사항 댓글 수정

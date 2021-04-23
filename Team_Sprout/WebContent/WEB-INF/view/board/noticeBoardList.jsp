@@ -1,4 +1,6 @@
 
+<%@page import="kr.or.ddit.user.vo.UserVO"%>
+<%@page import="kr.or.ddit.boardComment.vo.NoticeCmVO"%>
 <%@page import="kr.or.ddit.board.vo.NoticeBoardVO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -8,7 +10,14 @@
     NoticeBoardVO noticeVO = (NoticeBoardVO) request.getAttribute("noticeVO");
 	List<NoticeBoardVO> noticeList = (List<NoticeBoardVO>)request.getAttribute("noticeList");
 
-%>    
+	
+	UserVO uv = null;
+	if(session != null && session.getAttribute("userVO") != null){
+		uv = (UserVO)session.getAttribute("userVO");
+	}
+%>
+
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +35,75 @@
 </head>
 
 <body>
+	<nav class="navbar">
+		<!-- 왼쪽 여백 -->
+		<div class="col-sm-2"></div>
+		<!-- nav바 -->
+		<div class="col-sm-8" id="a_head">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#myNavbar">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a href="#"><img src="../../images/logo.png" id="logoImg" style="width: 100px; margin:5px;"></a>
+			</div>
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li><a href="#" class="a_title">인기프로젝트</a></li>
+					<li><a href="#" class="a_title">프로젝트검색</a></li>
+										<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#">커뮤니티 <span class="glyphicon glyphicon-chevron-down"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/Team_Sprout/board/noticeList.do">공지사항</a></li>
+							<li><a href="/Team_Sprout/board/freeBoard.do" class="a_title">커뮤니티</a></li>
+							<li><a href="#">구매후기</a></li>
+							<li><a href="#">FAQ</a></li>
+							<li><a href="/Team_Sprout/board/qnaBoard.do">Q&#38;A</a></li>
+							<li><a href="#">신고</a></li>
+						</ul>
+						</li>
+				</ul>			
+				<ul class="nav navbar-nav navbar-right">
+					<%
+					if(uv == null) {
+					%>
+					<li><a href="#" class="btn-lg"><span
+							class="glyphicon glyphicon-search"></span></a></li>
+					<li id="notlog"><a href="../login/login.jsp" class="btn-lg"><span
+							class="glyphicon glyphicon-user"></span></a></li>
+					<%
+					} else {
+					%>
+					<li id="userInfo" class="dropdown">
+						<a class="btn-lg"class="dropdown-toggle" data-toggle="dropdown"  href="#">
+						<span id="mypage"><%=uv.getUserNickName() %> 님 <span class="glyphicon glyphicon-chevron-down"></span></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">회원정보수정</a></li>
+							<li><a href="#">후원현황</a></li>
+							<li><a href="#">관심프로젝트</a></li>
+							<li><a href="#">내가 만든 프로젝트</a></li>
+							<li><a href="#">메세지</a></li>
+						</ul>
+					</li>
+					
+					<li id="yeslog">
+						<a href="#" onclick="LogOut()" class="btn-lg">
+						<span><span class="glyphicon glyphicon-log-out"></span> LOGOUT</span>
+						</a>
+					</li>
+					<%	
+					}
+					%>
+				</ul>
+			</div>
+		</div>
+	<!-- 오른쪽 여백 -->
+	<div class="col-sm-2"></div>
+	</nav>
+	
+	
 	<!-- 테이블 -->
 	<div class="container">
 		<table class="table table-hover">
@@ -40,14 +118,17 @@
 			</thead>
 			<tbody>
 			<%
-		
 				for(int i=0; i <noticeList.size(); i++){
 					//System.out.print(noticeList.get(i).toString());
 			%>
 				<tr>
 					<td><input type="checkbox" value="" name="num"></td>
 					<td><%=noticeList.get(i).getNoticeNm()%></td>
-					<td><a href="noticeSelect.do?notice_nm=<%=noticeList.get(i).getNoticeNm()%>"><%=noticeList.get(i).getNoticeTitle()%></a></td>
+					<td>
+						<a href="#" onclick="boardSelect('<%=noticeList.get(i).getNoticeNm()%>')">
+						<%=noticeList.get(i).getNoticeTitle() %>
+						</a>
+					</td>
 					<td><%=noticeList.get(i).getUserId()%></td>
 					<td><%=noticeList.get(i).getNoticeDate()%></td>
 				</tr>
@@ -88,9 +169,30 @@
 			<button type="button" class="btn btn-success" id="insert">등록</button>
 			<button type="button" class="btn btn-success" id="delete">삭제</button>			
 		</div>	
+		
+		<form id="fm">
+			<input type="hidden" name="noticeNm" id="noticeNm">
+		</form>
+		
+		<form id="fmCm">
+			<input type="hidden" name="ncNm" id="ncNmCm">	
+		</form>
 	</div>
 </body>
 <script type="text/javascript">
+	function boardSelect(noticeNm){
+		document.getElementById("noticeNm").value = noticeNm;
+		var fm = document.getElementById("fm");
+		fm.action = "noticeSelect.do";
+		fm.method = "post";
+		fm.submit();
+		
+// 		document.getElementById("ncNmCm").value = noticeNm;
+// 		var fmCm = document.getElementById("fmCm");
+// 		fm.action = "noticeBoardCm.do";
+// 		fm.submit();
+	}
+
 	$("#insert").click(function(){
 		location.href = "noticeInsert.do";
 	});

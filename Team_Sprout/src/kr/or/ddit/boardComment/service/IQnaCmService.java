@@ -8,9 +8,16 @@ public interface IQnaCmService {
 	
 	/**
 	 * QnA 게시판 댓글 출력 메서드
-	 * @return 작업성공 : 1, 작업실패 : 0
+	 * @return List<QnaCmVO>
 	 */
-	public List<QnaCmVO> getAllQnaCm();
+	public List<QnaCmVO> getAllQnaCm(String qnaNm);
+	
+	/**
+	 * QnA 게시판 댓글 하나만 가져오는 메서드
+	 * @param qcv
+	 * @return QnaCmVO
+	 */
+	public QnaCmVO getQnaCm(QnaCmVO qcv);
 	
 	/**
 	 * QnA 게시판 댓글 작성 메서드
@@ -31,6 +38,6 @@ public interface IQnaCmService {
 	 * @param qcNm
 	 * @return 작업성공 : 1, 작업실패 : 0
 	 */
-	public int deleteQnaCm(String qcNm);
+	public int deleteQnaCm(QnaCmVO qcv);
 	
 }

@@ -1,19 +1,35 @@
 package kr.or.ddit.board.vo;
 
+import java.util.List;
+
+import kr.or.ddit.boardComment.vo.NoticeCmVO;
+import kr.or.ddit.comm.vo.AtchFileVO;
+
 public class NoticeBoardVO {
 
 	private String noticeNm;
+	private int boardNm;
 	private String noticeTitle;
 	private String noticeContent;
 	private String noticeDate;
 	private String userId; 
 	private long atchFileId = -1;
 	
+	private List<AtchFileVO> atchFileVOList;
+	private List<NoticeCmVO> noticeCmVOList;
+	
+	
 	public String getNoticeNm() {
 		return noticeNm;
 	}
 	public void setNoticeNm(String noticeNm) {
 		this.noticeNm = noticeNm;
+	}
+	public int getBoardNm() {
+		return boardNm;
+	}
+	public void setBoardNm(int boardNm) {
+		this.boardNm = boardNm;
 	}
 	public String getNoticeTitle() {
 		return noticeTitle;
@@ -45,6 +61,18 @@ public class NoticeBoardVO {
 	}
 	public void setAtchFileId(long atchFileId) {
 		this.atchFileId = atchFileId;
+	}
+	public List<AtchFileVO> getAtchFileVOList() {
+		return atchFileVOList;
+	}
+	public void setAtchFileVOList(List<AtchFileVO> atchFileVOList) {
+		this.atchFileVOList = atchFileVOList;
+	}
+	public List<NoticeCmVO> getNoticeCmVOList() {
+		return noticeCmVOList;
+	}
+	public void setNoticeCmVOList(List<NoticeCmVO> noticeCmVOList) {
+		this.noticeCmVOList = noticeCmVOList;
 	}
 	
 }

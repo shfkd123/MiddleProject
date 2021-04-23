@@ -4,39 +4,36 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="freeBoard">
-	<select id="getFreeBoardInfo" resultClass="kr.or.ddit.board.vo.FreeBoardVO">
-		SELECT   FREE_NM      freeNm
-				,FREE_TITLE   freeTitle
-				,FREE_CONTENT freeContent
-				,FREE_DATE    freeDate
-				,USER_ID      userId
-				,ATCH_FILE_ID atchFileId
-		FROM FREE_BOARD
-		WHERE FREE_NM = #freeNm#
-	</select>
 
-	<select id="getFreeBoardList" resultClass="kr.or.ddit.board.vo.FreeBoardVO">
-		SELECT   FREE_NM      freeNm
-				,FREE_TITLE   freeTitle
-				,FREE_CONTENT freeContent
-				,FREE_DATE    freeDate
-				,USER_ID      userId
-				,ATCH_FILE_ID atchFileId
-		FROM     FREE_BOARD
-		ORDER BY 1 DESC	
+	<select id="getAllFreeBoard" parameterClass="kr.or.ddit.board.vo.FreeBoardVO" resultClass="kr.or.ddit.board.vo.FreeBoardVO">
+		SELECT A.FREE_NM       freeNm
+			 , A.FREE_TITLE    freeTitle
+			 , A.FREE_CONTENT  freeContent
+			 , A.FREE_DATE     freeDate
+			 , (
+			 	SELECT USER_NICKNAME 
+			 	FROM   TB_USER
+			 	WHERE  USER_ID = A.USER_ID
+			 	)            freeWriter
+			 , ATCH_FILE_ID atchFileId
+		FROM   FREE_BOARD A
+		ORDER  BY 1 DESC		
 	</select>
 	
-	<select id="getsearchFreeBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.FreeBoardVO">
-		SELECT   FREE_NM      freeNm
-				,FREE_TITLE   freeTitle
-				,FREE_CONTENT freeContent
-				,FREE_DATE    freeDate
-				,USER_ID      userId
-				,ATCH_FILE_ID atchFileId
-		FROM     FREE_BOARD
-		WHERE FREE_TITLE LIKE '%' || #freeTitle# || '%'
-		OR FREE_CONTENT LIKE '%' || #freeContent# || '%'
-		OR USER_ID '%' || #userId# || '%'	
+	<select id="getFreeBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.FreeBoardVO">
+		SELECT A.FREE_NM      freeNm
+			 , A.FREE_TITLE   freeTitle
+			 , A.FREE_CONTENT freeContent
+			 , A.FREE_DATE    freeDate
+			 , (
+			 	SELECT USER_NICKNAME 
+			 	FROM   TB_USER
+			 	WHERE  USER_ID = A.USER_ID
+			 	)			  freeWriter 
+			 , A.ATCH_FILE_ID atchFileId
+		FROM   FREE_BOARD A			
+		WHERE  1=1
+		AND    A.FREE_NM = #freeNm#
 	</select>
 	
 	<insert id="insertFreeBoard" parameterClass="kr.or.ddit.board.vo.FreeBoardVO">
@@ -53,7 +50,7 @@
 		  , #freeTitle#
 		  , #freeContent#
 		  , SYSDATE
-		  , #userId#
+		  , #freeWriter#
 		  , #atchFileId#
 		)
 	</insert>
@@ -63,14 +60,29 @@
 		SET	    FREE_TITLE   = #freeTitle#
 			   ,FREE_CONTENT = #freeContent#
 			   ,FREE_DATE    = SYSDATE
-			   ,USER_ID      = #userId#
-			   ,ATCH_FILE_ID = #atchFileId# 
-			              
+			   ,ATCH_FILE_ID = #atchFileId#            
 		WHERE   FREE_NM = #freeNm#
 	</update>
 	
-	<delete id="deleteFreeBoard" parameterClass="String">
+	<delete id="deleteFreeBoard" parameterClass="kr.or.ddit.board.vo.FreeBoardVO">
 		DELETE FROM FREE_BOARD
 		WHERE  FREE_NM = #freeNm#
 	</delete>
+	
+	<select id="searchFreeBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.FreeBoardVO">
+		SELECT A.FREE_NM       freeNm
+			 , A.FREE_TITLE    freeTitle
+			 , A.FREE_CONTENT  freeContent
+			 , A.FREE_DATE     freeDate
+			 , (
+			 	SELECT B.USER_NICKNAME 
+			 	FROM   TB_USER B
+			 	WHERE  B.USER_ID = A.USER_ID
+			 	)             freeWriter 
+			 , A.ATCH_FILE_ID atchFileId
+		FROM   FREE_BOARD A			
+		WHERE  1=1
+		AND    A.FREE_TITLE LIKE '%' || #freeTitle# || '%'
+		OR     B.USER_NICKNAME LIKE '%' || #freeWriter# || '%'
+	</select>
 </sqlMap>

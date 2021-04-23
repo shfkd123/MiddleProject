@@ -24,8 +24,8 @@ public class QnaCmDaoImpl implements IQnaCmDao {
 	}
 	
 	@Override
-	public List<QnaCmVO> getAllQnaCm(SqlMapClient smc) throws SQLException {
-		return smc.queryForList("qnaCm.getAllQnaCm");
+	public List<QnaCmVO> getAllQnaCm(SqlMapClient smc, String qnaNm) throws SQLException {
+		return smc.queryForList("qnaCm.getAllQnaCm", qnaNm);
 	}
 
 	@Override
@@ -53,15 +53,21 @@ public class QnaCmDaoImpl implements IQnaCmDao {
 	}
 
 	@Override
-	public int deleteQnaCm(SqlMapClient smc, String qcNm) throws SQLException {
+	public int deleteQnaCm(SqlMapClient smc, QnaCmVO qcv) throws SQLException {
 		int cnt = 0;
 		
-		Object obj = smc.delete("qnaCm.deleteQnaCm", qcNm);
+		Object obj = smc.delete("qnaCm.deleteQnaCm", qcv);
 		
 		if(obj != null) {
 			cnt = 1;
 		}
 		return cnt;
+	}
+
+	@Override
+	public QnaCmVO getQnaCm(SqlMapClient smc, QnaCmVO qvc) throws SQLException {
+		
+		return (QnaCmVO) smc.queryForObject("qnaCm.getQnaCm", qvc);
 	}
 
 }

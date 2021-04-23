@@ -7,8 +7,14 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.dao.INoticeBoardDao;
-import kr.or.ddit.board.dao.NoticeDaoImpl;
+import kr.or.ddit.board.dao.NoticeBoardDaoImpl;
 import kr.or.ddit.board.vo.NoticeBoardVO;
+import kr.or.ddit.boardComment.service.INoticeCmService;
+import kr.or.ddit.boardComment.service.NoticeCmServiceImpl;
+import kr.or.ddit.boardComment.vo.NoticeCmVO;
+import kr.or.ddit.comm.service.AtchFileServiceImpl;
+import kr.or.ddit.comm.service.IAtchFileService;
+import kr.or.ddit.comm.vo.AtchFileVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class NoticeServiceImpl implements INoticeService{
@@ -19,7 +25,7 @@ public class NoticeServiceImpl implements INoticeService{
 	public static NoticeServiceImpl noticeService;
 	
 	private NoticeServiceImpl() {
-		noticeDao = NoticeDaoImpl.getInstance();
+		noticeDao = NoticeBoardDaoImpl.getInstance();
 		smc = SqlMapClientUtil.getInstance();
 	}
 	
@@ -95,11 +101,30 @@ public class NoticeServiceImpl implements INoticeService{
 
 	//공지글 단건조회
 	@Override
-	public NoticeBoardVO getNoticeBoard(String notice_nm) {
+	public NoticeBoardVO getNoticeBoard(String noticNm) {
 		NoticeBoardVO nv = null;
 
 		try {
-			nv = noticeDao.getNoticeBoard(smc, notice_nm);
+			nv = noticeDao.getNoticeBoard(smc, noticNm);
+			
+			// 첨부파일 정보 조회
+			if(nv.getAtchFileId() > 0) { //첨부파일 존재하면...
+				//첨부파일 정보 조회
+				AtchFileVO fileVO = new AtchFileVO();
+				fileVO.setAtchFileId(nv.getAtchFileId());
+				
+				IAtchFileService atchFileService = AtchFileServiceImpl.getInstance();
+				List<AtchFileVO> atchFileVOList = atchFileService.getAtchFileList(fileVO);
+				
+				nv.setAtchFileVOList(atchFileVOList);
+				
+			}
+			
+			// 댓글 정보 조회
+			INoticeCmService noticeCmService = NoticeCmServiceImpl.getInstance();
+			List<NoticeCmVO> noticeCmVOList = noticeCmService.getNoticeCmListByNoticeNm(noticNm);
+			nv.setNoticeCmVOList(noticeCmVOList);
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
@@ -108,10 +133,10 @@ public class NoticeServiceImpl implements INoticeService{
 
 	//공지글 검색
 	@Override
-	public List<NoticeBoardVO> getSearchNoticeBoardList(String notice_title) {
+	public List<NoticeBoardVO> getSearchNoticeBoardList(String noticeTitle) {
 		List<NoticeBoardVO> noticeList = new ArrayList<>();
 		try {
-			noticeList = noticeDao.getSearchNoticeBoard(smc, notice_title);
+			noticeList = noticeDao.getSearchNoticeBoard(smc, noticeTitle);
 
 		} catch (SQLException ex) {
 			ex.printStackTrace();

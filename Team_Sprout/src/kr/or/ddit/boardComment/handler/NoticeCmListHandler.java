@@ -19,15 +19,17 @@ public class NoticeCmListHandler implements CommandHandler{
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-				// 1. 서비스 객체 생성하기
-				INoticeCmService noticeCmService = NoticeCmServiceImpl.getInstance();
-				
-				// 2.공지 댓글 조회
-				List<NoticeCmVO> noticeCmList = noticeCmService.getNoticeCmList();
+		
+		String ncNm = req.getParameter("ncNm");
+		
+		// 1. 서비스 객체 생성하기
+		INoticeCmService noticeCmService = NoticeCmServiceImpl.getInstance();
+		
+		// 2.공지 댓글 조회
+		List<NoticeCmVO> noticeCmList = noticeCmService.getNoticeCmList(ncNm);
 
-				req.setAttribute("noticeCmList", noticeCmList);
+		req.setAttribute("noticeCmList", noticeCmList);
 
-				return "/WEB-INF/view/board/noticeBoardSelect.jsp";
+		return "/WEB-INF/view/board/noticeBoardList.jsp";
 	}
-
 }

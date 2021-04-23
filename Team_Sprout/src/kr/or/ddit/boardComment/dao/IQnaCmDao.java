@@ -15,10 +15,27 @@ public interface IQnaCmDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<QnaCmVO> getAllQnaCm(SqlMapClient smc) throws SQLException;
+	public List<QnaCmVO> getAllQnaCm(SqlMapClient smc, String qnaNm) throws SQLException;
 	
 	/**
 	 * QnA게시판 댓글 작성 메서드
+	 * @param smc
+	 * @param qcv
+	 * @return
+	 * @throws SQLException
+	 */
+	
+	/**
+	 * QnA게시판 댓글 하나만 가져오는 메서드
+	 * @param smc
+	 * @param qvc
+	 * @return
+	 * @throws SQLException
+	 */
+	public QnaCmVO getQnaCm(SqlMapClient smc, QnaCmVO qvc) throws SQLException;
+	
+	/**
+	 * QnA게시판 댓글 등록 메서드
 	 * @param smc
 	 * @param qcv
 	 * @return
@@ -42,6 +59,6 @@ public interface IQnaCmDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int deleteQnaCm(SqlMapClient smc, String qcNm) throws SQLException;
+	public int deleteQnaCm(SqlMapClient smc, QnaCmVO qcv) throws SQLException;
 	
 }

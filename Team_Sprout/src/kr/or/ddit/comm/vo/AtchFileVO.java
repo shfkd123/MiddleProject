@@ -14,7 +14,19 @@ public class AtchFileVO {
 	private String fileCn;
 	private long fileSize = 0;
 	private String userId;
+	private String imgUrl;
 	
+	
+	
+	public String getImgUrl() {
+		String result = getFileStreCours();
+		String[] modNum = result.split("/");
+		String arr7 = modNum[6];
+		String arr8 = modNum[7];
+		
+		String result1 = "../" + arr7 + "/" + arr8;
+		return result1;
+	}
 	private String tempPath;//임시경로
 	
 	public long getAtchFileId() {
@@ -82,6 +94,9 @@ public class AtchFileVO {
 	}
 	public void setTempPath(String tempPath) {
 		this.tempPath = tempPath;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
 	}
 	
 	

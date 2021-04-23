@@ -7,7 +7,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.dao.IQnaBoardDao;
-import kr.or.ddit.board.dao.QnaDaoImpl;
+import kr.or.ddit.board.dao.QnaBoardDaoImpl;
 import kr.or.ddit.board.vo.QnaBoardVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
@@ -19,7 +19,7 @@ public class QnaServiceImpl implements IQnaService{
 	private static IQnaService qnaService;
 	
 	public QnaServiceImpl() {
-		boardDao = QnaDaoImpl.getInstance();
+		boardDao = QnaBoardDaoImpl.getInstance();
 		smc = SqlMapClientUtil.getInstance();
 	}
 	
@@ -42,9 +42,10 @@ public class QnaServiceImpl implements IQnaService{
 	}
 
 	@Override
-	public QnaBoardVO getQnaBoard(QnaBoardVO qbv) {
+	public QnaBoardVO getQnaBoard(String qnaNm) {
+		QnaBoardVO qbv = new QnaBoardVO();
 		try {
-			qbv = boardDao.getQnaBoard(smc, qbv.getQnaNm());
+			qbv = boardDao.getQnaBoard(smc, qnaNm);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

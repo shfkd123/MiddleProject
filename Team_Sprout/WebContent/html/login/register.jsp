@@ -12,7 +12,7 @@
 <script src="../../js/common/myUtil.js"></script>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<link rel="stylesheet" href="../../css/login/register.css">
+<link rel="stylesheet" href="/Team_Sprout/css/login/register.css">
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
@@ -20,7 +20,7 @@
 	<br>
 	<div class="wrapper">
 		<div class="title">
-			<img src="../../images/logo.png" width="100px">
+			<img src="/Team_Sprout/images/logo.png" width="100px">
 		</div>
 		<form action="#" id="regiForm">
 

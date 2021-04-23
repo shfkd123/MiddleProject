@@ -1,18 +1,12 @@
 <%@page import="kr.or.ddit.board.vo.FreeBoardVO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%
-	List<FreeBoardVO> freeList = (List<FreeBoardVO>) request.getAttribute("freeList");
-
-	String msg = request.getParameter("msg") == null ? "" : request.getParameter("msg");
-%>
-
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>자유게시판</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -21,7 +15,7 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="../../css/main/board.css">
+  <link rel="stylesheet" href="../../css/main/board.css">
 </head>
 
 <body>
@@ -37,28 +31,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				<%
-					int freeListSize = freeList.size();
-
-					if (freeListSize > 0) {
-						for (int i = 0; i < freeListSize; i++) {
-				%>
-				<tr>
-					<td><%=freeList.get(i).getFreeNm()%></td>
-					<td><a href="freeBoardSelect.do?freeNm=<%=freeList.get(i).getFreeNm()%>"><%=freeList.get(i).getFreeTitle()%></a></td>
-					<td><%=freeList.get(i).getUserId()%></td>
-					<td><%=freeList.get(i).getFreeDate()%></td>
-				</tr>
-				<%
-					}
-					} else {
-				%>
-				<tr>
-					<td colspan="5">등록된 게시글이 없습니다.</td>
-				</tr>
-				<%
-					}
-				%>
+			<%
+			List<FreeBoardVO> list = (List<FreeBoardVO>)request.getAttribute("list");
+			String freeNm = "";
+			for(int i = 0; i < list.size(); i++) {
+				freeNm = list.get(i).getFreeNm();
+			%>
+			<tr>
+				<td><%=list.size() - i %></td>
+				<td>
+					<a href="#" onclick="boardSelect()">
+						<%=list.get(i).getFreeTitle() %>
+					</a>
+				</td>
+				<td><%=list.get(i).getFreeWriter() %></td>
+				<td><%=list.get(i).getFreeDate() %></td>
+			</tr>
+			<%
+			}
+			%>
 			</tbody>
 		</table>
 		<!-- 페이지 이동 -->
@@ -72,26 +63,46 @@
 			</ul>
 		</div>
 		<hr>
-		<!-- 등록 수정 삭제 버튼  -->
-		<div id="btn">
-			<button type="button" class="btn btn-success" id="insert">등록</button>
-			<button type="button" class="btn btn-success">삭제</button>
+		<!-- 등록 버튼  -->
+		<div id="btn" style="text-align: right">
+			<button type="button" class="btn btn-success" onclick="insertBoard()">등록</button>
 		</div>
-		<%
-			if (msg.equals("성공")) { // 성공메시지가 전달되면...
-		%>
-		<script>
-			alert('정상적으로 처리되었습니다.');
-		</script>
-		<%
-			}
-		%>
-
+		<!-- 검색 창 -->
+		<div class="text-center">
+			<input type="text" id="schInput" name="search">
+			<button type="button" class="btn btn-success" onclick="searchBoard()">검색</button>
+		</div>
+		<form id="fm">
+			<input type="hidden" name="freeNm" id="freeNm">
+			<input type="hidden" name="flag" id="flag">
+		</form>
 	</div>
 </body>
 <script type="text/javascript">
-	$("#insert").click(function(){
-		location.href = "freeBoardInsert.do";
-	})
-</script>	
+	function boardSelect(){
+		document.getElementById("freeNm").value = "<%=freeNm %>";
+		document.getElementById("flag").value = "SEL";
+		var fm = document.getElementById("fm");
+		fm.method = "post";
+		fm.action = "freeBoard.do";
+		fm.submit();
+	}
+
+	function insertBoard(){
+		document.getElementById("flag").value = "INS";
+		var fm = document.getElementById("fm");
+		fm.method = "post";
+		fm.action = "freeBoard.do";
+		fm.submit();
+	}
+	
+	function searchBoard() {
+		document.getElementById("flag").value = "SCH";
+		
+		var fm = document.getElementById("fm");
+		fm.method = "post";
+		fm.action = "freeBoard.do";
+		fm.submit();
+	}
+</script>
 </html>

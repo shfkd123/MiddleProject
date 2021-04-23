@@ -1,67 +1,59 @@
 package kr.or.ddit.board.dao;
 
 import java.sql.SQLException;
-
 import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.vo.FreeBoardVO;
 
-
 public interface IFreeBoardDao {
+	
+	/**
+	 * 게시판 글 목록을 보는 메서드
+	 * @param smc
+	 * @return List<FreeBoardVO>
+	 * @throws SQLException
+	 */
+	public List<FreeBoardVO> getAllFreeBoard(SqlMapClient smc) throws SQLException;
+	
+	/**
+	 * 게시글을 확인하는 메서드
+	 * @param smc, fv
+	 * @return List<FreeBoardVO>
+	 * @throws SQLException
+	 */
+	public FreeBoardVO getFreeBoard(SqlMapClient smc, String FreeNm) throws SQLException;
 
 	/**
-	 * 공지사항 등록
-	 * @param smc
-	 * @param fv
-	 * @return 성공 1 실패 0
+	 * 게시글 생성 메서드
+	 * @param smc, fv
+	 * @return int
 	 * @throws SQLException
 	 */
 	public int insertFreeBoard(SqlMapClient smc, FreeBoardVO fv) throws SQLException;
 	
 	/**
-	 * 공지사항 목록 조회
-	 * @param smc
-	 * @return list
-	 * @throws SQLException
-	 */
-	public List<FreeBoardVO> getFreeBoardList(SqlMapClient smc) throws SQLException;
-	
-	/**
-	 * 공지사항 수정 
-	 * @param smc
-	 * @param fv
-	 * @return 성공 1 실패 0
+	 * 게시글을 수정하는 메서드
+	 * @param smc, fv
+	 * @return int
 	 * @throws SQLException
 	 */
 	public int updateFreeBoard(SqlMapClient smc, FreeBoardVO fv) throws SQLException;
 	
+	/**
+	 * 게시글을 삭제하는 메서드
+	 * @param smc, fv
+	 * @return int
+	 * @throws SQLException
+	 */
+	public int deleteFreeBoard(SqlMapClient smc, FreeBoardVO fv) throws SQLException;
 	
 	/**
-	 * 공지사항 검색 
+	 * 게시글을 검색하는 메서드
 	 * @param smc
-	 * @param fv
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<FreeBoardVO> getSearchFreeBoard(SqlMapClient smc, FreeBoardVO fv) throws SQLException;
-	
-	/**
-	 * 공지사항 삭제
-	 * @param smc
-	 * @param free_nm
-	 * @return
-	 * @throws SQLException
-	 */
-	public int deleteFreeBoard(SqlMapClient smc, String freeNm) throws SQLException;
-	
-	/**
-	 * 해당 번호 공지사항 조회 
-	 * @param smc
-	 * @param free_nm
-	 * @return
-	 * @throws SQLException
-	 */
-	public FreeBoardVO getFreeBoard(SqlMapClient smc, String free_nm) throws SQLException;
+	public List<FreeBoardVO> searchFreeBoard(SqlMapClient smc, String str) throws SQLException;
 }

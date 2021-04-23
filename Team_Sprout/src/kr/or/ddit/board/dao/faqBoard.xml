@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="faqBoard">
+
+<!-- 전체 조회 -->
+<select id="getAllFaqBoard">
+	SELECT FAQ_NM       faqNm
+		, FAQ_TITLE     faqTitle
+		, FAQ_CONTENT   faqContent
+		, FAQ_DATE      faqDate
+		, USER_ID       userId
+		, ATCH_FILE_ID  atchFileId	
+	FROM FAQ_BOARD
+	ORDER BY 1 DESC
+</select>
+
+
+<select id="getFaqBoard">
+	SELECT FAQ_NM       faqNm
+		, FAQ_TITLE     faqTitle
+		, FAQ_CONTENT   faqContent
+		, FAQ_DATE      faqDate
+		, USER_ID       userId
+		, ATCH_FILE_ID  atchFileId
+	FROM FAQ_BOARD
+	WHERE 1=1
+	AND FAQ_NM = #faqNm#	
+</select>
+
+
+<insert id="insertFaqBoard">
+	INSERT INTO FAQ_BOARD
+	FAQ_NM
+	,FAQ_TITLE
+	,FAQ_CONTENT
+	,FAQ_DATE
+	,USER_ID
+	,ATCH_FILE_ID
+	)
+	VALUES (
+		FAQ_BOARD_SEQ.NEXTVAL
+		, #faqTitle#
+		, #faqContent#
+		, SYSDATE
+		, #userId#
+		, #atchFileId#
+	) 
+</insert>
+
+
+<update id="updateFaqBoard">
+	UPDATE 
+	SET
+	WHERE
+
+
+</update>
+
+<delete id="deleteFaqBoard">
+	DELETE FROM FAQ_BOARD
+	WHERE  FAQ_NM = #faqNm#
+</delete>
+
+<select id="searchFaqBoard">
+
+</select>
+
+</sqlMap>

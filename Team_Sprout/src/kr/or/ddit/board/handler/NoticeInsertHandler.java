@@ -36,7 +36,6 @@ public class NoticeInsertHandler implements CommandHandler {
 		if (req.getMethod().equals("GET")) { // GET
 			return VIEW_PAGE;
 		} else { //Post방식인 경우isRedirect를 한다.
-			System.out.println("왔다1");
 			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFile")==null?null:((FileUploadRequestWrapper)req).getFileItem("atchFile");
 
 			//String userId = (String) req.getSession().getAttribute("userId"); //로그인시 저장되어있는 아이디를 가져온다. 
