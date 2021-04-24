@@ -3,6 +3,13 @@ package kr.or.ddit.board.vo;
 public class ReportBoardVO {
 
 	private String reportNm;
+	private int boardNm;
+	public int getBoardNm() {
+		return boardNm;
+	}
+	public void setBoardNm(int boardNm) {
+		this.boardNm = boardNm;
+	}
 	private String reportTitle;
 	private String reportContent;
 	private String reportDate;

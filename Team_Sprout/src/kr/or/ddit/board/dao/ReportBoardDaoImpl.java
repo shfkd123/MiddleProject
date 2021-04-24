@@ -29,8 +29,8 @@ public class ReportBoardDaoImpl implements IReportBoardDao{
 	}
 
 	@Override
-	public ReportBoardVO getReportBoard(SqlMapClient smc, String QnaNm) throws SQLException {
-		return (ReportBoardVO) smc.queryForObject("reportBoard.getReportBoard");
+	public ReportBoardVO getReportBoard(SqlMapClient smc, String reportNm) throws SQLException {
+		return (ReportBoardVO) smc.queryForObject("reportBoard.getReportBoard", reportNm);
 	}
 
 	@Override

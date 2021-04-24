@@ -87,8 +87,8 @@ public class QnaCmHandler implements CommandHandler {
 			
 			QnaCmVO qcv = new QnaCmVO();
 			qcv.setQcContent(req.getParameter("qcContent"));
-			qcv.setQnaNm(req.getParameter("qnaNmCm"));
 			qcv.setQcNm(req.getParameter("qcNmCm"));
+			qcv.setQnaNm(req.getParameter("qnaNmCm"));
 			
 			service.updateQnaCm(qcv);
 			List<QnaCmVO> qnaCmList = service.getAllQnaCm(req.getParameter("qnaNmCm"));

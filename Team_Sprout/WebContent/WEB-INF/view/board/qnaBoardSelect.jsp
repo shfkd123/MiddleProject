@@ -97,7 +97,7 @@
 				<tr>
 					<th>작성자</th>
 					<th style="text-align: left;">댓글</th>
-					<th style="text-align: right;">작성일</th>
+					<th style="text-align: left;">작성일</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -110,42 +110,50 @@
 				</tr>
 				<%	
 				} else {
-			%><!-- 댓글 수정 Modal -->
-				<div class="modal fade" id="myModal" role="dialog">
-					<div class="modal-dialog">
-				      <!-- 수정 Modal content-->
-				      <div class="modal-content">
-				        <div class="modal-header">
-				          <button type="button" class="close" data-dismiss="modal">&times;</button>
-				          <h4 class="modal-title">댓글 수정하기</h4>
-				        </div>
-				        <div class="modal-body">
-				          <textarea class="form-control" rows="3" id="editCm"></textarea>
-				        </div>
-				        <div class="modal-footer">
-				          <button type="button" class="btn btn-default" onclick="cmUpdate('<%=qnaCmList.get(i).getQcNm() %>')">저장</button>
-				          <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-				        </div>
-				      </div>
-				 	</div>
-		  		</div>
+				%>
 				<tr>
 					<td style="text-align: left;">
 					<%=qnaCmList.get(i).getqcWriter() %>
 					</td>
 					<td style="text-align: right;"><%=qnaCmList.get(i).getQcContent() %></td>
 					<td><%=qnaCmList.get(i).getQcDate() %>
-						<div class="btn-group"  style="float: right;">
-							<button type="button" class="btn btn-default btn-xs dropdown-toggle"
-								data-toggle="dropdown">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu" id="cmtMenu">
-								<li><a data-toggle="modal" data-target="#myModal">수정</a>
-								</li>
-								<li><a href="#" onclick="cmDelete('<%=qnaCmList.get(i).getQcNm() %>')">삭제</a></li>
-							</ul>
-						</div>
+						<%if(uv != null) {
+							if(uv.getUserNickName().equals(qnaCmList.get(i).getqcWriter())){
+							%>
+							<div class="btn-group" style="float: right;">
+								<button type="button" class="btn btn-default btn-xs dropdown-toggle"
+									data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu" id="cmtMenu">
+									<li><a data-toggle="modal" data-target="#myModal">수정</a>
+									</li>
+									<li><a href="#" onclick="cmDelete('<%=qnaCmList.get(i).getQcNm() %>')">삭제</a></li>
+								</ul>
+							</div>
+							<%
+							}
+						}
+						%>
+						<!-- 댓글 수정 Modal -->
+						<div class="modal fade" id="myModal" role="dialog">
+							<div class="modal-dialog">
+						      <!-- 수정 Modal content-->
+						      <div class="modal-content">
+						        <div class="modal-header">
+						          <button type="button" class="close" data-dismiss="modal">&times;</button>
+						          <h4 class="modal-title">댓글 수정하기</h4>
+						        </div>
+						        <div class="modal-body">
+						          <textarea class="form-control" rows="3" id="editCm"></textarea>
+						        </div>
+						        <div class="modal-footer">
+						          <button type="button" class="btn btn-default" onclick="cmUpdate('<%=qnaCmList.get(i).getQcNm() %>')">저장</button>
+						          <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+						        </div>
+						      </div>
+						 	</div>
+				  		</div>
 					</td>
 				</tr>
 			<%
@@ -203,17 +211,14 @@
 	</div>
 <script type="text/javascript">
 	$(document).ready(function(){
+		$("#updateWrite").css("display", "none");
+		$("#deleteWrite").css("display", "none");
 		<%
 		if(uv != null){
-			if(!uv.getUserNickName().equals(qbv.getQnaWriter())){
+			if(uv.getUserNickName().equals(qbv.getQnaWriter())){
 			%>
-				$("#updateWrite").hide();
-				$("#deleteWrite").hide();
-			<%
-			} else if(uv.getUserNickName().equals(qbv.getQnaWriter())){
-			%>
-				$("#updateWrite").show();
-				$("#deleteWrite").show();
+				$("#updateWrite").css("display", "inline");
+				$("#deleteWrite").css("display", "inline");
 			<%
 			}
 		}
@@ -268,13 +273,13 @@
 	function cmUpdate(qcNm){
 		if(confirm("수정하시겠습니까?")){
 			alert("수정이 완료되었습니다.");
-			document.getElementById("qnaNmCm").value = "<%=qbv.getQnaNm() %>";
-			document.getElementById("fmQcNm").value = qcNm;
 			<%
 			if(uv != null){
 			%>
 			document.getElementById("userId").value = "<%=uv.getUserId() %>";
 			<%}%>
+			document.getElementById("qnaNmCm").value = "<%=qbv.getQnaNm() %>";
+			document.getElementById("fmQcNm").value = qcNm;
 			document.getElementById("comment").value = $("#editCm").val();
 			document.getElementById("flagCm").value = "U";
 			var fmCm = document.getElementById("fmCm");

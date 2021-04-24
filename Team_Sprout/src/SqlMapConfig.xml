@@ -22,8 +22,10 @@
 	<sqlMap resource="kr/or/ddit/board/dao/freeBoard.xml"/>
 	<sqlMap resource="kr/or/ddit/board/dao/noticeBoard.xml"/>
 	<sqlMap resource="kr/or/ddit/board/dao/qnaBoard.xml"/>
+	<sqlMap resource="kr/or/ddit/board/dao/reportBoard.xml"/>
 	<sqlMap resource="kr/or/ddit/user/dao/signUp.xml"/>
 	<sqlMap resource="kr/or/ddit/boardComment/dao/freeCm.xml"/>
 	<sqlMap resource="kr/or/ddit/boardComment/dao/noticeCm.xml"/>
 	<sqlMap resource="kr/or/ddit/boardComment/dao/qnaCm.xml"/>
+	<sqlMap resource="kr/or/ddit/board/dao/faqBoard.xml"/>
 </sqlMapConfig>

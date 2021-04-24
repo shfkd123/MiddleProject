@@ -6,34 +6,51 @@
 <sqlMap namespace="faqBoard">
 
 <!-- 전체 조회 -->
-<select id="getAllFaqBoard">
-	SELECT FAQ_NM       faqNm
-		, FAQ_TITLE     faqTitle
-		, FAQ_CONTENT   faqContent
-		, FAQ_DATE      faqDate
-		, USER_ID       userId
-		, ATCH_FILE_ID  atchFileId	
-	FROM FAQ_BOARD
+<select id="getAllFaqBoard" resultClass="kr.or.ddit.board.vo.FaqBoardVO">
+	SELECT A.FAQ_NM faqNm            
+		, A.FAQ_TITLE faqTitle         
+		, A.FAQ_CONTENT faqContent       
+		, A.FAQ_DATE faqDate          
+		,(                                 
+		   SELECT USER_NICKNAME            
+		   FROM   TB_USER                  
+		   WHERE  USER_ID = A.USER_ID      
+		   )             faqWriter         
+		, ATCH_FILE_ID  atchFileId    
+	FROM (
+		SELECT
+		B.*, ROWNUM rnum
+		FROM FAQ_BOARD B	
+	) A
+	WHERE A.rnum between #firstRecNo# and #lastRecNo#                     
 	ORDER BY 1 DESC
 </select>
 
-
-<select id="getFaqBoard">
-	SELECT FAQ_NM       faqNm
-		, FAQ_TITLE     faqTitle
-		, FAQ_CONTENT   faqContent
-		, FAQ_DATE      faqDate
-		, USER_ID       userId
-		, ATCH_FILE_ID  atchFileId
+<select id="getFaqAllCount" resultClass="int">
+	SELECT COUNT(*)
 	FROM FAQ_BOARD
+</select>
+
+<select id="getFaqBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.FaqBoardVO">
+	SELECT A.FAQ_NM       faqNm
+		, A.FAQ_TITLE     faqTitle
+		, A.FAQ_CONTENT   faqContent
+		, A.FAQ_DATE      faqDate
+		,(
+		   SELECT USER_NICKNAME       
+		   FROM   TB_USER             
+		   WHERE  USER_ID = A.USER_ID 
+		   )             faqWriter      
+		, A.ATCH_FILE_ID  atchFileId
+	FROM FAQ_BOARD A
 	WHERE 1=1
-	AND FAQ_NM = #faqNm#	
+	AND A.FAQ_NM = #faqNm#	
 </select>
 
 
-<insert id="insertFaqBoard">
-	INSERT INTO FAQ_BOARD
-	FAQ_NM
+<insert id="insertFaqBoard" parameterClass="kr.or.ddit.board.vo.FaqBoardVO">
+	INSERT INTO FAQ_BOARD (
+	 FAQ_NM
 	,FAQ_TITLE
 	,FAQ_CONTENT
 	,FAQ_DATE
@@ -41,31 +58,39 @@
 	,ATCH_FILE_ID
 	)
 	VALUES (
-		FAQ_BOARD_SEQ.NEXTVAL
-		, #faqTitle#
-		, #faqContent#
-		, SYSDATE
-		, #userId#
-		, #atchFileId#
+	FAQ_BOARD_SEQ.NEXTVAL
+	, #faqTitle#
+	, #faqContent#
+	, SYSDATE
+	, #faqWriter#
+	, #atchFileId#
 	) 
 </insert>
 
 
-<update id="updateFaqBoard">
-	UPDATE 
-	SET
-	WHERE
-
+<update id="updateFaqBoard" parameterClass="kr.or.ddit.board.vo.FaqBoardVO">
+	UPDATE FAQ_BOARD
+	SET  FAQ_TITLE = #faqTitle#
+	    , FAQ_CONTENT = #faqContent#
+	    , FAQ_DATE = SYSDATE
+	    , ATCH_FILE_ID = #atchFileId#
+	WHERE FAQ_NM = #faqNm#
 
 </update>
 
-<delete id="deleteFaqBoard">
+<delete id="deleteFaqBoard" parameterClass="kr.or.ddit.board.vo.FaqBoardVO">
 	DELETE FROM FAQ_BOARD
 	WHERE  FAQ_NM = #faqNm#
 </delete>
 
-<select id="searchFaqBoard">
-
+<select id="searchFaqBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.FaqBoardVO">
+	SELECT FAQ_NM       faqNm
+		, FAQ_TITLE     faqTitle
+		, FAQ_CONTENT   faqContent
+		, FAQ_DATE      faqDate
+		, USER_ID       faqWriter       
+	FROM FAQ_BOARD
+	WHERE FAQ_TITLE LIKE '%' || #faqTitle# || '%'
 </select>
 
 </sqlMap>

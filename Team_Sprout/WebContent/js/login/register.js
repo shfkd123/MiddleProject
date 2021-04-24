@@ -42,7 +42,7 @@ $(document).ready(function(){
 		
 		// DB에서 중복검사 실행
 		$.ajax({
-			url : "/Team_Sprout/UserServlet"
+			url : "/Team_Sprout/user/register.do"
 			, type : "post"
 			, data : {
 				"userId" : userId
@@ -50,16 +50,73 @@ $(document).ready(function(){
 			}
 			, dataType : "json"
 			, success : function(data){
-				$("#spUserIdCk").hide();
-				$("#spUserIdReq").hide();
-				$("#spUserIdDntUse").hide();
-				$("#spUserIdUse").val("\'" + userId + "\' 사용 가능");
-				$("#spUserIdUse").show();
-				id = userId;
+				console.log(data);
+				if(data.cnt == 0){
+					$("#spUserIdCk").hide();
+					$("#spUserIdReq").hide();
+					$("#spUserIdDntUse").hide();
+					$("#spUserIdUse").text("\'" + userId + "\' 사용 가능");
+					$("#spUserIdUse").show();
+					id = userId;
+				} else if(data.cnt == 1) {
+					$("#spUserIdCk").hide();
+					$("#spUserIdReq").hide();
+					$("#spUserIdDntUse").show();
+					$("#spUserIdUse").hide();
+					$("#userId").focus();
+				}
+			}
+			, error : function(xhr){
+//				console.log(xhr);
+			}
+		});
+	});
+	
+	// 닉네임 중복검사
+	$("#btnUserNickName").click(function(){
+		var userNickName = $("#userNickName").val();
+		
+		// 닉네임 빈값 확인
+		if(!isEmpty(userNickName)){
+			alert("닉네임이 입력되지 않았습니다.");
+			$("#userNickName").focus();
+			return;
+		}
+		
+		// 닉네임 정규식
+		if(!chkRegExp($("#userNickName").val())) {
+			alert("닉네임 형식이 맞지 않습니다.");
+			$("#spUserNickNameReq").show();
+			$("#userNickName").focus();
+			return;
+		}
+		$("#spUserNickNameReq").hide();
+		
+		// 닉네임 중복검사
+		$.ajax({
+			url : "register.do"
+			, type : "post"
+			, data : {
+				"userNickName" : userNickName
+				, "flag" : "CHKNICK"
+			}
+			, dataType : "json"
+			, success : function(data){
+				if(data.cnt == 0){
+					$("#spNickNameCk").hide();
+					$("#spNickNameReq").hide();
+					$("#spNickNameUse").text("\'" + userNickName + "\' 사용 가능");
+					$("#spNickNameUse").show();
+					id = userId;
+				} else if(data.cnt == 1) {
+					$("#spNickNameCk").hide();
+					$("#spNickNameReq").hide();
+					$("#spNickNameUse").hide();
+					$("#userNickName").focus();
+				}
 			}
 			, error : function(xhr){
 				console.log(xhr);
-				$("#spUserIdDntUse").show();
 			}
 		});
 	});
@@ -177,10 +234,11 @@ function save() {
 		$("#userPw").focus();
 		return;
 	}
-	if(!chkRegExp($("#userPw"), "password")){
+	if(!chkRegExp($("#userPw").val(), "password")){
 		alert("비밀번호 형식이 맞지 않습니다.");
 		$("#userPw").focus();
 		$("#spUserPassReq").show();
+		return;
 	}
 	$("#spUserPassReq").hide();
 	
@@ -188,6 +246,7 @@ function save() {
 	if($("#userPw").val() != $("#userPw2").val()){
 		alert("비밀번호가 일치하지 않습니다.");
 		$("#userPw").focus();
+		return;
 	}
 	
 	// 이름 정규식
@@ -195,35 +254,26 @@ function save() {
 		alert("이름 형식이 맞지 않습니다.");
 		$("#userName").focus();
 		$("#spUserNameReq").show();
+		return;
 	}
 	$("#spUserNameReq").hide();
-	
-	// 닉네임 정규식
-	if(!chkRegExp($("#userNickName").val())) {
-		alert("닉네임 형식이 맞지 않습니다.");
-		$("#spUserNickNameReq").show();
-		$("#userNickName").focus();
-	}
-	$("#spUserNickNameReq").hide();
 	
 	// 생년월일 입력 안했을 때
 	if(!isEmpty($("#year").val()) || !isEmpty($("#day").val())){
 		alert("생년월일을 입력해주세요.");
 		$("#year").focus();
+		return;
 	}
 	
 	// 주소 입력 안했을때
 	if(!isEmpty($("#sample6_postcode").val())){
 		alert("주소를 입력해주세요.");
 		$("#sample6_postcode").focus();
+		return;
 	}
 	if(!isEmpty($("#sample6_detailAddress").val())){
 		alert("상세 주소를 입력해주세요.");
 		$("#sample6_detailAddress").focus();
-	}
-	
-	if($("#capcha").val() == "N"){
-		alert("자동가입방지 문자를 입력해주세요.");
 		return;
 	}
 	
@@ -234,16 +284,19 @@ function save() {
 	$("#flag").val("C");
 	
 	$.ajax({
-		url : "/Team_Sprout/UserServlet"
+		url : "register.do"
 		, type : "post"
 		, data : $("#regiForm").serialize()
 		, dataType : "json"
 		, success : function(data){
-			alert("회원가입 완료!");
+			if(data.resultCnt == 1){
+				alert("회원가입 완료!");
+			} else if(data.resultCnt == 0){
+				alert("회원가입 실패!");
+			}
 		}
 		, error : function(xhr) {
-			alert("회원가입 오류!");
-			console.log(xhr);
+			alert("회원가입에 실패했습니다. 관리자에게 문의해주세요.\n오류코드 : " + xhr.status)
 		}
 	});
 }

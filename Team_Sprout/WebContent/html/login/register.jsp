@@ -5,11 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-<script src="../../js/jquery-3.6.0.js"></script>
+<script src="/js/jquery-3.6.0.js"></script>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="../../js/login/register.js"></script>
-<script src="../../js/common/myUtil.js"></script>
+<script src="/js/login/register.js"></script>
+<script src="/js/common/myUtil.js"></script>
 <script
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <link rel="stylesheet" href="/Team_Sprout/css/login/register.css">
@@ -22,14 +22,14 @@
 		<div class="title">
 			<img src="/Team_Sprout/images/logo.png" width="100px">
 		</div>
-		<form action="#" id="regiForm">
+		<form id="regiForm">
 
 			<!-- 아이디 -->
 			<div class="field">
 				<input type="text" id="userId" name="userId" required> <label>아이디</label>
 			</div>
 
-			<div class="span">		
+			<div class="span" align="center">		
 				<span id="spUserIdCk" style="display: none; color: red">중복된 ID 입니다</span>
 				<span id="spUserIdUse" style="display: none; color: green"></span>
 				<span id="spUserIdReq" style="display: none; color: red"> 영문 소문자는 반드시 포함하고, 영문 소문자와 숫자의 조합으로 4~12 글자 </span>
@@ -57,6 +57,12 @@
 					확인</label>
 			</div>
 
+			<!-- 이름 -->
+			<div class="field">
+				<input type="text" id="userName" name="userkName" required>
+				<label>이름</label>
+			</div>
+			
 			<!-- 닉네임 -->
 			<div class="field">
 				<input type="text" id="userNickName" name="userNickName" required>
@@ -91,8 +97,9 @@
 				<br>
 				<h3>성별</h3>
 				<div class="content">
-					<label><input type="radio" name="gender" id="male"
-						checked="checked"> 남자</label> <label><input type="radio"
+					<label><input type="radio" name="gender" id="male" value="남자"
+						checked="checked"> 남자</label> 
+					<label><input type="radio" value="여자"
 						name="gender" id="female"> 여자</label>
 				</div>
 			</div>
@@ -135,7 +142,7 @@
 			<!-- 구글 리캡챠(로봇이 아닙니다) -->
 			<div class="g-recaptcha"
 				data-sitekey="6LeODLMaAAAAADZ6qbdrcHwUvZ-_ZvwfJZhTk28l"
-				align="center"></div>
+				align="center" id="capcha"></div>
 
 			<!-- 저장 , 초기화 버튼  -->
 			<div class="field">

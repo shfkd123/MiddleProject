@@ -6,6 +6,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.vo.FaqBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 
 public interface IFaqBoardDao {
 
@@ -15,7 +16,7 @@ public interface IFaqBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<FaqBoardVO> getAllFaqBoard(SqlMapClient smc) throws SQLException;
+	public List<FaqBoardVO> getAllFaqBoard(SqlMapClient smc, PagingVO pagingVO ) throws SQLException;
 	
 	/**
 	 * 게시글 조회
@@ -60,5 +61,13 @@ public interface IFaqBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<FaqBoardVO> searchFaqBoard(SqlMapClient smc, String str) throws SQLException;
+	public List<FaqBoardVO> searchFaqBoard(SqlMapClient smc, String faqTitle) throws SQLException;
+
+	/**
+	 * 전체 게시판 카운트
+	 * @param smc
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getAllFaqListCount(SqlMapClient smc) throws SQLException;
 }

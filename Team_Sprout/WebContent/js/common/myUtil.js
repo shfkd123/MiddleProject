@@ -57,9 +57,9 @@ function chkRegExp(val, type){
 		regExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 	}
 	
-	return checkRegExp(val, regExp);
+	return val.match(regExp);
 }
 // 정규식 - 형식체크 함수
 function checkRegExp(str, regExp) {
-	return str.match(regExp);
+	return str.test(regExp);
 }

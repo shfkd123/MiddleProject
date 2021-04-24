@@ -3,17 +3,39 @@ package kr.or.ddit.board.vo;
 public class FaqBoardVO {
 
 	private String faqNm;
+	private int boardNm;
 	private String faqTitle;
 	private String faqContent;
 	private String faqDate;
 	private String faqWriter;
 	private long atchFileId = -1;
 	
+	private int firstRecNo;				// 첫번째 레코드 번호
+	private int lastRecNo;
+	
+	public int getFirstRecNo() {
+		return firstRecNo;
+	}
+	public void setFirstRecNo(int firstRecNo) {
+		this.firstRecNo = firstRecNo;
+	}
+	public int getLastRecNo() {
+		return lastRecNo;
+	}
+	public void setLastRecNo(int lastRecNo) {
+		this.lastRecNo = lastRecNo;
+	}
 	public String getFaqNm() {
 		return faqNm;
 	}
 	public void setFaqNm(String faqNm) {
 		this.faqNm = faqNm;
+	}
+	public int getBoardNm() {
+		return boardNm;
+	}
+	public void setBoardNm(int boardNm) {
+		this.boardNm = boardNm;
 	}
 	public String getFaqTitle() {
 		return faqTitle;

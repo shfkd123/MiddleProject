@@ -52,7 +52,7 @@
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a href="#"><img src="/images/logo.png" id="logoImg" style="width: 100px; margin:5px;"></a>
+				<a href="/Team_Sprout/user/logOut.do"><img src="/images/logo.png" id="logoImg" style="width: 100px; margin:5px;"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
@@ -64,19 +64,19 @@
 							<li><a href="/Team_Sprout/board/noticeList.do">공지사항</a></li>
 							<li><a href="/Team_Sprout/board/freeBoard.do" class="a_title">커뮤니티</a></li>
 							<li><a href="#">구매후기</a></li>
-							<li><a href="#">FAQ</a></li>
+							<li><a href="/Team_Sprout/board/faqBoard.do">FAQ</a></li>
 							<li><a href="/Team_Sprout/board/qnaBoard.do">Q&#38;A</a></li>
-							<li><a href="#">신고</a></li>
+							<li><a href="/Team_Sprout/board/reportBoard.do">신고</a></li>
 						</ul>
 						</li>
 				</ul>			
 				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#" class="btn-lg"><span
+							class="glyphicon glyphicon-search"></span></a></li>
 					<%
 					if(uv == null) {
 					%>
-					<li><a href="#" class="btn-lg"><span
-							class="glyphicon glyphicon-search"></span></a></li>
-					<li id="notlog"><a href="../login/login.jsp" class="btn-lg"><span
+					<li id="notlog"><a href="/Team_Sprout/user/signIn.do" class="btn-lg"><span
 							class="glyphicon glyphicon-user"></span></a></li>
 					<%
 					} else {

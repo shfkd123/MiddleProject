@@ -3,6 +3,7 @@ package kr.or.ddit.board.service;
 import java.util.List;
 
 import kr.or.ddit.board.vo.FaqBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 
 
 
@@ -12,7 +13,7 @@ public interface IFaqService {
 	 * 게시글 전체 조회
 	 * @return List
 	 */
-	public List<FaqBoardVO> getAllFaqBoard();
+	List<FaqBoardVO> getAllFaqBoardList(PagingVO pagingVO);
 	
 	/**
 	 * 게시글 조회
@@ -49,5 +50,13 @@ public interface IFaqService {
 	 * @param str
 	 * @return
 	 */
-	public List<FaqBoardVO> searchQnaBoard(String str);
+	public List<FaqBoardVO> searchFaqBoard(String faqTitle);
+
+	/**
+	 * 전체 faq 게시글 수 반환하는 메서드
+	 * @return 전체 게시글 수 
+	 */
+	public int getAllFaqListCount();
+
+	
 }

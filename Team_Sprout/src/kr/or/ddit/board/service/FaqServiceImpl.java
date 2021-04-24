@@ -6,8 +6,11 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import kr.or.ddit.board.dao.FaqBoardDaoImpl;
 import kr.or.ddit.board.dao.IFaqBoardDao;
 import kr.or.ddit.board.vo.FaqBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
+import kr.or.ddit.util.SqlMapClientUtil;
 
 
 public class FaqServiceImpl implements IFaqService {
@@ -17,6 +20,11 @@ public class FaqServiceImpl implements IFaqService {
 	
 	private static IFaqService faqService;
 	
+	public FaqServiceImpl() {
+		FaqBoardDao = FaqBoardDaoImpl.getInstance();
+		smc = SqlMapClientUtil.getInstance();
+	}
+	
 	public static IFaqService getInstance() {
 		if(faqService == null) {
 			faqService = new FaqServiceImpl();
@@ -25,10 +33,10 @@ public class FaqServiceImpl implements IFaqService {
 	}
 
 	@Override
-	public List<FaqBoardVO> getAllFaqBoard() {
+	public List<FaqBoardVO> getAllFaqBoardList(PagingVO pagingVO) {
 		List<FaqBoardVO> list = new ArrayList<>();
 		try {
-			list = FaqBoardDao.getAllFaqBoard(smc);
+			list = FaqBoardDao.getAllFaqBoard(smc, pagingVO);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -80,15 +88,26 @@ public class FaqServiceImpl implements IFaqService {
 	}
 
 	@Override
-	public List<FaqBoardVO> searchQnaBoard(String str) {
+	public List<FaqBoardVO> searchFaqBoard(String faqTitle) {
 		List<FaqBoardVO> list = new ArrayList<>();
 		
 		try {
-			list = FaqBoardDao.searchFaqBoard(smc, str);
+			list = FaqBoardDao.searchFaqBoard(smc, faqTitle);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public int getAllFaqListCount() {
+		int cnt = 0;
+		try {
+			cnt = FaqBoardDao.getAllFaqListCount(smc);
+		}catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+		return cnt;
 	}
 
 }

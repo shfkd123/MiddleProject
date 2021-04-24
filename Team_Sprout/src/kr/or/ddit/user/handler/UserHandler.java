@@ -1,93 +1,100 @@
 package kr.or.ddit.user.handler;
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.SQLException;
+import java.net.URLEncoder;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.beanutils.BeanUtils;
 
 import kr.or.ddit.comm.handler.CommandHandler;
-import kr.or.ddit.user.service.UserService;
+import kr.or.ddit.user.service.IUserService;
+import kr.or.ddit.user.service.UserServiceImpl;
 import kr.or.ddit.user.vo.UserVO;
 
 public class UserHandler implements CommandHandler {
 
+	private static final String VIEW_PAGE = "/WEB-INF/view/login/register.jsp";
+	
 	@Override
 	public boolean isRedirect(HttpServletRequest req) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		String flag = req.getParameter("flag");
 		
-		try {
-			if("CHKID".equals(flag)) { // 유저 중복 검사
-				UserVO uv = checkedUserId(req);
-				int resultCnt = 0;
-				if(uv != null) {
-					resultCnt = 1;
+		String flag = req.getParameter("flag");
+		IUserService service = UserServiceImpl.getInstance();
+		
+		if(req.getMethod().equals("GET")) {
+			return VIEW_PAGE;
+		} else {
+			if("CHKID".equals(flag)) { // id 중복 검사
+				String userId = req.getParameter("userId");
+				
+				int cnt = service.chkUserId(userId);
+				
+				req.setAttribute("cnt", cnt);
+				
+				return "/html/common/userCheckResult.jsp";
+				
+			} else if ("CHKNICK".equals(flag)) { // 닉네임 중복검사
+				String userNickName = req.getParameter("userNickName");
+				
+				int cnt = service.chkNickName(userNickName);
+				
+				req.setAttribute("cnt", cnt);
+				
+				return "/html/common/userCheckResult.jsp";
+				
+			} else if("C".equals(flag)) {
+				if(req.getMethod().equals("GET")) {
+					return "/html/login/register.jsp";
+				} else {
+					UserVO uv = new UserVO();
+					
+					BeanUtils.populate(uv, req.getParameterMap());
+					
+					int cnt = service.signUpUser(uv);
+					
+					req.setAttribute("cnt", cnt);
+					
+					return "/html/common/userCheckResult.jsp";
 				}
-				req.setAttribute("resultCnt", resultCnt);
-				
-				return "/html/common/userChkResult.jsp";
-				
-			} else if("C".equals(flag)) { // 유저 생성
-				createUser(req);
-				
-				req.setAttribute("resultCnt", 1);
-				
-				return "/html/common/userChkResult.jsp";
-				
 			} else if("U".equals(flag)) { // 유저 정보 수정
-				 UserVO uv = new UserVO();
-				 
-				 BeanUtils.populate(uv, req.getParameterMap());
-				 
-				 UserService service = new UserService();
-				 
-				 service.updateUser(uv);
-				 
-				 return null;
+				UserVO uv = new UserVO();
+				
+				BeanUtils.populate(uv, req.getParameterMap());
+				
+				int cnt = service.updateUser(uv);
+				String msg = "";
+				if(cnt > 0) {
+					msg = "성공";
+				} else {
+					msg = "실패";
+				}
+				String redirectUrl = req.getContextPath() + "" + URLEncoder.encode(msg, "UTF-8");
+				
+				return redirectUrl;
 			} else if("D".equals(flag)) { // 유저 삭제
 				UserVO uv = new UserVO();
+				
 				uv.setUserId(req.getParameter("userId"));
 				
-				UserService service = new UserService();
+				int cnt = service.deleteUser(uv);
 				
-				service.updateUser(uv);
+				String msg = "";
+				if(cnt > 0) {
+					msg = "성공";
+				} else {
+					msg = "실패";
+				}
+				String redirectUrl = req.getContextPath() + "/html/main/main.jsp" + URLEncoder.encode(msg, "UTF-8");
 				
-				return null;
+				return redirectUrl;
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		
 		return null;
 	}
-	
-	private void createUser(HttpServletRequest req) throws IllegalAccessException, InvocationTargetException, SQLException {
-		UserVO uv = new UserVO();
-		BeanUtils.populate(uv, req.getParameterMap());
-		
-		UserService service = new UserService();
-		
-		service.insertUser(uv);
-	}
-
-	private UserVO checkedUserId(HttpServletRequest req) throws SQLException {
-		String userId = req.getParameter("userId");
-		
-		UserService service = new UserService();
-		
-		UserVO uv = service.retrieveUser(userId);
-		
-		return uv;
-	}
-
 }

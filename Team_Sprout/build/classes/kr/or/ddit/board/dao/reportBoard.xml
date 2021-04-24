@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap
+	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="reportBoard">
+
+	<select id="getAllReportBoard" parameterClass="kr.or.ddit.board.vo.ReportBoardVO" resultClass="kr.or.ddit.board.vo.ReportBoardVO">
+		SELECT A.REPORT_NM		reportNm
+			 , A.REPORT_TITLE	reportTitle
+			 , A.REPORT_CONTENT reportContent
+			 , TO_CHAR(A.REPORT_DATE, 'YYYY-MM-DD')	reportDate
+			 , ( 
+			 SELECT USER_NICKNAME
+			 FROM TB_USER
+			 WHERE USER_ID = A.USER_ID
+			 )					reportWriter
+			 , ATCH_FILE_ID atchFileId
+		FROM REPORT_BOARD A
+		ORDER BY 1 DESC
+	</select>
+	
+	<select id="getReportBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.ReportBoardVO">
+		SELECT A.REPORT_NM		reportNm
+			 , A.REPORT_TITLE	reportTitle
+			 , A.REPORT_CONTENT reportContent
+			 , TO_CHAR(A.REPORT_DATE, 'YYYY-MM-DD')	reportDate
+			 , ( 
+			 SELECT USER_NICKNAME
+			 FROM TB_USER
+			 WHERE USER_ID = A.USER_ID
+			 )					reportWriter
+			 , ATCH_FILE_ID atchFileId
+		FROM REPORT_BOARD A		
+		WHERE  1=1
+		AND    A.REPORT_NM = #reportNm#
+	</select>
+	
+	<insert id="insertReportBoard" parameterClass="kr.or.ddit.board.vo.ReportBoardVO">
+		INSERT INTO REPORT_BOARD(
+			 REPORT_NM		
+			 , REPORT_TITLE	
+			 , REPORT_CONTENT 
+			 , TO_CHAR(REPORT_DATE, 'YYYY-MM-DD')	
+			 , USER_ID
+			 , ATCH_FILE_ID 
+		)
+		VALUES (
+			REPORT_BOARD_SEQ.NEXTVAL
+		  , #reportTitle#
+		  , #reportContent#
+		  , TO_CHAR(SYSDATE, 'YYYY-MM-DD')	
+		  , #reportWriter#
+		  , #atchFileId#
+		)
+	</insert>
+	
+	<update id="updateReportBoard" parameterClass="kr.or.ddit.board.vo.ReportBoardVO">
+		UPDATE  REPORT_BOARD
+		SET	    REPORT_TITLE   = #reportTitle#
+			   ,REPORT_CONTENT = #reportContent#
+			   ,TO_CHAR(REPORT_DATE, 'YYYY-MM-DD')    = SYSDATE
+			   ,ATCH_FILE_ID = #atchFileId#            
+		WHERE   REPORT_NM = #reportNm#
+	</update>
+	
+	<delete id="deleteReportBoard" parameterClass="kr.or.ddit.board.vo.ReportBoardVO">
+		DELETE FROM REPORT_BOARD
+		WHERE  REPORT_NM = #reportNm#
+	</delete>
+	
+	<select id="searchReportBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.ReportBoardVO">
+		SELECT REPORT_NM       reportNm
+		, REPORT_TITLE     reportTitle
+		, REPORT_CONTENT   reportContent
+		, TO_CHAR(REPORT_DATE, 'YYYY-MM-DD')      reportDate
+		, USER_ID       reportWriter       
+	FROM REPORT_BOARD
+	WHERE REPORT_TITLE LIKE '%' || #reportTitle# || '%'
+	</select>
+</sqlMap>

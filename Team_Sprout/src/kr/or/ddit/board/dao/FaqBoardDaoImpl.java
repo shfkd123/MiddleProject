@@ -6,6 +6,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.vo.FaqBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class FaqBoardDaoImpl implements IFaqBoardDao{
@@ -24,8 +25,9 @@ public class FaqBoardDaoImpl implements IFaqBoardDao{
 	}
 
 	@Override
-	public List<FaqBoardVO> getAllFaqBoard(SqlMapClient smc) throws SQLException {
-		return smc.queryForList("faqBoard.getAllFaqBoard");
+	public List<FaqBoardVO> getAllFaqBoard(SqlMapClient smc, PagingVO pagingVO) throws SQLException {
+		List<FaqBoardVO> faqList = smc.queryForList("faqBoard.getAllFaqBoard", pagingVO);
+		return faqList;
 	}
 
 	@Override
@@ -70,8 +72,14 @@ public class FaqBoardDaoImpl implements IFaqBoardDao{
 	}
 
 	@Override
-	public List<FaqBoardVO> searchFaqBoard(SqlMapClient smc, String str) throws SQLException {
-		return smc.queryForList("faqBoard.searchFaqBoard", str);
+	public List<FaqBoardVO> searchFaqBoard(SqlMapClient smc, String faqTitle) throws SQLException {
+		return smc.queryForList("faqBoard.searchFaqBoard", faqTitle);
+	}
+
+	@Override
+	public int getAllFaqListCount(SqlMapClient smc) throws SQLException {
+		int cnt = (int)smc.queryForObject("faqBoard.getFaqAllCount");
+		return cnt;
 	}
 
 }

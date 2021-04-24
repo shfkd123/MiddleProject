@@ -4,46 +4,15 @@
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
 <sqlMap namespace="user">
-
-	<select id="retrieveUserList" parameterClass="kr.or.ddit.user.vo.UserVO" resultClass="kr.or.ddit.user.vo.UserVO">
-		SELECT USER_ID       userId
-			 , USER_NAME     userName
-			 , USER_PW       userPw
-			 , USER_NICKNAME userNickName
-			 , USER_GENDER   userGender
-			 , USER_BIR      userBir
-			 , USER_TEL      userTel
-			 , USER_EMAIL    userEmail
-			 , LIKEY_CODE    likeyCode
-			 , USER_ZIP      userZip
-			 , USER_ADD1     userAdd1
-			 , USER_ADD2     userAdd2
-			 , USER_MONEY    userMoney
-			 , ADMIN_CK      adminCk
-		FROM   TB_USER;
-	</select>
-	
-	<select id="retrieveUser" parameterClass="String" resultClass="kr.or.ddit.user.vo.UserVO">
-		SELECT USER_ID       userId
-			 , USER_NAME     userName
-			 , USER_PW       userPw
-			 , USER_NICKNAME userNickName
-			 , USER_GENDER   userGender
-			 , USER_BIR      userBir
-			 , USER_TEL      userTel
-			 , USER_EMAIL    userEmail
-			 , LIKEY_CODE    likeyCode
-			 , USER_ZIP      userZip
-			 , USER_ADD1     userAdd1
-			 , USER_ADD2     userAdd2
-			 , USER_MONEY    userMoney
-			 , ADMIN_CK      adminCk
+	<!-- ID 중복검사 -->
+	<select id="chkUserId" parameterClass="String" resultClass="int">
+		SELECT COUNT(*)
 		FROM   TB_USER
-		WHERE  1=1
-		AND    USER_ID = #userId#
+		WHERE  USER_ID = #userId#
 	</select>
-	
-	<insert id="insertUser" parameterClass="kr.or.ddit.user.vo.UserVO">
+
+	<!-- 회원 가입 -->
+	<insert id="signUpUser" parameterClass="kr.or.ddit.user.vo.UserVO">
 		INSERT INTO TB_USER(
 			USER_ID
 		  , USER_NAME
@@ -78,6 +47,83 @@
 		)
 	</insert>
 	
+	<!-- 유저목록 전체 -->
+	<select id="getUserList" resultClass="kr.or.ddit.user.vo.UserVO">
+		SELECT USER_ID       userId
+			 , USER_NAME     userName
+			 , USER_PW       userPw
+			 , USER_NICKNAME userNickName
+			 , USER_GENDER   userGender
+			 , USER_BIR      userBir
+			 , USER_TEL      userTel
+			 , USER_EMAIL    userEmail
+			 , LIKEY_CODE    likeyCode
+			 , USER_ZIP      userZip
+			 , USER_ADD1     userAdd1
+			 , USER_ADD2     userAdd2
+			 , USER_MONEY    userMoney
+			 , ADMIN_CK      adminCk
+		FROM   TB_USER
+	</select>
+	
+	<!-- 유저 한명 검색 -->	
+	<select id="getUser" parameterClass="String" resultClass="kr.or.ddit.user.vo.UserVO">
+		SELECT USER_ID       userId
+			 , USER_NAME     userName
+			 , USER_PW       userPw
+			 , USER_NICKNAME userNickName
+			 , USER_GENDER   userGender
+			 , USER_BIR      userBir
+			 , USER_TEL      userTel
+			 , USER_EMAIL    userEmail
+			 , LIKEY_CODE    likeyCode
+			 , USER_ZIP      userZip
+			 , USER_ADD1     userAdd1
+			 , USER_ADD2     userAdd2
+			 , USER_MONEY    userMoney
+			 , ADMIN_CK      adminCk
+		FROM   TB_USER
+		WHERE  USER_ID = #userId#
+	</select>
+	
+	<!-- 로그인 할때  -->
+	<select id="signInUser" parameterClass="kr.or.ddit.user.vo.UserVO" resultClass="int">
+		SELECT COUNT(*) cnt
+		FROM   TB_USER
+		WHERE  USER_ID = #userId#
+		AND    USER_PW = #userPw#
+	</select>
+	
+	<!-- 유저 찾기 -->
+	<select id="findUser" parameterClass="kr.or.ddit.user.vo.UserVO" resultClass="kr.or.ddit.user.vo.UserVO">
+		SELECT USER_ID       userId
+			 , USER_NAME     userName
+			 , USER_PW       userPw
+			 , USER_NICKNAME userNickName
+			 , USER_GENDER   userGender
+			 , USER_BIR      userBir
+			 , USER_TEL      userTel
+			 , USER_EMAIL    userEmail
+			 , LIKEY_CODE    likeyCode
+			 , USER_ZIP      userZip
+			 , USER_ADD1     userAdd1
+			 , USER_ADD2     userAdd2
+			 , USER_MONEY    userMoney
+			 , ADMIN_CK      adminCk
+		FROM   TB_USER
+		WHERE  1=1
+		AND    USER_ID = #userId#
+		OR     USER_NICKNAME = #userNickName#
+	</select>
+	
+	<!-- 닉네임 같은지 조회 -->
+	<select id="chkNickName" parameterClass="String" resultClass="int">
+		SELECT COUNT(*) cnt
+		FROM   TB_USER
+		WHERE  USER_NICKNAME = #userNickName#
+	</select>
+		
+	<!-- 개인정보 변경 -->	
 	<update id="updateUser" parameterClass="kr.or.ddit.user.vo.UserVO">
 		UPDATE TB_USER
 		SET	   USER_ID       = #userId#       
@@ -92,13 +138,30 @@
 			 , USER_ZIP      = #userZip#      
 			 , USER_ADD1     = #userAdd1#     
 			 , USER_ADD2     = #userAdd2#     
-			 , USER_MONEY    = #userMoney#            
-			 , ADMIN_CK      = #adminCk#            
+			 , USER_MONEY    = #userMoney#          
 		WHERE  USER_ID = #userId#
 	</update>
 	
+	<!-- 아이디 찾기 -->
+	<select id="findUserId" parameterClass="kr.or.ddit.user.vo.UserVO" resultClass="String">
+		SELECT USER_ID userId
+		FROM   TB_USER
+		WHERE  USER_NAME = #userName#
+		AND    USER_TEL = #userTel#
+	</select>
+	
+	<!-- 비밀번호 찾기 -->
+	<select id="findUserPw" parameterClass="kr.or.ddit.user.vo.UserVO" resultClass="String">
+		SELECT USER_PW userPw
+		FROM   TB_USER
+		WHERE  USER_ID = #userId#
+	</select>
+	
+	<!-- 회원 탈퇴 -->
 	<delete id="deleteUser" parameterClass="kr.or.ddit.user.vo.UserVO">
 		DELETE FROM TB_USER
 		WHERE  USER_ID = #userId#
 	</delete>
+	
+	
 </sqlMap>

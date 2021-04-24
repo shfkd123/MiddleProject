@@ -7,6 +7,7 @@ public class CommunityBoardVO {
 	private String cbTitle;
 	private String cbContent;
 	private String cbDate;
+	private String cbWriter;
 	private long atchFileId = -1;
 	
 	public String getCbNm() {
@@ -50,6 +51,13 @@ public class CommunityBoardVO {
 	}
 	public void setAtchFileId(long atchFileId) {
 		this.atchFileId = atchFileId;
+	}
+	
+	public String getCbWriter() {
+		return cbWriter;
+	}
+	public void setCbWriter(String cbWriter) {
+		this.cbWriter = cbWriter;
 	}
 	
 	

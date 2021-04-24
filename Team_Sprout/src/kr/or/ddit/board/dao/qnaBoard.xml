@@ -83,6 +83,10 @@
 		FROM   QNA_BOARD A			
 		WHERE  1=1
 		AND    A.QNA_TITLE LIKE '%' || #qnaTitle# || '%'
-		OR     B.USER_NICKNAME LIKE '%' || #qnaWriter# || '%'
+		OR     (
+			 	SELECT B.USER_NICKNAME 
+			 	FROM   TB_USER B
+			 	WHERE  B.USER_ID = A.USER_ID
+			 	) LIKE '%' || #qnaWriter# || '%'
 	</select>
 </sqlMap>
