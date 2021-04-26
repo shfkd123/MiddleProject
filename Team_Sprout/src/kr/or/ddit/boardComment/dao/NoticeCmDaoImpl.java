@@ -20,6 +20,12 @@ public class NoticeCmDaoImpl implements INoticeCmDao{
 		return NoticeCmDao;
 	}
 
+	//공지사항 댓글 조회
+	@Override
+	public List<NoticeCmVO> getNoticeCmListByNoticeNm(SqlMapClient smc, String noticeNm) throws SQLException {
+		return smc.queryForList("noticeCm.getNoticeCmListByNoticeNm", noticeNm);
+	}
+
 	//공지사항 댓글 등록
 	@Override
 	public int insertNoticeCm(SqlMapClient smc, NoticeCmVO ncv) throws SQLException {
@@ -33,33 +39,28 @@ public class NoticeCmDaoImpl implements INoticeCmDao{
 		return cnt;
 	}
 
-	//공지사항 댓글 조회
-	@Override
-	public List<NoticeCmVO> getNoticeCmList(SqlMapClient smc, String ncNm) throws SQLException {
-		return smc.queryForList("noticeCm.getNoticeCmList", ncNm);
-	}
-	
-	@Override
-	public List<NoticeCmVO> getNoticeCmListByNoticeNm(SqlMapClient smc, String noticeNm) throws SQLException {
-		return smc.queryForList("noticeCm.getNoticeCmListByNoticeNm", noticeNm);
-	}
-
 	//공지사항 댓글 수정
 	@Override
 	public int updateNoticeCm(SqlMapClient smc, NoticeCmVO ncv) throws SQLException {
 		int cnt = 0;
 		
-		cnt = smc.update("noticeCm.updateNoticeCm", ncv);
+		Object obj = smc.update("noticeCm.updateNoticeCm", ncv);
+		if(obj != null) {
+			cnt = 1;
+		}
 		return cnt;
 	}
 
 	//공지사항 댓글 삭제
 	@Override
-	public int deleteNoticeCm(SqlMapClient smc, String ncNm) throws SQLException {
+	public int deleteNoticeCm(SqlMapClient smc, NoticeCmVO ncv) throws SQLException {
 		int cnt = 0;
-
-		cnt = smc.update("noticeCm.deleteNoticeCm", ncNm);
-
+		
+		Object obj = smc.delete("noticeCm.deleteNoticeCm", ncv);
+		
+		if(obj != null) {
+			cnt = 1;
+		}
 		return cnt;
 	}
 }

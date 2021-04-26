@@ -67,16 +67,21 @@ public class QnaBoardHandler implements CommandHandler {
 				qbv.setQnaContent(qnaContent);
 				qbv.setQnaWriter(userId);
 				
-				if((String)req.getParameter("attachFile") == "") {
-					FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
-					AtchFileVO atchFileVO = new AtchFileVO();
+				FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
+				
+				AtchFileVO atchFileVO = new AtchFileVO();
+				
+				atchFileVO.setAtchFileId(req.getParameter("atchFileId") == null ?
+						-1 : Long.parseLong(req.getParameter("atchFileId")));
+				
+				if(item != null && !item.getName().equals("")) {
 					
 					IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-					atchFileVO = fileService.saveAtchFile(item, userId);
+					
+					atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
 					
 					qbv.setAtchFileId(atchFileVO.getAtchFileId());
 				}
-				
 				int cnt = service.insertQnaBoard(qbv);
 
 				String msg = "";
@@ -95,6 +100,14 @@ public class QnaBoardHandler implements CommandHandler {
 		} else if("U".equals(flag)) { // 게시글 수정
 			
 			String userId = uv.getUserId();
+
+			IQnaService service = QnaServiceImpl.getInstance();
+			
+			QnaBoardVO qbv = new QnaBoardVO();
+			
+			qbv.setQnaNm(req.getParameter("qnaNm"));
+			qbv.setQnaTitle(req.getParameter("qnaTitle"));
+			qbv.setQnaContent(req.getParameter("qnaContent"));
 			
 			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
 			
@@ -108,16 +121,9 @@ public class QnaBoardHandler implements CommandHandler {
 				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
 				
 				atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
+				
+				qbv.setAtchFileId(atchFileVO.getAtchFileId());
 			}
-			
-			IQnaService service = QnaServiceImpl.getInstance();
-			
-			QnaBoardVO qbv = new QnaBoardVO();
-			
-			qbv.setQnaNm(req.getParameter("qnaNm"));
-			qbv.setQnaTitle(req.getParameter("qnaTitle"));
-			qbv.setQnaContent(req.getParameter("qnaContent"));
-			qbv.setAtchFileId(atchFileVO.getAtchFileId());
 			
 			int cnt = service.updateQnaBoard(qbv);
 			
@@ -163,6 +169,7 @@ public class QnaBoardHandler implements CommandHandler {
 				List<AtchFileVO> atchFileList = fileService.getAtchFileList(fileVO);
 				
 				req.setAttribute("atchFileList", atchFileList);
+				
 			}
 			
 			req.setAttribute("qbv", qbv);
@@ -188,9 +195,9 @@ public class QnaBoardHandler implements CommandHandler {
 			req.setAttribute("list", list);
 			
 			return "/WEB-INF/view/board/qnaBoardList.jsp";
-		} else if("INS".equals(flag)) {
+		} else if("INS".equals(flag)) { // 게시글 등록하는 페이지로 이동
 			return "/WEB-INF/view/board/qnaBoardInsert.jsp";
-		} else if("UPD".equals(flag)) {
+		} else if("UPD".equals(flag)) { // 게시글 수정하는 페이지로 이동
 			String qnaNm = (String)req.getParameter("qnaNm");
 			
 			IQnaService service = QnaServiceImpl.getInstance();

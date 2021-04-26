@@ -6,7 +6,7 @@
 <sqlMap namespace="user">
 	<!-- ID 중복검사 -->
 	<select id="chkUserId" parameterClass="String" resultClass="int">
-		SELECT COUNT(*)
+		SELECT COUNT(*) cnt
 		FROM   TB_USER
 		WHERE  USER_ID = #userId#
 	</select>
@@ -163,5 +163,19 @@
 		WHERE  USER_ID = #userId#
 	</delete>
 	
-	
+	<!-- 유저의 후원 목록 -->
+	<select id="userOrderList" resultClass="kr.or.ddit.user.vo.OrderVO" parameterClass="String">
+		SELECT ORDER_NM 
+			 , ORDER_BILL 
+			 , ORDER_STATE 
+			 , PJ_NM 
+			 , USER_ID 
+			 , ORDER_TIME 
+			 , ORDER_PRICE 	
+		FROM   TB_ORDER
+		WHERE  USER_ID = (SELECT PJ_NM
+						  FROM TB_USER
+						  WHERE USER_ID = #userId#	
+						)
+	</select>
 </sqlMap>

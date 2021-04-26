@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import kr.or.ddit.project.vo.ProjectVO;
 import kr.or.ddit.user.vo.UserVO;
 
 public interface IUserService {
@@ -96,4 +97,11 @@ public interface IUserService {
 	 * @return
 	 */
 	public int signInUser(UserVO uv);
+	
+	/**
+	 * 내가 후원한 프로젝트 리스트
+	 * @param userId
+	 * @return
+	 */
+	public List<ProjectVO> userOrderList(String userId);
 }

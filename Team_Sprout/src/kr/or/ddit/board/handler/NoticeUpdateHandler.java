@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.Session;
 
 import org.apache.commons.fileupload.FileItem;
 
@@ -15,6 +16,7 @@ import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
 import kr.or.ddit.comm.vo.AtchFileVO;
+import kr.or.ddit.user.vo.UserVO;
 import kr.or.ddit.util.FileUploadRequestWrapper;
 
 public class NoticeUpdateHandler implements CommandHandler {
@@ -32,63 +34,68 @@ public class NoticeUpdateHandler implements CommandHandler {
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		if (req.getMethod().equals("GET")) { // GET 방식인 경우 redirect를 하지 않는다.
+		if (req.getMethod().equals("GET")) { // GET
 
+			String userId = (String) req.getSession().getAttribute("userId");
+			
 			String noticeNm = req.getParameter("noticeNm");
-
-			INoticeService noticeservice = NoticeServiceImpl.getInstance();
-			NoticeBoardVO nv = noticeservice.getNoticeBoard(noticeNm);
-
-			if (nv.getAtchFileId() > 0) { // 첨부파일이 존재하면
-				// 첨부파일 정보 조회
-
-				AtchFileVO fileVO = new AtchFileVO();
-				fileVO.setAtchFileId(nv.getAtchFileId());
-
-				IAtchFileService atchFileService = AtchFileServiceImpl.getInstance();
-				atchFileService.getAtchFileList(fileVO);
-
-				List<AtchFileVO> atchFileList = atchFileService.getAtchFileList(fileVO);
-
-				req.setAttribute("atchFileList", atchFileList);
-			}
-
-			// 2. 모델정보 등록
-			req.setAttribute("NoticeBoardVO", nv);
-
-			return VIEW_PAGE;
-		} else { // POST방식의 경우
-
-			FileItem item = ((FileUploadRequestWrapper) req).getFileItem("atchFile");
-			String userId = req.getParameter("userId");
+			
+			INoticeService noticeService = NoticeServiceImpl.getInstance();
+			
+			
+			NoticeBoardVO noticeVO =  noticeService.getNoticeBoard(noticeNm);
+			
+			req.setAttribute("noticeNm", noticeVO);
+			
+			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
+			
 			AtchFileVO atchFileVO = new AtchFileVO();
-
-			// 기존 첨부파일 아이디 정보 가져오기
-			atchFileVO.setAtchFileId(
-					req.getParameter("atchFile") == null ? -1 : Long.parseLong(req.getParameter("atchFile")));
-
-			if (item != null && !item.getName().equals("")) {
-
+			
+			atchFileVO.setAtchFileId(req.getParameter("atchFileId") == null ?
+					-1 : Long.parseLong(req.getParameter("atchFileId")));
+			
+			if(item !=null && !item.getName().equals("")) {
+				
 				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-
+				
 				atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
-
 			}
-			// 1.요청 파라미터 정보 가져오기
-			String noticeNm = req.getParameter("noticeNm");
+			
+			
+			return VIEW_PAGE;
+		}else { // POST방식의 경우
+
+			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFile")==null?null:((FileUploadRequestWrapper)req).getFileItem("atchFile");
+
+			//String userId = (String) req.getSession().getAttribute("userId"); //로그인시 저장되어있는 아이디를 가져온다. 
+			String userId = "mem001"; //테스트
+			/*
+			String userId = req.getParameter("userId");*/
+			AtchFileVO atchFileVO = new AtchFileVO();
+			
+			IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+			
+			if(item!=null) {
+				atchFileVO = fileService.saveAtchFile(item, userId);
+			}
+			// 1. 요청파라미터 정보 가져오기
 			String noticeTitle = req.getParameter("noticeTitle");
 			String noticeContent = req.getParameter("noticeContent");
 
 			// 2. 서비스 객체 생성하기
 			INoticeService noticeService = NoticeServiceImpl.getInstance();
 
-			// 3. 회원정보 수정하기
+			// 3. 게시글 등록하기
 			NoticeBoardVO nv = new NoticeBoardVO();
 			
 			nv.setNoticeTitle(noticeTitle);
+			nv.setUserId(userId);
 			nv.setNoticeContent(noticeContent);
-			nv.setAtchFileId(atchFileVO.getAtchFileId());
-
+			
+			if(atchFileVO!=null) {
+				nv.setAtchFileId(atchFileVO.getAtchFileId());
+			}
+			
 			int cnt = noticeService.updateNoticeBoard(nv);
 
 			String msg = "";
@@ -98,10 +105,11 @@ public class NoticeUpdateHandler implements CommandHandler {
 			} else {
 				msg = "실패";
 			}
-
-			// 4. 목록 조회화면으로 이동
-			String redirectUrl = req.getContextPath() + "/board/noticeList.do?msg=" + URLEncoder.encode(msg, "UTF-8");
-
+			
+			//4. 목록 조회화면으로 이동 - Redirect
+			String redirectUrl = req.getContextPath() + 
+					"/board/noticeList.do?msg=" + URLEncoder.encode(msg, "UTF-8"); 
+			
 			return redirectUrl;
 		}
 	}

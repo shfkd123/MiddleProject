@@ -2,28 +2,26 @@ package kr.or.ddit.project.vo;
 
 public class ProjectVO {
 	private String pjNm;
-	private String userNd;
 	private String pjType;
 	private String pjName;
 	private String pjContent;
-	private long atchFileId = - 1;
 	private String pjPriceAmount;
 	private String pjCondition;
 	private String pjDday;
 	private String pjOpenday;
 	private String pjReward;
+	private String userId;
+	private long atchFileId = - 1;
+	private String PjCategory;
+
+	
+	
 	
 	public String getPjNm() {
 		return pjNm;
 	}
 	public void setPjNm(String pjNm) {
 		this.pjNm = pjNm;
-	}
-	public String getUserNd() {
-		return userNd;
-	}
-	public void setUserNd(String userNd) {
-		this.userNd = userNd;
 	}
 	public String getPjType() {
 		return pjType;
@@ -78,5 +76,17 @@ public class ProjectVO {
 	}
 	public void setPjReward(String pjReward) {
 		this.pjReward = pjReward;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getPjCategory() {
+		return PjCategory;
+	}
+	public void setPjCategory(String pjCategory) {
+		PjCategory = pjCategory;
 	}
 }

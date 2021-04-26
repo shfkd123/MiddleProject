@@ -6,7 +6,7 @@ public class CommunityCmVO {
 	private String ccDate;
 	private String ccType;
 	private String cbNm;
-	private String userId;
+	private String ccWriter;
 	
 	public String getCcNm() {
 		return ccNm;
@@ -38,12 +38,13 @@ public class CommunityCmVO {
 	public void setCbNm(String cbNm) {
 		this.cbNm = cbNm;
 	}
-	public String getUserId() {
-		return userId;
+	public String getCcWriter() {
+		return ccWriter;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setCcWriter(String ccWriter) {
+		this.ccWriter = ccWriter;
 	}
+	
 	
 	
 	

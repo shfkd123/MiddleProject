@@ -5,6 +5,7 @@
 <%@page import="kr.or.ddit.board.vo.QnaBoardVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/view/include/head.jsp"%>
 <%
 	QnaBoardVO qbv = (QnaBoardVO)request.getAttribute("qbv");
 
@@ -12,7 +13,7 @@
 	
 	List<QnaCmVO> qnaCmList = (List<QnaCmVO>)request.getAttribute("qnaCmList");
 	
-	UserVO uv = (UserVO)session.getAttribute("userVO");
+	uv = (UserVO)session.getAttribute("userVO");
 
 %>
 <!DOCTYPE html>
@@ -21,21 +22,45 @@
 <meta charset="UTF-8">
 <title>상세조회</title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src=""></script>
-<link rel="stylesheet" href="../../css/main/boardDetail.css">
+<link rel="stylesheet" type="text/css"
+	href="/Team_Sprout/css/main/main.css">
+<link rel="stylesheet" href="/Team_Sprout/css/main/boardDetail.css">
 <style type="text/css">
+#menu_title {
+	text-align: center;
+	background-image: url('/Team_Sprout/images/main_image.png');
+	width: 100%;
+	height: 250px;
+	color: white;
+}
+div.col-sm-12 {
+	margin: 0px;
+	padding: 0px;
+}
 </style>
 </head>
 <body>
-	<!-- 테이블 -->
-	<div class="container">
+<!-- 헤더 이미지 및 문구 -->
+	<div class="col-sm-12">
+		<div id="menu_title">
+			<p>
+			
+			<br><br><br>
+				<h3><b>Q & A</b></h3>
+				<br>
+				* 이용 중 궁금한 사항들을 질문하는 게시판입니다.
+			</p>
+		</div>
+	</div>
+		<!-- 전체-->
+	<div class="col-sm-12">
+
+		<!-- 왼쪽 여백 -->
+		<div class="col-sm-2"></div>
+
+		<!-- 게시판 -->
+		<div class="col-sm-8">
+		<br><br>
 		<table class="table">
 			<thead>
 				<tr id="head">
@@ -56,7 +81,18 @@
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td colspan="3"><%=qbv.getQnaContent() %></td>
+					<td colspan="3" id="imgPrint"><%=qbv.getQnaContent() %>
+								<%
+			if(atchFileList != null){
+				for(AtchFileVO atchFileVO : atchFileList){
+			%>
+			<img src='<%=atchFileVO.getImgUrl()%>' width="500px">
+			<%
+				}
+			}
+			 %>
+					
+					</td>
 				</tr>
 				<tr>
 					<th>첨부파일</th>
@@ -95,9 +131,9 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>작성자</th>
-					<th style="text-align: left;">댓글</th>
-					<th style="text-align: left;">작성일</th>
+					<th style="text-align: center;">작성자</th>
+					<th style="text-align: center;">댓글</th>
+					<th style="text-align: center;">작성일</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -106,17 +142,17 @@
 				if(qnaCmList.size() == 0){
 				%>
 				<tr>
-					<td colspan="3" align="left">댓글이 없습니다.</td>
+					<td colspan="3" align="center">댓글이 없습니다.</td>
 				</tr>
 				<%	
 				} else {
 				%>
 				<tr>
-					<td style="text-align: left;">
+					<td style="text-align: center;">
 					<%=qnaCmList.get(i).getqcWriter() %>
 					</td>
-					<td style="text-align: right;"><%=qnaCmList.get(i).getQcContent() %></td>
-					<td><%=qnaCmList.get(i).getQcDate() %>
+					<td style="text-align: left;"><%=qnaCmList.get(i).getQcContent() %></td>
+					<td style="text-align: right;"><%=qnaCmList.get(i).getQcDate() %>
 						<%if(uv != null) {
 							if(uv.getUserNickName().equals(qnaCmList.get(i).getqcWriter())){
 							%>
@@ -126,7 +162,7 @@
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu" role="menu" id="cmtMenu">
-									<li><a data-toggle="modal" data-target="#myModal">수정</a>
+									<li><a data-toggle="modal" data-target="#myModal" onclick="openModifyModal('<%=qnaCmList.get(i).getQcNm() %>')">수정</a>
 									</li>
 									<li><a href="#" onclick="cmDelete('<%=qnaCmList.get(i).getQcNm() %>')">삭제</a></li>
 								</ul>
@@ -135,25 +171,6 @@
 							}
 						}
 						%>
-						<!-- 댓글 수정 Modal -->
-						<div class="modal fade" id="myModal" role="dialog">
-							<div class="modal-dialog">
-						      <!-- 수정 Modal content-->
-						      <div class="modal-content">
-						        <div class="modal-header">
-						          <button type="button" class="close" data-dismiss="modal">&times;</button>
-						          <h4 class="modal-title">댓글 수정하기</h4>
-						        </div>
-						        <div class="modal-body">
-						          <textarea class="form-control" rows="3" id="editCm"></textarea>
-						        </div>
-						        <div class="modal-footer">
-						          <button type="button" class="btn btn-default" onclick="cmUpdate('<%=qnaCmList.get(i).getQcNm() %>')">저장</button>
-						          <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-						        </div>
-						      </div>
-						 	</div>
-				  		</div>
 					</td>
 				</tr>
 			<%
@@ -200,6 +217,29 @@
 				
 			</tbody>
 		</table>
+		
+		<!-- 댓글 수정 Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog">
+		      <!-- 수정 Modal content-->
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title">댓글 수정하기</h4>
+		        </div>
+		        <div class="modal-body">
+		          <textarea class="form-control" rows="3" id="editCm"></textarea>
+		        </div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-default" onclick="cmUpdate()">저장</button>
+		          <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+		          <input type="hidden" id="modalQcNm">
+		        </div>
+		      </div>
+		 	</div>
+  		</div>
+  		<!-- 댓글 수정 Modal END -->
+		  		
 		<form id="fmCm">
 			<input type="hidden" id="qnaNmCm" name="qnaNmCm">
 			<input type="hidden" id="fmQcNm" name="qcNmCm">
@@ -209,6 +249,11 @@
 			<input type="hidden" id="flagCm" name="flagCm">
 		</form>
 	</div>
+			
+		<!-- 오른쪽 여백 -->
+		<div class="col-sm-2"></div>
+	</div>
+	</body>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#updateWrite").css("display", "none");
@@ -270,7 +315,8 @@
 		fmCm.submit();
 	}
 	
-	function cmUpdate(qcNm){
+	function cmUpdate(){
+		var qcNm = $("#modalQcNm").val();
 		if(confirm("수정하시겠습니까?")){
 			alert("수정이 완료되었습니다.");
 			<%
@@ -308,6 +354,12 @@
 		}
 		return;
 	}
+	
+	function openModifyModal(qcNm){
+		$("#modalQcNm").val(qcNm);
+	}
 </script>
-</body>
+
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>
+

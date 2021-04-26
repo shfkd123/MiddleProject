@@ -9,6 +9,16 @@ import kr.or.ddit.boardComment.vo.NoticeCmVO;
 
 public interface INoticeCmDao {
 
+	
+	/**
+	 * 공지사항 댓글 조회
+	 * @param ncNm
+	 * @param nv
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<NoticeCmVO> getNoticeCmListByNoticeNm(SqlMapClient smc, String noticeNm) throws SQLException;
+
 	/**
 	 * 공지사항 댓글 등록
 	 * @param smc
@@ -19,19 +29,9 @@ public interface INoticeCmDao {
 	public int insertNoticeCm(SqlMapClient smc, NoticeCmVO ncv) throws SQLException;
 	
 	/**
-	 * 공지사항 댓글 조회
-	 * @param ncNm
-	 * @param nv
-	 * @return
-	 * @throws SQLException
-	 */
-	public List<NoticeCmVO> getNoticeCmList(SqlMapClient smc, String ncNm) throws SQLException;
-	public List<NoticeCmVO> getNoticeCmListByNoticeNm(SqlMapClient smc, String noticeNm) throws SQLException;
-	
-	/**
 	 * 공지사항 댓글 수정
 	 * @param smc
-	 * @param nv
+	 * @param ncv
 	 * @return
 	 * @throws SQLException
 	 */
@@ -40,11 +40,11 @@ public interface INoticeCmDao {
 	/**
 	 * 공지사항 댓글 삭제
 	 * @param smc
-	 * @param notice_nm
+	 * @param ncv
 	 * @return
 	 * @throws SQLException
 	 */
-	public int deleteNoticeCm(SqlMapClient smc, String ncNm) throws SQLException;
+	public int deleteNoticeCm(SqlMapClient smc, NoticeCmVO ncv) throws SQLException;
 
 	
 }

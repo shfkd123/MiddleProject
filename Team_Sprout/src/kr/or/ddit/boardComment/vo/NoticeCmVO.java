@@ -6,7 +6,7 @@ public class NoticeCmVO {
 	private String ncDate;
 	private String ncType;
 	private String noticeNm;
-	private String userId;
+	private String ncWriter;
 	
 	public String getNcNm() {
 		return ncNm;
@@ -38,11 +38,11 @@ public class NoticeCmVO {
 	public void setNoticeNm(String noticeNm) {
 		this.noticeNm = noticeNm;
 	}
-	public String getUserId() {
-		return userId;
+	public String getNcWriter() {
+		return ncWriter;
 	}
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setNcWriter(String ncWriter) {
+		this.ncWriter = ncWriter;
 	}
 	
 	

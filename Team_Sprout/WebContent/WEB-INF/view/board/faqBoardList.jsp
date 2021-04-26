@@ -2,25 +2,53 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/view/include/head.jsp"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>FAQ 게시판</title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="../../css/main/board.css">
+<link rel="stylesheet" type="text/css"
+	href="/Team_Sprout/css/main/main.css">
+<link rel="stylesheet" href="/Team_Sprout/css/main/board.css">
+<style type="text/css">
+#menu_title {
+	text-align: center;
+	background-image: url('/Team_Sprout/images/main_image.png');
+	width: 100%;
+	height: 250px;
+	color: white;
+}
+div.col-sm-12 {
+	margin: 0px;
+	padding: 0px;
+}
+</style>
 </head>
 
 <body>
-	<!-- 테이블 -->
-	<div class="container">
+<!-- 헤더 이미지 및 문구 -->
+	<div class="col-sm-12">
+		<div id="menu_title">
+			<p>
+			
+			<br><br><br>
+				<h3><b>F & Q</b></h3>
+				<br>
+				* 자주 묻는 질문
+			</p>
+		</div>
+	</div>
+		<!-- 전체-->
+	<div class="col-sm-12">
+
+		<!-- 왼쪽 여백 -->
+		<div class="col-sm-2"></div>
+
+		<!-- 게시판 -->
+		<div class="col-sm-8">
+		<br><br>
 		<table class="table table-hover">
 			<thead>
 				<tr>
@@ -82,7 +110,13 @@
 			<input type="hidden" name="faqNm" id="faqNm">
 			<input type="hidden" name="flag" id="flag">
 		</form>
+		</div>
+
+		<!-- 오른쪽 여백 -->
+		<div class="col-sm-2"></div>
+
 	</div>
+
 </body>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -120,4 +154,5 @@
 		fm.submit();
 	}
 </script>
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

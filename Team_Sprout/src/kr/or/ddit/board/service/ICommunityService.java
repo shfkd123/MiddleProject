@@ -12,7 +12,7 @@ public interface ICommunityService {
 	 * @param pagingVO
 	 * @return
 	 */
-	List<CommunityBoardVO> getAllCommunityBoardList(PagingVO pagingVO);
+	List<CommunityBoardVO> getAllCommunityBoardList();
 	
 
 	/**
@@ -54,7 +54,7 @@ public interface ICommunityService {
 	 * @param cbTitle
 	 * @return
 	 */
-	public List<CommunityBoardVO> searchCommunityBoard(CommunityBoardVO cbv);
+	public List<CommunityBoardVO> searchCommunityBoard(String str);
 
 	
 	/**

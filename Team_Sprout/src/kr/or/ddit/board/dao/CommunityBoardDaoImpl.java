@@ -11,34 +11,34 @@ import kr.or.ddit.util.SqlMapClientUtil;
 
 public class CommunityBoardDaoImpl implements ICommunityBoardDao {
 
-	private static ICommunityBoardDao communityBoardVO;
+	private static ICommunityBoardDao communityBoardBoardVO;
 	
 	public CommunityBoardDaoImpl() {
 		SqlMapClientUtil.getInstance();
 	}
 	
 	public static ICommunityBoardDao getInstance() {
-		if(communityBoardVO == null) {
-			communityBoardVO = new CommunityBoardDaoImpl();
+		if(communityBoardBoardVO == null) {
+			communityBoardBoardVO = new CommunityBoardDaoImpl();
 		}
-		return communityBoardVO;
+		return communityBoardBoardVO;
 	}
 	@Override
-	public List<CommunityBoardVO> getAllCommunityBoard(SqlMapClient smc, PagingVO pagingVO) throws SQLException {
-		List<CommunityBoardVO> communityList = smc.queryForList("community.getAllCommunityBoard", pagingVO);
-		return communityList;
+	public List<CommunityBoardVO> getAllCommunityBoard(SqlMapClient smc) throws SQLException {
+		return smc.queryForList("communityBoard.getAllCommunityBoard");
+
 	}
 
 	@Override
 	public CommunityBoardVO getCommunityBoard(SqlMapClient smc, String cbNm) throws SQLException {
-		return (CommunityBoardVO) smc.queryForObject("community.getCommunityBoard", cbNm);
+		return (CommunityBoardVO) smc.queryForObject("communityBoard.getCommunityBoard", cbNm);
 	}
 
 	@Override
 	public int insertCommunityBoard(SqlMapClient smc, CommunityBoardVO cbv) throws SQLException {
 		int cnt = 0;
 		
-		Object obj = smc.insert("community.insertCommunityBoard", cbv);
+		Object obj = smc.insert("communityBoard.insertCommunityBoard", cbv);
 		
 		if(obj != null) {
 			cnt = 1;
@@ -50,7 +50,7 @@ public class CommunityBoardDaoImpl implements ICommunityBoardDao {
 	public int updateCommunityBoard(SqlMapClient smc, CommunityBoardVO cbv) throws SQLException {
 		int cnt = 0;
 		
-		Object obj = smc.update("community.updateCommunityBoard", cbv);
+		Object obj = smc.update("communityBoard.updateCommunityBoard", cbv);
 		
 		if(obj != null) {
 			cnt = 1;
@@ -62,7 +62,7 @@ public class CommunityBoardDaoImpl implements ICommunityBoardDao {
 	public int deleteCommunityBoard(SqlMapClient smc, CommunityBoardVO cbv) throws SQLException {
 		int cnt = 0;
 		
-		Object obj = smc.delete("community.deleteCommunityBoard", cbv);
+		Object obj = smc.delete("communityBoard.deleteCommunityBoard", cbv);
 		
 		if(obj != null) {
 			cnt = 1;
@@ -71,13 +71,13 @@ public class CommunityBoardDaoImpl implements ICommunityBoardDao {
 	}
 
 	@Override
-	public List<CommunityBoardVO> searchCommunityBoard(SqlMapClient smc, CommunityBoardVO cbv) throws SQLException {
-		return smc.queryForList("community.searchCommunityBoard", cbv);
+	public List<CommunityBoardVO> searchCommunityBoard(SqlMapClient smc, String str) throws SQLException {
+		return smc.queryForList("communityBoard.searchCommunityBoard", str);
 	}
 
 	@Override
 	public int getAllCommunityListCount(SqlMapClient smc) throws SQLException {
-		int cnt = (int)smc.queryForObject("community.getFaqAllCount");
+		int cnt = (int)smc.queryForObject("communityBoard.getFaqAllCount");
 		return cnt;
 	}
 

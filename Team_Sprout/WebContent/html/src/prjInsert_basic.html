@@ -11,6 +11,28 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" href="/Team_Sprout/css/prj/prjInsert.css">
+<script type="text/javascript">
+
+function addOp(){
+	var opDiv = $('#addOpDiv').children().length; 
+	var str = "<div>" 
+			+ "<p>옵션</p>"
+			+ "<label>후원금액 </label><br><input type='text' class='form-control' id='prjOpPrice'>원<br>"
+			+ "<label>후원금액 </label><br><input type='text' class='form-control' id='prjOpContent'>"
+			+ "<button type='button' class='btn btn-success' onclick='removeOp(this)'>삭제</button>"
+			 + "</div>";
+	if (opDiv < 2){
+			 $("#addOpDiv").append(str);
+	} else {
+		alert("리워드 옵션은 최대 3개까지 가능합니다.");
+	}
+}
+
+function removeOp(obj){
+    document.getElementById('addOpDiv').removeChild(obj.parentNode);
+}
+
+</script>	
 </head>
 <body>
 	<!-- 상단 전체   -->
@@ -50,20 +72,21 @@
 					<br><br><p><h4>프로젝트 리워드 옵션 </h4></p>  
 					<span style="color: red;">* 프로젝트 성공 시 후원자에게 전달할 리워드를 입력해주세요.</span>
 					<br><br>
+					
 					<!-- 리워드 옵션 부분 -->
 					<div id="option">
-						<p>옵션1</p> 
-						
+						<p>옵션</p> 
 						<label>후원금액 </label><br>
 						<input type="text" class="form-control" id="prjOpPrice">원<br>
-						
 						<br><label>옵션내용 </label><br>
-						<input type="text" class="form-control" id="prjOpContent">
-						
+						<input type="text" class="form-control" id="prjOpContent"><br><br>
 					</div>
 					
+					<!-- 옵션 추가될 곳 -->
+					<div id="addOpDiv"></div>
+					
 					<!-- 옵션 추가 버튼 -->
-					<br><button type="button" class="btn btn-success">옵션 추가</button>
+					<button type="button" class="btn btn-success" onclick="addOp()">옵션 추가</button>
 					
 					<!-- 프로젝트 마감일 -->
 					<br><br><label>프로젝트 마감일</label><br>

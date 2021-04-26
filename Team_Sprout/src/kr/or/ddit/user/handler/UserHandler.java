@@ -4,6 +4,8 @@ import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.xml.ws.RespectBinding;
 
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -18,6 +20,18 @@ public class UserHandler implements CommandHandler {
 	
 	@Override
 	public boolean isRedirect(HttpServletRequest req) {
+		String flag = (String)req.getParameter("flag");
+		
+		if("C".equals(flag) || "U".equals(flag)) {
+			if(req.getMethod().equals("GET")) { 
+				return false;
+			}else { 
+				return true;
+			}
+		}
+		if("D".equals(flag)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -37,7 +51,7 @@ public class UserHandler implements CommandHandler {
 				
 				req.setAttribute("cnt", cnt);
 				
-				return "/html/common/userCheckResult.jsp";
+				return "/html/common/userChkResult.jsp";
 				
 			} else if ("CHKNICK".equals(flag)) { // 닉네임 중복검사
 				String userNickName = req.getParameter("userNickName");
@@ -46,7 +60,7 @@ public class UserHandler implements CommandHandler {
 				
 				req.setAttribute("cnt", cnt);
 				
-				return "/html/common/userCheckResult.jsp";
+				return "/html/common/userChkResult.jsp";
 				
 			} else if("C".equals(flag)) {
 				if(req.getMethod().equals("GET")) {
@@ -60,7 +74,7 @@ public class UserHandler implements CommandHandler {
 					
 					req.setAttribute("cnt", cnt);
 					
-					return "/html/common/userCheckResult.jsp";
+					return "/html/common/userChkResult.jsp";
 				}
 			} else if("U".equals(flag)) { // 유저 정보 수정
 				UserVO uv = new UserVO();
@@ -74,7 +88,13 @@ public class UserHandler implements CommandHandler {
 				} else {
 					msg = "실패";
 				}
-				String redirectUrl = req.getContextPath() + "" + URLEncoder.encode(msg, "UTF-8");
+				UserVO user = service.getUser(uv.getUserId());
+				
+				HttpSession session = req.getSession();
+				
+				session.setAttribute("userVO", user);
+				
+				String redirectUrl = req.getContextPath() + "/html/main/main.jsp?" + URLEncoder.encode(msg, "UTF-8");
 				
 				return redirectUrl;
 			} else if("D".equals(flag)) { // 유저 삭제

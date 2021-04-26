@@ -53,10 +53,10 @@ public class FreeCmDaoImpl implements IFreeCmDao {
 	}
 
 	@Override
-	public int deleteFreeCm(SqlMapClient smc, String fcNm) throws SQLException {
+	public int deleteFreeCm(SqlMapClient smc, FreeCmVO fcv) throws SQLException {
 		int cnt = 0;
 		
-		Object obj = smc.delete("freeCm.deleteFreeCm", fcNm);
+		Object obj = smc.delete("freeCm.deleteFreeCm", fcv);
 		
 		if(obj != null) {
 			cnt = 1;

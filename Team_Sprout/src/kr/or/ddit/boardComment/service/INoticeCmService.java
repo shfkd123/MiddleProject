@@ -17,7 +17,6 @@ public interface INoticeCmService {
 	 * 공지사항 댓글 조회
 	 * @return 공지사항 댓글 List
 	 */
-	public List<NoticeCmVO> getNoticeCmList(String ncNm);
 	public List<NoticeCmVO> getNoticeCmListByNoticeNm(String noticNm);
 	
 	/**
@@ -25,7 +24,7 @@ public interface INoticeCmService {
 	 * @param ncv
 	 * @return 성공1 실패 0
 	 */
-	public int updateNoticeCm(String ncNm);
+	public int updateNoticeCm(NoticeCmVO ncv);
 	
 	/**
 	 * 공지사항 댓글 삭제

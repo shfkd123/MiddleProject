@@ -10,6 +10,9 @@ import kr.or.ddit.board.dao.CommunityBoardDaoImpl;
 import kr.or.ddit.board.dao.ICommunityBoardDao;
 import kr.or.ddit.board.vo.CommunityBoardVO;
 import kr.or.ddit.board.vo.FaqBoardVO;
+import kr.or.ddit.boardComment.service.INoticeCmService;
+import kr.or.ddit.boardComment.service.NoticeCmServiceImpl;
+import kr.or.ddit.boardComment.vo.NoticeCmVO;
 import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
@@ -33,14 +36,20 @@ public class CommunityServiceImpl implements ICommunityService{
 	}
 
 	@Override
-	public List<CommunityBoardVO> getAllCommunityBoardList(PagingVO pagingVO) {
+	public List<CommunityBoardVO> getAllCommunityBoardList() {
 		List<CommunityBoardVO> list = new ArrayList<>();
 		try {
-			list = CommunityBoardDao.getAllCommunityBoard(smc, pagingVO);
+			list = CommunityBoardDao.getAllCommunityBoard(smc);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return list;
+		
+		//프로젝트 정보 조회
+		/*INoticeCmService noticeCmService = NoticeCmServiceImpl.getInstance();
+		List<NoticeCmVO> noticeCmVOList = noticeCmService.getNoticeCmListByNoticeNm(noticNm);
+		nv.setNoticeCmVOList(noticeCmVOList);*/
+		
 	}
 
 	@Override
@@ -88,11 +97,11 @@ public class CommunityServiceImpl implements ICommunityService{
 	}
 
 	@Override
-	public List<CommunityBoardVO> searchCommunityBoard(CommunityBoardVO cbv) {
+	public List<CommunityBoardVO> searchCommunityBoard(String str) {
 		List<CommunityBoardVO> list = new ArrayList<>();
 		
 		try {
-			list = CommunityBoardDao.searchCommunityBoard(smc, cbv);
+			list = CommunityBoardDao.searchCommunityBoard(smc, str);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

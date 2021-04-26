@@ -1,129 +1,21 @@
 <%@page import="kr.or.ddit.user.vo.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@include file="/WEB-INF/view/include/head.jsp"%>   
+ <jsp:include page="/WEB-INF/view/include/slide.html"/>
+  
 <!DOCTYPE html>
 <head>
 <title>Sprout</title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link href="https://fonts.googleapis.com/css?family=Lato"
-	rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Montserrat"
-	rel="stylesheet" type="text/css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/Team_Sprout/css/main/main.css">
-<style type="text/css">
-</style>
-<script type="text/javascript">
-	function LogOut(){
-		if(confirm("로그아웃 하시겠습니까?")){
-			alert("로그아웃 되었습니다.");
-			location.href = "/Team_Sprout/user/logOut.do";
-		}
-		return;
-	}
-</script>
 </head>
+
 <body>
-<%
-	UserVO uv = null;
-	if(session != null && session.getAttribute("userVO") != null){
-		uv = (UserVO)session.getAttribute("userVO");
-	}
-%>
-	<nav class="navbar">
-		<!-- 왼쪽 여백 -->
-		<div class="col-sm-2"></div>
-		<!-- nav바 -->
-		<div class="col-sm-8" id="a_head">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target="#myNavbar">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a href="/Team_Sprout/user/logOut.do"><img src="/images/logo.png" id="logoImg" style="width: 100px; margin:5px;"></a>
-			</div>
-			<div class="collapse navbar-collapse" id="myNavbar">
-				<ul class="nav navbar-nav">
-					<li><a href="#" class="a_title">인기프로젝트</a></li>
-					<li><a href="#" class="a_title">프로젝트검색</a></li>
-										<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#">커뮤니티 <span class="glyphicon glyphicon-chevron-down"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="/Team_Sprout/board/noticeList.do">공지사항</a></li>
-							<li><a href="/Team_Sprout/board/freeBoard.do" class="a_title">커뮤니티</a></li>
-							<li><a href="#">구매후기</a></li>
-							<li><a href="/Team_Sprout/board/faqBoard.do">FAQ</a></li>
-							<li><a href="/Team_Sprout/board/qnaBoard.do">Q&#38;A</a></li>
-							<li><a href="/Team_Sprout/board/reportBoard.do">신고</a></li>
-						</ul>
-						</li>
-				</ul>			
-				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#" class="btn-lg"><span
-							class="glyphicon glyphicon-search"></span></a></li>
-					<%
-					if(uv == null) {
-					%>
-					<li id="notlog"><a href="/Team_Sprout/user/signIn.do" class="btn-lg"><span
-							class="glyphicon glyphicon-user"></span></a></li>
-					<%
-					} else {
-					%>
-					<li id="userInfo" class="dropdown">
-						<a class="btn-lg"class="dropdown-toggle" data-toggle="dropdown"  href="#">
-						<span id="mypage"><%=uv.getUserNickName() %> 님 <span class="glyphicon glyphicon-chevron-down"></span></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href="#">회원정보수정</a></li>
-							<li><a href="#">후원현황</a></li>
-							<li><a href="#">관심프로젝트</a></li>
-							<li><a href="#">내가 만든 프로젝트</a></li>
-							<li><a href="#">메세지</a></li>
-						</ul>
-					</li>
-					
-					<li id="yeslog">
-						<a href="#" onclick="LogOut()" class="btn-lg">
-						<span><span class="glyphicon glyphicon-log-out"></span> LOGOUT</span>
-						</a>
-					</li>
-					<%	
-					}
-					%>
-				</ul>
-			</div>
-		</div>
-	<!-- 오른쪽 여백 -->
-	<div class="col-sm-2"></div>
-	</nav>
-	
-	<!-- 상단 이미지 12 -->
-	<div class="container-fluid bg-3 text-center" id="bodymargin">
-		<!-- top -->
-		<div class="col-sm-12" id="main_Image">
-			<p id="main_Slogan">
-				개인부터 스타트업 까지!<br> 미래를 자라나게 하는 가장 손쉬운 방법, 스프라우트<br>
-				당신의 펀딩을 응원합니다.
-			</p>
-		</div>	
-	</div>	
 		<!-- main 12-->
 		<div class="col-sm-12">
 			<div class="col-sm-2"></div>
 			<div class="col-sm-8">
-			<h3 style="text-align:left; font-weight: bold">진행중인 펀딩</h3><br>
+			<h3 style="text-align:left; font-weight: bold">주목할만한 프로젝트</h3><br>
 			</div>
 			<div class="col-sm-2"></div>
 		</div>
@@ -135,7 +27,7 @@
 		
 		<!-- 1번 항목 2-->
 		<div class="col-sm-2">
-			<img src="/images/img1.jpg" class="img-rounded" style="width: 100%"
+			<img src="/Team_Sprout/images/img1.jpg" class="img-rounded" style="width: 100%"
 				alt="Image">
 			<h4><a href="#">세상에 오직 하나, 한국의 판타지 아이템 도감</a></h4>
 			<p>
@@ -151,7 +43,7 @@
 
 		<!-- 2번 항목 2-->		
 		<div class="col-sm-2">
-			<img src="/images/img2.jpg" class="img-rounded" style="width: 100%"
+			<img src="/Team_Sprout/images/img2.jpg" class="img-rounded" style="width: 100%"
 				alt="Image">
 			<h4><a href="#">같이 먹어요! 바스크 치즈 케이크와 딸기 라떼 베이스</a></h4>
 			<p>
@@ -167,7 +59,7 @@
 		
 		<!-- 3번 항목 2-->	
 		<div class="col-sm-2">
-			<img src="/images/img3.png" class="img-rounded" style="width: 100%"
+			<img src="/Team_Sprout/images/img3.png" class="img-rounded" style="width: 100%"
 				alt="Image">
 			<h4><a href="#">제대로 즐기게 해 주는 MoMA 미술관 도슨트 북</a></h4>
 			<p>
@@ -183,7 +75,7 @@
 		
 		<!-- 4번 항목 2-->		
 		<div class="col-sm-2">
-			<img src="/images/img4.jpg" class="img-rounded" style="width: 100%"
+			<img src="/Team_Sprout/images/img4.jpg" class="img-rounded" style="width: 100%"
 				alt="Image">
 			<h4><a href="#">코디 걱정 없이 편하게, '나봄 저고리 셔츠 허리치마'</h4>
 			<p>
@@ -197,25 +89,10 @@
 			</div>
 		</div>
 		
-	<!-- 여백 2-->	
+	<!-- 오른쪽 여백 2-->	
+	<div class="col-sm-2"></div>
 	</div>
-	
-	<!-- top -->
-	<a style="display: scroll; position: fixed; bottom: 40px; right: 40px;"
-		href="#" title="top"><img src="/images/topbutton.png" width="40px"></a>
-
-	<!-- footer -->
-	<footer class="container-fluid text-center">
-		<br><br>
-		<p>Design By Seul-gi</p>
-		<p>
-			스프라우트는 플랫폼 제공자로서 프로젝트의 당사자가 아니며, 직접적인 통신판매를 진행하지 않습니다.<br> 프로젝트의
-			완수 및 선물제공의 책임은 해당 프로젝트의 창작자에게 있으며,<br> 프로젝트와 관련하여 후원자와 발생하는 법적
-			분쟁에 대한 책임은 해당 창작자가 부담합니다.
-		</p>
-		<p>스프라우트(주) | 스프라우트 123-45-67890 | 대전광역시 중구, 영민빌딩 4층 ddit 403호 |
-			통신판매업 2021-1234-1234-123 | 대표전화 042) 000-1234</p>
-	</footer>
 </body>
+<%@include file="/WEB-INF/view/include/footer.jsp"%> 
 </html>
 

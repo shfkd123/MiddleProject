@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import kr.or.ddit.project.vo.ProjectVO;
 import kr.or.ddit.user.vo.UserVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
@@ -81,6 +82,11 @@ public class UserDaoImpl implements IUserDao {
 	@Override
 	public int signInUser(SqlMapClient smc, UserVO uv) throws SQLException {
 		return (int) smc.queryForObject("user.signInUser", uv);
+	}
+
+	@Override
+	public List<ProjectVO> userOrderList(SqlMapClient smc, String userId) throws SQLException {
+		return smc.queryForList("user.userOrderList", userId);
 	}
 
 	

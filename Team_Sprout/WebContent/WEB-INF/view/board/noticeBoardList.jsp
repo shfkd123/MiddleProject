@@ -5,13 +5,11 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+ <%@include file="/WEB-INF/view/include/head.jsp"%>   
 <%
     NoticeBoardVO noticeVO = (NoticeBoardVO) request.getAttribute("noticeVO");
 	List<NoticeBoardVO> noticeList = (List<NoticeBoardVO>)request.getAttribute("noticeList");
 
-	
-	UserVO uv = null;
 	if(session != null && session.getAttribute("userVO") != null){
 		uv = (UserVO)session.getAttribute("userVO");
 	}
@@ -24,89 +22,46 @@
 <meta charset="UTF-8">
 <title>공지사항게시판</title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="../../css/main/board.css">
+<link rel="stylesheet" type="text/css"
+	href="/Team_Sprout/css/main/main.css">
+<link rel="stylesheet" href="/Team_Sprout/css/main/board.css">
+<style type="text/css">
+#menu_title {
+	text-align: center;
+	background-image: url('/Team_Sprout/images/main_image.png');
+	width: 100%;
+	height: 250px;
+	color: white;
+}
+div.col-sm-12 {
+	margin: 0px;
+	padding: 0px;
+}
+</style>
 </head>
 
 <body>
-	<nav class="navbar">
+<!-- 헤더 이미지 및 문구 -->
+	<div class="col-sm-12">
+		<div id="menu_title">
+			<p>
+			<br><br><br>
+				<h3><b>공지</b></h3>
+				<br>
+				* 메이커/서포터에게 전하는 안내
+			</p>
+		</div>
+	</div>
+	<!-- 전체-->
+	<div class="col-sm-12">
+
 		<!-- 왼쪽 여백 -->
 		<div class="col-sm-2"></div>
-		<!-- nav바 -->
-		<div class="col-sm-8" id="a_head">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse"
-					data-target="#myNavbar">
-					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a href="#"><img src="../../images/logo.png" id="logoImg" style="width: 100px; margin:5px;"></a>
-			</div>
-			<div class="collapse navbar-collapse" id="myNavbar">
-				<ul class="nav navbar-nav">
-					<li><a href="#" class="a_title">인기프로젝트</a></li>
-					<li><a href="#" class="a_title">프로젝트검색</a></li>
-										<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#">커뮤니티 <span class="glyphicon glyphicon-chevron-down"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="/Team_Sprout/board/noticeList.do">공지사항</a></li>
-							<li><a href="/Team_Sprout/board/freeBoard.do" class="a_title">커뮤니티</a></li>
-							<li><a href="#">구매후기</a></li>
-							<li><a href="#">FAQ</a></li>
-							<li><a href="/Team_Sprout/board/qnaBoard.do">Q&#38;A</a></li>
-							<li><a href="#">신고</a></li>
-						</ul>
-						</li>
-				</ul>			
-				<ul class="nav navbar-nav navbar-right">
-					<%
-					if(uv == null) {
-					%>
-					<li><a href="#" class="btn-lg"><span
-							class="glyphicon glyphicon-search"></span></a></li>
-					<li id="notlog"><a href="../login/login.jsp" class="btn-lg"><span
-							class="glyphicon glyphicon-user"></span></a></li>
-					<%
-					} else {
-					%>
-					<li id="userInfo" class="dropdown">
-						<a class="btn-lg"class="dropdown-toggle" data-toggle="dropdown"  href="#">
-						<span id="mypage"><%=uv.getUserNickName() %> 님 <span class="glyphicon glyphicon-chevron-down"></span></span>
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href="#">회원정보수정</a></li>
-							<li><a href="#">후원현황</a></li>
-							<li><a href="#">관심프로젝트</a></li>
-							<li><a href="#">내가 만든 프로젝트</a></li>
-							<li><a href="#">메세지</a></li>
-						</ul>
-					</li>
-					
-					<li id="yeslog">
-						<a href="#" onclick="LogOut()" class="btn-lg">
-						<span><span class="glyphicon glyphicon-log-out"></span> LOGOUT</span>
-						</a>
-					</li>
-					<%	
-					}
-					%>
-				</ul>
-			</div>
-		</div>
-	<!-- 오른쪽 여백 -->
-	<div class="col-sm-2"></div>
-	</nav>
-	
-	
-	<!-- 테이블 -->
-	<div class="container">
-		<table class="table table-hover">
+
+		<!-- 게시판 -->
+		<div class="col-sm-8">
+		<br><br>
+			<table class="table table-hover">
 			<thead>
 				<tr>
 					<th><input type="checkbox" id="AllCheck"></th>
@@ -166,7 +121,7 @@
 		
 		<!-- 등록 수정 삭제 버튼  -->
 		<div id="btn">
-			<button type="button" class="btn btn-success" id="insert">등록</button>
+			<button type="button" class="btn btn-success" id="insertBtn" onclick="insert()">등록</button>
 			<button type="button" class="btn btn-success" id="delete">삭제</button>			
 		</div>	
 		
@@ -177,25 +132,31 @@
 		<form id="fmCm">
 			<input type="hidden" name="ncNm" id="ncNmCm">	
 		</form>
+		</div>
+
+		<!-- 오른쪽 여백 -->
+		<div class="col-sm-2"></div>
+
 	</div>
+
 </body>
 <script type="text/javascript">
-	function boardSelect(noticeNm){
-		document.getElementById("noticeNm").value = noticeNm;
-		var fm = document.getElementById("fm");
-		fm.action = "noticeSelect.do";
-		fm.method = "post";
-		fm.submit();
-		
-// 		document.getElementById("ncNmCm").value = noticeNm;
-// 		var fmCm = document.getElementById("fmCm");
-// 		fm.action = "noticeBoardCm.do";
-// 		fm.submit();
-	}
 
-	$("#insert").click(function(){
-		location.href = "noticeInsert.do";
-	});
+function boardSelect(noticeNm){
+	document.getElementById("noticeNm").value = noticeNm;
+	var fm = document.getElementById("fm");
+	fm.action = "noticeSelect.do";
+	fm.method = "post";
+	fm.submit();
+}
+	
+function insert(){
+
+	var fm = document.getElementById("fm");
+	fm.action = "noticeInsert.do";
+	fm.method = "get";
+	fm.submit();
+}
 	
 	$("#AllCheck").click(function(){
 		// '전체선택' 체크박스가 체크 되어 있을때
@@ -245,4 +206,5 @@
 	});
 	
 </script>
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

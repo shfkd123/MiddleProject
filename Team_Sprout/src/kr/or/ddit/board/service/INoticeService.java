@@ -8,10 +8,10 @@ public interface INoticeService {
 	
 	/**
 	 * 공지사항 등록하는 메서드
-	 * @param nv
+	 * @param noticeVO
 	 * @return 성공1 실패 0 반환
 	 */
-	public int insertNoticeBoard(NoticeBoardVO nv);
+	public int insertNoticeBoard(NoticeBoardVO noticeVO);
 	
 	/**
 	 * 전체 공지사항 목록 조회 메서드

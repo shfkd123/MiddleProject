@@ -3,6 +3,7 @@
  */
 
 var id = "";
+var nickName = "";
 
 $(document).ready(function(){
 	
@@ -42,7 +43,7 @@ $(document).ready(function(){
 		
 		// DB에서 중복검사 실행
 		$.ajax({
-			url : "/Team_Sprout/user/register.do"
+			url : "register.do"
 			, type : "post"
 			, data : {
 				"userId" : userId
@@ -107,7 +108,7 @@ $(document).ready(function(){
 					$("#spNickNameReq").hide();
 					$("#spNickNameUse").text("\'" + userNickName + "\' 사용 가능");
 					$("#spNickNameUse").show();
-					id = userId;
+					nickName = userNickName;
 				} else if(data.cnt == 1) {
 					$("#spNickNameCk").hide();
 					$("#spNickNameReq").hide();
@@ -146,7 +147,7 @@ function makeUserLikey(data) {
 		if(i > 0 && i % 5 == 0){
 			likeyList += "<br><br>";
 		}
-		likeyList += "&emsp;<label><input type='checkbox' value='&nbsp;"
+		likeyList += "&emsp;<label><input type='radio' name='likey' value='&nbsp;"
 			+ data[i].likeyCode + "'>" 
 			+ data[i].likeyName + "</label>";
 	}
@@ -258,12 +259,27 @@ function save() {
 	}
 	$("#spUserNameReq").hide();
 	
+	// 닉네임을 바꾸고 다시 중복검사를 하지 않았을때
+	if($("#userNickName").val() != nickName) {
+		alert("닉네임 중복검사를 해주세요.");
+		$("#spUserNickNameReq").show();
+		$("#spNickNameUse").hide();
+		$("#userNickName").focus();
+		return;
+	}
+	
 	// 생년월일 입력 안했을 때
 	if(!isEmpty($("#year").val()) || !isEmpty($("#day").val())){
 		alert("생년월일을 입력해주세요.");
 		$("#year").focus();
 		return;
 	}
+	
+	$("#userBir").val($("#year").val() + "-" + $("#month option:selected").val() + "-" + $("#day").val());
+	
+	$("userGender").val($('input[name=gender]:radio').val());
+	
+	$("userLikey").val($('input[name=likey]:radio').val());
 	
 	// 주소 입력 안했을때
 	if(!isEmpty($("#sample6_postcode").val())){
@@ -281,17 +297,17 @@ function save() {
 		return;
 	}
 
-	$("#flag").val("C");
-	
 	$.ajax({
 		url : "register.do"
 		, type : "post"
 		, data : $("#regiForm").serialize()
 		, dataType : "json"
 		, success : function(data){
-			if(data.resultCnt == 1){
+			console.log(data);
+			if(data.cnt == 0){
 				alert("회원가입 완료!");
-			} else if(data.resultCnt == 0){
+				location.href = "/Team_Sprout/user/logOut.do";
+			} else if(data.cnt == 1){
 				alert("회원가입 실패!");
 			}
 		}

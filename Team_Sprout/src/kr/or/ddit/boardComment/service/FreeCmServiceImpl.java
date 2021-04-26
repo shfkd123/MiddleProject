@@ -63,10 +63,10 @@ public class FreeCmServiceImpl implements IFreeCmService{
 	}
 
 	@Override
-	public int deleteFreeCm(String fcNm) {
+	public int deleteFreeCm(FreeCmVO fcv) {
 		int cnt = 0;
 		try {
-			cnt = freeCmDao.deleteFreeCm(smc, fcNm);
+			cnt = freeCmDao.deleteFreeCm(smc, fcv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

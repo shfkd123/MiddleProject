@@ -14,6 +14,7 @@
 <script src="/Team_Sprout/js/jquery-3.6.0.js"></script>
 <script src="/Team_Sprout/js/login/register.js"></script>
 <script src="/Team_Sprout/js/common/myUtil.js"></script>
+<head profile="http://www.w3.org/2005/10/profile">
 </head>
 <body>
 	<br>
@@ -59,7 +60,7 @@
 
 			<!-- 이름 -->
 			<div class="field">
-				<input type="text" id="userName" name="userkName" required>
+				<input type="text" id="userName" name="userName" required>
 				<label>이름</label>
 			</div>
 			
@@ -93,7 +94,7 @@
 				</div>
 				<div class="field">
 					<input type="text" id="day" required> <label>일 </label> <input
-						type="hidden" id="userBir" name="userBir">
+						type="hidden" id="day">
 				</div>
 			</div>
 
@@ -102,10 +103,10 @@
 				<br>
 				<h3>성별</h3>
 				<div class="content">
-					<label><input type="radio" name="gender" id="male" value="남자"
+					<label><input type="radio" id="male" value="남자"
 						checked="checked"> 남자</label> 
 					<label><input type="radio" value="여자"
-						name="gender" id="female"> 여자</label>
+						 id="female"> 여자</label>
 				</div>
 			</div>
 
@@ -129,11 +130,11 @@
 
 				<div class="field">
 					<input type="text" id="sample6_address" name="userAdd1"
-						placeholder="도, 시 " readonly="readonly">
+						 readonly="readonly">
 				</div>
 
 				<div class="field">
-					<input type="text" id="sample6_extraAddress" placeholder="구, 군"
+					<input type="text" id="sample6_extraAddress"
 						readonly="readonly">
 				</div>
 
@@ -155,7 +156,10 @@
 			</div>
 
 			<div class="field">
-				<input type="hidden" id="flag" value="C">
+				<input type="hidden" id="flag" name="flag" value="C">
+				<input type="hidden" id="userBir" name="userBir">
+				<input type="hidden" id="userGender" name="userGender">
+				<input type="hidden" id="userLikey" name="likeyCode">
 				<input type="button" onclick="save()" value="회원가입">
 			</div>
 		</form>

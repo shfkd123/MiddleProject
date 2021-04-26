@@ -41,8 +41,8 @@
 <!-- 공지사항 수정 -->
 <update id="updateNoticeBoard" parameterClass="kr.or.ddit.board.vo.NoticeBoardVO">
 	UPDATE NOTICE_BOARD
-	SET NOTICE_NM = #noticeNm#
-	, NOTICE_TITLE = #noticeTitle#
+	SET 
+	 NOTICE_TITLE = #noticeTitle#
 	, NOTICE_CONTENT = #noticeContent#
 	, ATCH_FILE_ID = #atchFileId#
 	WHERE NOTICE_NM = #noticeNm#

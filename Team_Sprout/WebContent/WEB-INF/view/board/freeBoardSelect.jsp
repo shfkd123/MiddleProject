@@ -5,6 +5,7 @@
 <%@page import="kr.or.ddit.board.vo.FreeBoardVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/view/include/head.jsp"%>
 <%
 	FreeBoardVO fv = (FreeBoardVO)request.getAttribute("fv");
 
@@ -12,48 +13,52 @@
 	
 	List<FreeCmVO> freeCmList = (List<FreeCmVO>)request.getAttribute("freeCmList");
 	
-	UserVO uv = (UserVO)session.getAttribute("userVO");
-	
-	String userNick = uv.getUserNickName();
+	 uv = (UserVO)session.getAttribute("userVO");
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>상세조회</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="../../css/main/boardDetail.css">
+<link rel="stylesheet" type="text/css"
+	href="/Team_Sprout/css/main/main.css">
+<link rel="stylesheet" href="/Team_Sprout/css/main/boardDetail.css">
 <style type="text/css">
+#menu_title {
+	text-align: center;
+	background-image: url('/Team_Sprout/images/main_image.png');
+	width: 100%;
+	height: 250px;
+	color: white;
+}
+div.col-sm-12 {
+	margin: 0px;
+	padding: 0px;
+}
 </style>
-<script type="text/javascript">
-	$(document).ready(function(){
-		<%
-		if(userNick != fv.getFreeWriter()){
-		%>
-			$("#updateWrite").hide();
-			$("#deleteWrite").hide();
-		<%
-		} else if(userNick == fv.getFreeWriter()){
-		%>
-			$("#updateWrite").show();
-			$("#deleteWrite").show();
-		<%
-		}
-		%>
-	});
-</script>
 </head>
-<body>
-	<!-- 테이블 -->
-	<div class="container">
-		<table class="table">
+<body><!-- 헤더 이미지 및 문구 -->
+	<div class="col-sm-12">
+		<div id="menu_title">
+			<p>
+			
+			<br><br><br>
+				<h3><b>자유커뮤니티</b></h3>
+				<br>
+				* 메이커/서포터 구분없이 자유롭게 이야기를 나눠보세요!
+			</p>
+		</div>
+	</div>
+	<!-- 전체-->
+	<div class="col-sm-12">
+
+		<!-- 왼쪽 여백 -->
+		<div class="col-sm-2"></div>
+
+		<!-- 게시판 -->
+		<div class="col-sm-8">
+		<br><br>
+			<table class="table">
 			<thead>
 				<tr id="head">
 					<th>번호</th>
@@ -107,8 +112,151 @@
 			<button type="button" id="deleteWrite" class="btn btn-success" onclick="deleteBoard()">삭제</button>
 		</div>	
 		<hr>
+		<!-- 댓글 조회 -->
+		<h4><b><span>댓글 총 <%=freeCmList.size() %>개</span></b></h4>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>작성자</th>
+					<th style="text-align: left;">댓글</th>
+					<th style="text-align: left;">작성일</th>
+				</tr>
+			</thead>
+			<tbody>
+			<%
+			for(int i = 0; i < freeCmList.size(); i++){
+				if(freeCmList.size() == 0){
+				%>
+				<tr>
+					<td colspan="3" align="left">댓글이 없습니다.</td>
+				</tr>
+				<%	
+				} else {
+				%>
+				<tr>
+					<td style="text-align: left;">
+					<%=freeCmList.get(i).getFcWriter() %>
+					</td>
+					<td style="text-align: right;"><%=freeCmList.get(i).getFcContent() %></td>
+					<td><%=freeCmList.get(i).getFcDate() %>
+						<%if(uv != null) {
+							if(uv.getUserNickName().equals(freeCmList.get(i).getFcWriter())){
+							%>
+							<div class="btn-group" style="float: right;">
+								<button type="button" class="btn btn-default btn-xs dropdown-toggle"
+									data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu" id="cmtMenu">
+									<li><a data-toggle="modal" data-target="#myModal" onclick="openModifyModal('<%=freeCmList.get(i).getFcNm() %>')">수정</a>
+									</li>
+									<li><a href="#" onclick="cmDelete('<%=freeCmList.get(i).getFcNm() %>')">삭제</a></li>
+								</ul>
+							</div>
+							<%
+							}
+						}
+						%>
+					</td>
+				</tr>
+			<%
+				}
+			}
+			%>
+			</tbody>
+		</table>
+		<hr>
+		<!-- 댓글 작성  -->
+		<h4><b><span>댓글 작성</span></b></h4>
+		<table class="table">
+			<thead>
+				<tr>
+					<th></th>
+					<th></th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="3">
+						<%
+						if(uv == null)  {
+						%>
+						<textarea class="form-control" readonly="readonly" rows="5" placeholder="댓글은 회원만 작성할 수 있습니다."></textarea>
+						<%
+						} else {
+						%>
+						<textarea class="form-control" rows="5" id="commentWrite"></textarea>
+<!-- 						<div class="checkbox"> -->
+<!-- 							<label><input type="checkbox" id="secret">비공개</label> -->
+<!-- 						</div> -->
+						<%
+						}
+						%>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" style="text-align: right;">
+						<button type="button" class="btn btn-success" onclick="cmCreate()">댓글 등록</button>
+					</td>
+				</tr>	
+				
+			</tbody>
+		</table>
 		
+		<!-- 댓글 수정 Modal -->
+		<div class="modal fade" id="myModal" role="dialog">
+			<div class="modal-dialog">
+		      <!-- 수정 Modal content-->
+		      <div class="modal-content">
+		        <div class="modal-header">
+		          <button type="button" class="close" data-dismiss="modal">&times;</button>
+		          <h4 class="modal-title">댓글 수정하기</h4>
+		        </div>
+		        <div class="modal-body">
+		          <textarea class="form-control" rows="3" id="editCm"></textarea>
+		        </div>
+		        <div class="modal-footer">
+		          <button type="button" class="btn btn-default" onclick="cmUpdate()">저장</button>
+		          <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+		          <input type="hidden" id="modalFcNm">
+		        </div>
+		      </div>
+		 	</div>
+  		</div>
+  		<!-- 댓글 수정 Modal END -->
+		  		
+		<form id="fmCm">
+			<input type="hidden" id="freeNmCm" name="freeNmCm">
+			<input type="hidden" id="fmFcNm" name="fcNmCm">
+			<input type="hidden" id="comment" name="fcContent">
+			<input type="hidden" id="userId" name="userId">
+			<input type="hidden" id="cmType" name="fcType">
+			<input type="hidden" id="flagCm" name="flagCm">
+		</form>
+</div>
+		
+		<!-- 오른쪽 여백 -->
+		<div class="col-sm-2"></div>
+		
+	</div>
+</body>
 <script type="text/javascript">
+	$(document).ready(function(){
+		$("#updateWrite").css("display", "none");
+		$("#deleteWrite").css("display", "none");
+		<%
+		if(uv != null){
+			if(uv.getUserNickName().equals(fv.getFreeWriter())){
+			%>
+			$("#updateWrite").css("display", "inline");
+			$("#deleteWrite").css("display", "inline");
+			<%
+			}
+		}
+		%>
+	});
+	
 	function goList(){
 		location.href = "freeBoard.do";
 	}
@@ -133,96 +281,70 @@
 			return;
 		}
 	}
-</script>
-		<!-- 댓글 조회 -->
+	
+	function cmCreate(){
+		<%if(uv == null){%>
+			alert("댓글은 회원만 작성 가능합니다.");
+			return;
+		<%}%>
+		document.getElementById("freeNmCm").value = "<%=fv.getFreeNm() %>";
 		<%
-		
+		if(uv != null){
 		%>
-		<h4><b><span>댓글 총 <%=freeCmList.size() %>개</span></b></h4>
-		<table class="table">
-			<thead>
-				
-				<tr>
-					<th>작성자</th>
-					<th style="text-align: left;">댓글</th>
-					<th style="text-align: right;">작성일</th>
-				</tr>
-			</thead>
-			<tbody>
-			<%
-			for(int i = 0; i < freeCmList.size(); i++){
-			%>
-				<tr>
-					<td style="text-align: left;"><%=freeCmList.get(i).getFcWriter() %></td>
-					<td style="text-align: right;"><%=freeCmList.get(i).getFcContent() %></td>
-					<td><%=freeCmList.get(i).getFcDate() %>
-						<div class="btn-group"  style="float: right;">
-							<button type="button" class="btn btn-default btn-xs dropdown-toggle"
-								data-toggle="dropdown">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu" id="cmtMenu">
-								<li><a href="#" onclick="cmUpdate()">수정</a></li>
-								<li><a href="#" onclick="cmDelete()">삭제</a></li>
-							</ul>
-						</div>
-					</td>
-				</tr>
-			<%
-			}
-			%>
-			</tbody>
-		</table>
-		<hr>
-		<!-- 댓글 작성  -->
-		<h4><b><span>댓글 작성</span></b></h4>
-		<table class="table">
-			<thead>
-				<tr>
-					<th></th>
-					<th></th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td colspan="3">
-						<%
-						if(userNick == null)  {
-						%>
-						<textarea class="form-control" readonly="readonly" rows="5" placeholder="댓글은 회원만 작성할 수 있습니다."></textarea>
-						<%
-						} else {
-						%>
-						<textarea class="form-control" rows="5" id="comment"></textarea>
-						<%
-						}
-						%>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="3" style="text-align: right;">
-						<button type="button" class="btn btn-success" onclick="cmUpdate()">댓글 등록</button>
-					</td>
-				</tr>	
-				
-			</tbody>
-		</table>
-		<form id="fmCm">
-			<input type="hidden" id="comment" name="comment">
-			<input type="hidden" id="userId" name="userId">
-			<input type="hidden" id="flag" name="flag">
-		</form>
-	</div>
-</body>
-<script type="text/javascript">
-	function cmUpdate(){
-		document.getElementById("freeNm").value = "<%=fv.getFreeNm() %>";
-		document.getElementById("flag").value = "UPD";
-		var fm = document.getElementById("fm");
+		document.getElementById("userId").value = "<%=uv.getUserId() %>";
+		<%}%>
+		document.getElementById("comment").value = $("#commentWrite").val();
+		document.getElementById("flagCm").value = "C";
+		var fmCm = document.getElementById("fmCm");
 		fmCm.method = "post";
-		fm.action = "freeBoard.do";
+		fmCm.action = "freeBoardComment.do";
+		fmCm.submit();
+	}
+	
+	function cmUpdate(){
+		var fcNm = $("#modalFcNm").val();
+		if(confirm("수정하시겠습니까?")){
+			alert("수정되었습니다.");
+		}
+		<%
+		if(uv != null){
+		%>
+		document.getElementById("userId").value = "<%=uv.getUserId() %>";
+		<%
+		}
+		%>
+		document.getElementById("freeNm").value = "<%=fv.getFreeNm() %>";
+		document.getElementById("fmQnNm").value = fcNm;
+		document.getElementById("comment").value = $("#editCm").val();
+		document.getElementById("flag").value = "U";
+		var fm = document.getElementById("fmCm");
+		fmCm.method = "post";
+		fm.action = "freeBoardComment.do";
 		fm.submit();
 	}
+	
+	function cmDelete(qcNm){
+		if(confirm("정말 댓글을 삭제하시겠습니까?")){
+			alert("댓글이 삭제되었습니다.");
+			<%
+			if(uv != null){
+			%>
+			document.getElementById("userId").value = "<%=uv.getUserId() %>";
+			<%}%>
+			document.getElementById("freeNmCm").value = "<%=fv.getFreeNm() %>";
+			document.getElementById("fmFcNm").value = fcNm;
+			document.getElementById("flagCm").value = "D";
+			var fmCm = document.getElementById("fmCm");
+			fmCm.method = "post";
+			fmCm.action = "freeBoardComment.do";
+			fmCm.submit();
+		}
+		return;
+	}
+	
+	function openModifyModal(fcNm){
+		$("#modalFcNm").val(fcNm);
+	}
 </script>
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

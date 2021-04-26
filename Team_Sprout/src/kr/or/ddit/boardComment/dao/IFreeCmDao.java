@@ -42,6 +42,6 @@ public interface IFreeCmDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int deleteFreeCm(SqlMapClient smc, String fcNm) throws SQLException;
+	public int deleteFreeCm(SqlMapClient smc, FreeCmVO fcv) throws SQLException;
 	
 }

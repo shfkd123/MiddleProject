@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import kr.or.ddit.project.vo.ProjectVO;
 import kr.or.ddit.user.dao.IUserDao;
 import kr.or.ddit.user.dao.UserDaoImpl;
 import kr.or.ddit.user.vo.UserVO;
@@ -150,5 +151,16 @@ public class UserServiceImpl implements IUserService {
 			e.printStackTrace();
 		}
 		return cnt;
+	}
+
+	@Override
+	public List<ProjectVO> userOrderList(String userId) {
+		List<ProjectVO> list = null;
+		try {
+			list = userDao.userOrderList(smc, userId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }

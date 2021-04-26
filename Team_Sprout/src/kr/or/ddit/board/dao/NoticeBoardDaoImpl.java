@@ -29,7 +29,7 @@ private static INoticeBoardDao noticeDao;
 		
 		Object obj = smc.insert("noticeBoard.insertNoticeBoard", nv);
 		if (obj == null) {
-			cnt = 1; //성공
+			cnt = 1; //성공  
 		}
 		return cnt;
 	}

@@ -54,7 +54,7 @@
 </update>
 
 <!-- 댓글 삭제 -->
-<delete id="deleteFreeCm" parameterClass="String">
+<delete id="deleteFreeCm" parameterClass="kr.or.ddit.boardComment.vo.FreeCmVO">
 	DELETE FROM FREE_COMMENT
 	WHERE  FC_NM = #fcNm#
 	AND    FREE_NM = #freeNm#

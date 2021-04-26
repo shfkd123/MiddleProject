@@ -16,8 +16,11 @@ import kr.or.ddit.board.service.IQnaService;
 import kr.or.ddit.board.service.QnaServiceImpl;
 import kr.or.ddit.board.vo.CommunityBoardVO;
 import kr.or.ddit.board.vo.QnaBoardVO;
+import kr.or.ddit.boardComment.service.CommunityCmServiceImpl;
+import kr.or.ddit.boardComment.service.ICommunityCmService;
 import kr.or.ddit.boardComment.service.IQnaCmService;
 import kr.or.ddit.boardComment.service.QnaCmServiceImpl;
+import kr.or.ddit.boardComment.vo.CommunityCmVO;
 import kr.or.ddit.boardComment.vo.QnaCmVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
@@ -55,7 +58,7 @@ public class CommunityBoardHandler implements CommandHandler {
 		
 		if("C".equals(flag)) { // 게시글 작성
 			if(req.getMethod().equals("GET")) {
-				return "/WEB-INF/view/board/CommunityBoardInsert.jsp";
+				return "/WEB-INF/view/board/communityBoardInsert.jsp";
 			} else {
 				String userId = uv.getUserId();
 				
@@ -63,9 +66,11 @@ public class CommunityBoardHandler implements CommandHandler {
 				
 				ICommunityService service = CommunityServiceImpl.getInstance();
 				
-				String cbTitle = req.getParameter("cbTitle");
+				String pjName = req.getParameter("pjName");
+//				String cbTitle = req.getParameter("cbTitle");
 				String cbContent = req.getParameter("cbContent");
-				cbv.setCbTitle(cbTitle);
+				cbv.setPjName(pjName);
+//				cbv.setCbTitle(cbTitle);
 				cbv.setCbContent(cbContent);
 				cbv.setCbWriter(userId);
 				
@@ -80,10 +85,9 @@ public class CommunityBoardHandler implements CommandHandler {
 					cbv.setAtchFileId(atchFileVO.getAtchFileId());
 				}
 				
-				///////////////////////////////////////////////////////////////////////////////////////////////////////
-				//int cnt = service.insertQnaBoard(cbv);
+				
+				int cnt = service.insertCommunityBoard(cbv);
 
-				int cnt = 0;
 				String msg = "";
 				
 				if(cnt > 0) {
@@ -92,7 +96,7 @@ public class CommunityBoardHandler implements CommandHandler {
 					msg = "실패";
 				}
 				String redirectUrl = req.getContextPath() 
-						+ "/board/qnaBoard.do?msg=" 
+						+ "/board/communityBoard.do?msg=" 
 						+ URLEncoder.encode(msg, "UTF-8");
 				return redirectUrl;
 			}
@@ -115,16 +119,19 @@ public class CommunityBoardHandler implements CommandHandler {
 				atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
 			}
 			
-			IQnaService service = QnaServiceImpl.getInstance();
+			ICommunityService service = CommunityServiceImpl.getInstance();
 			
-			QnaBoardVO cbv = new QnaBoardVO();
-			
-			cbv.setQnaNm(req.getParameter("qnaNm"));
-			cbv.setQnaTitle(req.getParameter("qnaTitle"));
-			cbv.setQnaContent(req.getParameter("qnaContent"));
+			CommunityBoardVO cbv = new CommunityBoardVO();
+						
+			cbv.setCbNm(req.getParameter("cbNm"));
+			//cbv.setCbTitle(req.getParameter("cbTitle"));
+			String pjName = req.getParameter("pjName");
+			cbv.setPjName(req.getParameter("pjName")); // 프로젝트 이름
+			cbv.setCbContent(req.getParameter("cbContent"));
 			cbv.setAtchFileId(atchFileVO.getAtchFileId());
+
 			
-			int cnt = service.updateQnaBoard(cbv);
+			int cnt = service.updateCommunityBoard(cbv);
 			
 			String msg = "";
 			if(cnt > 0) {
@@ -133,15 +140,17 @@ public class CommunityBoardHandler implements CommandHandler {
 				msg = "실패";
 			}
 			String redirectUrl = req.getContextPath() + "/board/communityBoard.do?msg=" + URLEncoder.encode(msg, "UTF-8");
+		
 			return redirectUrl;	
+		
 		} else if("D".equals(flag)) { // 게시글 삭제
-			QnaBoardVO cbv = new QnaBoardVO();
+			CommunityBoardVO cbv = new CommunityBoardVO();
 			
-			cbv.setQnaNm(req.getParameter("qnaNm"));
+			cbv.setCbNm(req.getParameter("cbNm"));
 			
-			IQnaService service = QnaServiceImpl.getInstance();
+			ICommunityService service = CommunityServiceImpl.getInstance();
 			
-			int cnt = service.deleteQnaBoard(cbv);
+			int cnt = service.deleteCommunityBoard(cbv);
 			
 			String msg = "";
 			if(cnt > 0){
@@ -149,14 +158,15 @@ public class CommunityBoardHandler implements CommandHandler {
 			} else {
 				msg = "실패";
 			}
-			String redirectUrl = req.getContextPath() + "/board/qnaBoard.do?msg=" + URLEncoder.encode(msg, "UTF-8");
+			String redirectUrl = req.getContextPath() + "/board/communityBoard.do?msg=" + URLEncoder.encode(msg, "UTF-8");
 			return redirectUrl;
+		
 		} else if("SEL".equals(flag)) { // 한 게시글 조회
-			String qnaNm = req.getParameter("qnaNm");
+			String cbNm = req.getParameter("cbNm");
 			
-			IQnaService service = QnaServiceImpl.getInstance();
+			ICommunityService service = CommunityServiceImpl.getInstance();
 			
-			QnaBoardVO cbv = service.getQnaBoard(qnaNm);
+			CommunityBoardVO cbv = new CommunityBoardVO();
 			
 			if(cbv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
 				AtchFileVO fileVO = new AtchFileVO();
@@ -173,34 +183,35 @@ public class CommunityBoardHandler implements CommandHandler {
 			req.setAttribute("cbv", cbv);
 
 			// 댓글 전부 보여줌
-			IQnaCmService cmService = QnaCmServiceImpl.getInstance();
+			ICommunityCmService cmService = CommunityCmServiceImpl.getInstance();
 			
-			List<QnaCmVO> cmList = cmService.getAllQnaCm(qnaNm);
+			List<CommunityCmVO> cmList = cmService.getAllCommunityCm(cbNm);
 			
-			req.setAttribute("qnaCmList", cmList);
+			req.setAttribute("cmList", cmList);
 			
-			return "/WEB-INF/view/board/qnaBoardSelect.jsp";
+			return "/WEB-INF/view/board/communityBoardSelect.jsp";
 			
 		} else if("SCH".equals(flag)) { // 게시글 검색
 			String str = "";
 
 			str = req.getParameter("search");
 			
-			IQnaService service = QnaServiceImpl.getInstance();
+			ICommunityService service = CommunityServiceImpl.getInstance();
 			
-			List<QnaBoardVO> list = service.searchQnaBoard(str);
+			List<CommunityBoardVO> list = service.searchCommunityBoard(str);
 			
 			req.setAttribute("list", list);
 			
-			return "/WEB-INF/view/board/qnaBoardList.jsp";
+			return "/WEB-INF/view/board/communityBoardList.jsp";
 		} else if("INS".equals(flag)) {
-			return "/WEB-INF/view/board/qnaBoardInsert.jsp";
+			return "/WEB-INF/view/board/communityBoardInsert.jsp";
 		} else if("UPD".equals(flag)) {
-			String qnaNm = (String)req.getParameter("qnaNm");
 			
-			IQnaService service = QnaServiceImpl.getInstance();
+			String cbNm = req.getParameter("cbNm");
 			
-			QnaBoardVO cbv = service.getQnaBoard(qnaNm);
+			ICommunityService service = CommunityServiceImpl.getInstance();
+
+			CommunityBoardVO cbv = service.getCommunityBoard(cbNm);
 			
 			if(cbv.getAtchFileId() > 0) {
 				AtchFileVO fileVO = new AtchFileVO();
@@ -214,21 +225,22 @@ public class CommunityBoardHandler implements CommandHandler {
 			
 			req.setAttribute("cbv", cbv);
 			
-			return "/WEB-INF/view/board/qnaBoardUpdate.jsp";
+			return "/WEB-INF/view/board/communityBoardUpdate.jsp";
 		}
 		
 		// 모든 게시글 조회
-		QnaBoardVO boardVO = new QnaBoardVO();
+		CommunityBoardVO boardVO = new CommunityBoardVO();
 		
 		BeanUtils.populate(boardVO, req.getParameterMap());
 		
-		IQnaService service = QnaServiceImpl.getInstance();
+		ICommunityService service = CommunityServiceImpl.getInstance();
 		
-		List<QnaBoardVO> list = service.getAllQnaBoardList();
+		
+		List<CommunityBoardVO> list = service.getAllCommunityBoardList();
 		
 		req.setAttribute("list", list);
 		
-		return "/WEB-INF/view/board/qnaBoardList.jsp";
+		return "/WEB-INF/view/board/communityBoardList.jsp";
 	}
 
 }

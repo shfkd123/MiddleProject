@@ -1,6 +1,5 @@
 package kr.or.ddit.boardComment.handler;
 
-import java.net.URLEncoder;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;

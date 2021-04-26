@@ -31,6 +31,6 @@ public interface IFreeCmService {
 	 * @param fcNm
 	 * @return 작업성공 : 1, 작업실패 : 0
 	 */
-	public int deleteFreeCm(String fcNm);
+	public int deleteFreeCm(FreeCmVO fcv);
 	
 }

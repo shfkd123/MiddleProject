@@ -30,38 +30,6 @@ public class NoticeCmServiceImpl implements INoticeCmService{
 		return noticCmService;
 	}
 	
-	
-	
-	@Override
-	public int insertNoticeCm(NoticeCmVO ncv) {
-		int cnt = 0;
-		
-		try {
-			smc.startTransaction();
-			cnt = NoticeCmDao.insertNoticeCm(smc, ncv);
-			smc.commitTransaction();
-		} catch (SQLException e) {
-			try {
-				smc.endTransaction();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-			e.printStackTrace();
-		}
-		return cnt;
-	}
-
-	@Override
-	public List<NoticeCmVO> getNoticeCmList(String ncNm) {
-		List<NoticeCmVO> noticeCmList = new ArrayList<>();
-
-		try {
-			noticeCmList = NoticeCmDao.getNoticeCmList(smc, ncNm);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return noticeCmList;
-	}
 	@Override
 	public List<NoticeCmVO> getNoticeCmListByNoticeNm(String noticeNm) {
 		List<NoticeCmVO> noticeCmList = new ArrayList<>();
@@ -73,6 +41,18 @@ public class NoticeCmServiceImpl implements INoticeCmService{
 		}
 		return noticeCmList;
 	}
+	
+	@Override
+	public int insertNoticeCm(NoticeCmVO ncv) {
+		int cnt = 0;
+		try {
+			cnt = NoticeCmDao.insertNoticeCm(smc, ncv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
 
 	@Override
 	public int updateNoticeCm(NoticeCmVO ncv) {
@@ -87,12 +67,11 @@ public class NoticeCmServiceImpl implements INoticeCmService{
 	}
 
 	@Override
-	public int deleteNoticeCm(String ncNm) {
-
+	public int deleteNoticeCm(NoticeCmVO ncv) {
 		int cnt = 0;
 
 		try {
-			cnt = NoticeCmDao.deleteNoticeCm(smc, ncNm);
+			cnt = NoticeCmDao.deleteNoticeCm(smc, ncv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

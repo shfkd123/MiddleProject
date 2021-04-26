@@ -13,6 +13,9 @@ import org.apache.commons.fileupload.FileItem;
 import kr.or.ddit.board.service.IFreeService;
 import kr.or.ddit.board.service.FreeServiceImpl;
 import kr.or.ddit.board.vo.FreeBoardVO;
+import kr.or.ddit.boardComment.service.FreeCmServiceImpl;
+import kr.or.ddit.boardComment.service.IFreeCmService;
+import kr.or.ddit.boardComment.vo.FreeCmVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
@@ -46,11 +49,12 @@ public class FreeBoardHandler implements CommandHandler {
 		
 		HttpSession session = req.getSession();
 		
+		UserVO uv = (UserVO) session.getAttribute("userVO");
+		
 		if("C".equals(flag)) { // 게시글 작성
 			if(req.getMethod().equals("GET")) {
 				return "/WEB-INF/view/board/freeBoardInsert.jsp";
 			} else {
-				UserVO uv = (UserVO) session.getAttribute("userVO");
 				String userId = uv.getUserId();
 				
 				FreeBoardVO fv = new FreeBoardVO();
@@ -63,7 +67,7 @@ public class FreeBoardHandler implements CommandHandler {
 				fv.setFreeContent(freeContent);
 				fv.setFreeWriter(userId);
 				
-				if((String)req.getParameter("attachFile") == "") {
+				if((String)req.getParameter("attachFile") != "") {
 					FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
 					AtchFileVO atchFileVO = new AtchFileVO();
 					
@@ -90,8 +94,15 @@ public class FreeBoardHandler implements CommandHandler {
 			
 		} else if("U".equals(flag)) { // 게시글 수정
 			
-			UserVO uv = (UserVO) session.getAttribute("userVO");
 			String userId = uv.getUserId();
+
+			IFreeService service = FreeServiceImpl.getInstance();
+			
+			FreeBoardVO fv = new FreeBoardVO();
+			
+			fv.setFreeNm(req.getParameter("freeNm"));
+			fv.setFreeTitle(req.getParameter("freeTitle"));
+			fv.setFreeContent(req.getParameter("freeContent"));
 			
 			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
 			
@@ -101,20 +112,10 @@ public class FreeBoardHandler implements CommandHandler {
 					-1 : Long.parseLong(req.getParameter("atchFileId")));
 			
 			if(item !=null && !item.getName().equals("")) {
-				
 				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-				
 				atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
+				fv.setAtchFileId(atchFileVO.getAtchFileId());
 			}
-			
-			IFreeService service = FreeServiceImpl.getInstance();
-			
-			FreeBoardVO fv = new FreeBoardVO();
-			
-			fv.setFreeNm(req.getParameter("freeNm"));
-			fv.setFreeTitle(req.getParameter("freeTitle"));
-			fv.setFreeContent(req.getParameter("freeContent"));
-			fv.setAtchFileId(atchFileVO.getAtchFileId());
 			
 			int cnt = service.updateFreeBoard(fv);
 			
@@ -144,15 +145,14 @@ public class FreeBoardHandler implements CommandHandler {
 			String redirectUrl = req.getContextPath() + "/board/freeBoard.do?msg=" + URLEncoder.encode(msg, "UTF-8");
 			return redirectUrl;
 		} else if("SEL".equals(flag)) { // 한 게시글 조회
-			UserVO uv = (UserVO) session.getAttribute("userVO");
-			String userId = uv.getUserId();
-
 			String freeNm = req.getParameter("freeNm");
-			FreeBoardVO boardVO = new FreeBoardVO();
-			boardVO.setFreeNm(freeNm);
+			
 			IFreeService service = FreeServiceImpl.getInstance();
 			
-			FreeBoardVO fv = service.getFreeBoard(boardVO);
+			FreeBoardVO fv = new FreeBoardVO();
+			fv.setFreeNm(freeNm);
+			
+			fv = service.getFreeBoard(fv);
 			
 			if(fv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
 				AtchFileVO fileVO = new AtchFileVO();
@@ -166,6 +166,12 @@ public class FreeBoardHandler implements CommandHandler {
 				req.setAttribute("atchFileList", atchFileList);
 			}
 			req.setAttribute("fv", fv);
+			
+			IFreeCmService cmService = FreeCmServiceImpl.getInstance();
+			
+			List<FreeCmVO> cmList = cmService.getAllFreeCm(freeNm);
+			
+			req.setAttribute("freeCmList", cmList);
 			
 			return "/WEB-INF/view/board/freeBoardSelect.jsp";
 			

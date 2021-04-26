@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
+import kr.or.ddit.project.vo.ProjectVO;
 import kr.or.ddit.user.vo.UserVO;
 
 public interface IUserDao {
@@ -97,4 +98,13 @@ public interface IUserDao {
 	 * @return
 	 */
 	public int signInUser(SqlMapClient smc, UserVO uv) throws SQLException;
+	
+	/**
+	 * 내가 후원한 프로젝트 리스트
+	 * @param smc
+	 * @param userId
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<ProjectVO> userOrderList(SqlMapClient smc, String userId) throws SQLException;
 }

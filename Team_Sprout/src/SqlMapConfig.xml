@@ -28,4 +28,8 @@
 	<sqlMap resource="kr/or/ddit/boardComment/dao/noticeCm.xml"/>
 	<sqlMap resource="kr/or/ddit/boardComment/dao/qnaCm.xml"/>
 	<sqlMap resource="kr/or/ddit/board/dao/faqBoard.xml"/>
+	<sqlMap resource="kr/or/ddit/project/dao/project.xml"/>
+	<sqlMap resource="kr/or/ddit/project/dao/projectOption.xml"/>
+	<sqlMap resource="kr/or/ddit/board/dao/communityBoard.xml"/>
+	<sqlMap resource="kr/or/ddit/boardComment/dao/communityCm.xml"/>
 </sqlMapConfig>
