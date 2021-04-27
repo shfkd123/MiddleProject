@@ -2,7 +2,6 @@ package kr.or.ddit.project.service;
 
 import java.util.List;
 
-import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.project.vo.ProjectVO;
 
 public interface IProjectService {
@@ -11,25 +10,25 @@ public interface IProjectService {
 	 * 프로젝트 게시판 전체목록 조회 메서드
 	 * @return List<ProjectVO>
 	 */
-	public List<ProjectVO> getAllProjectList(PagingVO pagingVO);
+	public List<ProjectVO> getAllProjectList();
 	
 	/**
 	 * 프로젝트 게시글 조회 메서드
 	 * @return ProjectVO
 	 */
-	public ProjectVO getProject(String pjNm);
+	public ProjectVO getProject(long pjNm);
 	
 	/**
 	 * 프로젝트 게시글 등록 메서드
 	 * @return 작업성공 : 1, 작업실패 : 0
 	 */
-	public int insertProject(ProjectVO pv);
+	public long insertProject(ProjectVO pv);
 	
 	/**
 	 * 프로젝트 게시글 수정 메서드
 	 * @return 작업성공 : 1, 작업실패 : 0
 	 */
-	public int updateProject(ProjectVO pv);
+	public long updateProject(ProjectVO pv);
 	
 	/**
 	 * 프로젝트 게시글 삭제 메서드

@@ -64,7 +64,7 @@ div.col-sm-12 {
 			<table class="table table-hover">
 			<thead>
 				<tr>
-					<th><input type="checkbox" id="AllCheck"></th>
+					<!-- <th><input type="checkbox" id="AllCheck"></th> -->
 					<th>번호</th>
 					<th>제목</th>
 					<th>작성자</th>
@@ -77,7 +77,7 @@ div.col-sm-12 {
 					//System.out.print(noticeList.get(i).toString());
 			%>
 				<tr>
-					<td><input type="checkbox" value="" name="num"></td>
+					<!-- <td><input type="checkbox" value="" name="num"></td> -->
 					<td><%=noticeList.get(i).getNoticeNm()%></td>
 					<td>
 						<a href="#" onclick="boardSelect('<%=noticeList.get(i).getNoticeNm()%>')">
@@ -158,7 +158,7 @@ function insert(){
 	fm.submit();
 }
 	
-	$("#AllCheck").click(function(){
+	/* $("#AllCheck").click(function(){
 		// '전체선택' 체크박스가 체크 되어 있을때
 		if($(this).prop("checked")){
 			$(":checkbox").prop("checked", true);
@@ -179,7 +179,7 @@ function insert(){
 		});
 		
 	});
-
+ */
 
  	$("#delete").click(function(){
 		var tempList = [];

@@ -10,6 +10,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.fileupload.FileItem;
 
+import kr.or.ddit.board.service.FreeServiceImpl;
+import kr.or.ddit.board.service.IFreeService;
+import kr.or.ddit.board.vo.FreeBoardVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
@@ -56,47 +59,66 @@ public class ProjectHandler implements CommandHandler{
 			if(req.getMethod().equals("GET")) {
 				return "/WEB-INF/view/project/projectInsert.jsp";
 			} else {
-				String userId = uv.getUserId();
-				ProjectVO pv = new ProjectVO(); 
 				
+				String userId = uv.getUserId();
+
 				IProjectService service = ProjectServiceImpl.getInstance();
 				IProjectOptionService serviceOption = ProjectOptionServiceImpl.getInstance();
 				
-				
-				String pjName = req.getParameter("pjName");
-				String pjContent = req.getParameter("pjContent");
-				String PjCategory = req.getParameter("PjCategory");
-				String pjPriceAmount = req.getParameter("pjPriceAmount");
-				pv.setPjName(pjName);
-				pv.setPjContent(pjContent);
+				ProjectVO pv = new ProjectVO(); 
+				BeanUtils.populate(pv, req.getParameterMap());
 				pv.setUserId(userId);
-				pv.setPjCategory(PjCategory);
-				pv.setPjPriceAmount(pjPriceAmount);
 				
-//				req.getParameterValues(pjName)
+//				if((String)req.getParameter("atchFileId") == "") {
+//					FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
+//					AtchFileVO atchFileVO = new AtchFileVO();
+//					
+//					IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+//					atchFileVO = fileService.saveAtchFile(item, userId);
+//					
+//					pv.setAtchFileId(atchFileVO.getAtchFileId());
+//				}
+//				
+				long newPjNm = service.insertProject(pv);
 				
 				
-				if((String)req.getParameter("attachFile") == "") {
-					FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
-					AtchFileVO atchFileVO = new AtchFileVO();
-					
+				FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
+				
+				AtchFileVO atchFileVO = new AtchFileVO();
+				
+				atchFileVO.setAtchFileId(req.getParameter("atchFileId") == null ?
+						-1 : Long.parseLong(req.getParameter("atchFileId")));
+				
+				if(item !=null && !item.getName().equals("")) {
 					IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-					atchFileVO = fileService.saveAtchFile(item, userId);
-					
+					atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
 					pv.setAtchFileId(atchFileVO.getAtchFileId());
 				}
 				
-				int cnt = service.insertProject(pv);
-
-				String msg = "";
+				/*프로젝트 옵션 전송*/
+				String[] poName = req.getParameterValues("poName");
+				String[] poAddPrice = req.getParameterValues("poAddPrice");
+				String[] poContent = req.getParameterValues("poContent");
 				
-				if(cnt > 0) {
+				for ( int i = 0 ; i < poName.length ; i++ ) {
+					ProjectOptionVO pov = new ProjectOptionVO(); 
+					
+					pov.setPjNm(newPjNm);
+					pov.setPoName(poName[i]);
+					pov.setPoAddPrice(Long.parseLong(poAddPrice[i]));
+					pov.setPoContent(poContent[i]);
+					
+					serviceOption.insertProjectOption(pov);
+				}
+				
+				String msg = "";
+				if(newPjNm > 0 ) {
 					msg = "성공";
 				} else {
 					msg = "실패";
 				}
 				String redirectUrl = req.getContextPath() 
-						+ "/project/faqBoard.do?msg="
+						+ "/project/projectBoard.do?msg="
 						+ URLEncoder.encode(msg, "UTF-8");
 				return redirectUrl;
 			}
@@ -104,7 +126,7 @@ public class ProjectHandler implements CommandHandler{
 		}  else if("D".equals(flag)) { // 프로젝트 삭제
 			ProjectVO pv = new ProjectVO();
 			
-			pv.setPjNm(req.getParameter("PjNm"));
+			pv.setPjNm(Integer.parseInt(req.getParameter("PjNm")));
 			
 			IProjectService service = ProjectServiceImpl.getInstance();
 			
@@ -122,7 +144,7 @@ public class ProjectHandler implements CommandHandler{
 			return redirectUrl;
 			
 		} else if("SEL".equals(flag)) { // 한 프로젝트 조회
-			String pjNm = req.getParameter("pjNm");
+			long pjNm = Long.parseLong(req.getParameter("pjNm"));
 			
 			IProjectService service = ProjectServiceImpl.getInstance();
 			IProjectOptionService serviceOption = ProjectOptionServiceImpl.getInstance();
@@ -165,34 +187,16 @@ public class ProjectHandler implements CommandHandler{
 			return "/WEB-INF/view/project/projectInsert.jsp";
 		} 
 		
-		// 모든 프로젝트 조회
-		
-		// 요청 페이지 번호
-		int pageNo = 
-			req.getParameter("pageNo") == null ? 
-			1 : Integer.parseInt(req.getParameter("pageNo"));
-		
-		PagingVO pagingVO = new PagingVO();
-		
-		
-		
+	
 		ProjectVO projectVO = new ProjectVO();
 		
 		BeanUtils.populate(projectVO, req.getParameterMap());
 		
-		IProjectService service = ProjectServiceImpl.getInstance();
+		IProjectService service2 = ProjectServiceImpl.getInstance();
 		
-		int totalCount = service.getAllProjectListCount();
-		pagingVO.setTotalCount(totalCount);
-		pagingVO.setCurrentPageNo(pageNo);
-		pagingVO.setCountPerPage(5);
-		pagingVO.setPageSize(5);
-
-		List<ProjectVO> list = service.getAllProjectList(pagingVO);
+		List<ProjectVO> list = service2.getAllProjectList();
 		
-		   
 		req.setAttribute("list", list);
-		req.setAttribute("pagingVO", pagingVO);
 		
 		return "/WEB-INF/view/project/projectList.jsp";
 	}

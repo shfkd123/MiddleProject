@@ -33,7 +33,7 @@ public class FaqServiceImpl implements IFaqService {
 	}
 
 	@Override
-	public List<FaqBoardVO> getAllFaqBoardList(PagingVO pagingVO) {
+	public List<FaqBoardVO> getAllFaqBoard(PagingVO pagingVO) {
 		List<FaqBoardVO> list = new ArrayList<>();
 		try {
 			list = FaqBoardDao.getAllFaqBoard(smc, pagingVO);
@@ -100,10 +100,10 @@ public class FaqServiceImpl implements IFaqService {
 	}
 
 	@Override
-	public int getAllFaqListCount() {
+	public int getAllFaqBoardListCount() {
 		int cnt = 0;
 		try {
-			cnt = FaqBoardDao.getAllFaqListCount(smc);
+			cnt = FaqBoardDao.getAllFaqBoardListCount(smc);
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}

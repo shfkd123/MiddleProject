@@ -13,7 +13,7 @@ public interface IFaqService {
 	 * 게시글 전체 조회
 	 * @return List
 	 */
-	List<FaqBoardVO> getAllFaqBoardList(PagingVO pagingVO);
+	List<FaqBoardVO> getAllFaqBoard(PagingVO pagingVO);
 	
 	/**
 	 * 게시글 조회
@@ -56,7 +56,7 @@ public interface IFaqService {
 	 * 전체 faq 게시글 수 반환하는 메서드
 	 * @return 전체 게시글 수 
 	 */
-	public int getAllFaqListCount();
+	public int getAllFaqBoardListCount();
 
 	
 }

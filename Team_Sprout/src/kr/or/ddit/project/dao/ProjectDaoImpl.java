@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
-import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.project.vo.ProjectVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
@@ -25,25 +24,18 @@ public class ProjectDaoImpl implements IProjectDao {
 	}
 
 	@Override
-	public List<ProjectVO> getAllProject(SqlMapClient smc, PagingVO pagingVO) throws SQLException {
+	public List<ProjectVO> getAllProject(SqlMapClient smc) throws SQLException {
 		return smc.queryForList("project.getAllProject");
 	}
 
 	@Override
-	public ProjectVO getProject(SqlMapClient smc, String pjNm) throws SQLException {
+	public ProjectVO getProject(SqlMapClient smc, long pjNm) throws SQLException {
 		return (ProjectVO) smc.queryForObject("project.getProject", pjNm);
 	}
 
 	@Override
-	public int insertProject(SqlMapClient smc, ProjectVO pv) throws SQLException {
-		int cnt = 0;
-		
-		Object obj = smc.insert("project.insertProject", pv);
-		
-		if(obj != null) {
-			cnt = 1;
-		}
-		return cnt;
+	public long insertProject(SqlMapClient smc, ProjectVO pv) throws SQLException {
+		return (long)smc.insert("project.insertProject", pv);
 	}
 
 	@Override

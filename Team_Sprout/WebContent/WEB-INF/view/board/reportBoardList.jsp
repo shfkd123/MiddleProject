@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.comm.vo.PagingVO"%>
 <%@page import="kr.or.ddit.board.vo.ReportBoardVO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -26,6 +27,13 @@ div.col-sm-12 {
 </style>
 </head>
 <body>
+<%
+	if (session != null && session.getAttribute("userVO") != null) {
+		uv = (UserVO) session.getAttribute("userVO");
+	}
+
+	PagingVO pv = (PagingVO)request.getAttribute("pv");
+%>
 	<!-- 헤더 이미지 및 문구 -->
 	<div class="col-sm-12">
 		<div id="menu_title">
@@ -60,11 +68,12 @@ div.col-sm-12 {
 				<tbody>
 					<%
 						List<ReportBoardVO> list = (List<ReportBoardVO>) request.getAttribute("list");
+						Integer totalCount = (Integer)request.getAttribute("totalCount");
 						for (int i = 0; i < list.size(); i++) {
 							String reportNm = list.get(i).getReportNm();
 					%>
 					<tr>
-						<td><%=list.size() - i%></td>
+						<td><%=totalCount - list.get(i).getrNum() + 1 %></td>
 						<td><a href="#" onclick="boardSelect('<%=reportNm%>')"> <%=list.get(i).getReportTitle()%>
 						</a></td>
 						<td><%=list.get(i).getReportWriter()%></td>
@@ -75,16 +84,27 @@ div.col-sm-12 {
 					%>
 				</tbody>
 			</table>
-			<!-- 페이지 이동 -->
 			<div class="text-center">
+			<!-- 페이징 처리 시작 -->
+				<%if(pv.getTotalCount() > 0) {%>
 				<ul class="pagination">
-					<li><a href="">1</a></li>
-					<li><a href="">2</a></li>
-					<li><a href="">3</a></li>
-					<li><a href="">4</a></li>
-					<li><a href="">5</a></li>
+					<%if(pv.getFirstPageNo() > pv.getPageSize()) { %>
+					<li><a href="reportBoard.do?pageNo=<%=pv.getFirstPageNo() - pv.getPageSize() %>">이전</a></li>
+					<%} %>
+					<%for(int pNo = pv.getFirstPageNo(); pNo <= pv.getLastPageNo(); pNo++){ %>
+					<li>
+						<a href="reportBoard.do?pageNo=<%=pNo %>">
+							<%=pNo %>
+						</a>
+					</li>
+					<%} %>
+					<%if(pv.getLastPageNo() < pv.getTotalPageCount()){ %>
+					<li><a href="reportBoard.do?pageNo=<%=pv.getFirstPageNo() + pv.getPageSize() %>">다음</a></li>
 				</ul>
+				<%}
+				} %>
 			</div>
+		<!-- 페이징 처리 끝.. -->
 			<!-- 검색 창 -->
 			<div class="text-center">
 				<input type="text" id="schInput" name="search">

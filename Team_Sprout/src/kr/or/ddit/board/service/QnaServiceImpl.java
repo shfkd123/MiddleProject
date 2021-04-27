@@ -9,6 +9,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import kr.or.ddit.board.dao.IQnaBoardDao;
 import kr.or.ddit.board.dao.QnaBoardDaoImpl;
 import kr.or.ddit.board.vo.QnaBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class QnaServiceImpl implements IQnaService{
@@ -31,10 +32,10 @@ public class QnaServiceImpl implements IQnaService{
 	}
 
 	@Override
-	public List<QnaBoardVO> getAllQnaBoardList() {
+	public List<QnaBoardVO> getAllQnaBoardList(PagingVO pv) {
 		List<QnaBoardVO> list = new ArrayList<>();
 		try {
-			list = boardDao.getAllQnaBoard(smc);
+			list = boardDao.getAllQnaBoard(smc, pv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -95,5 +96,16 @@ public class QnaServiceImpl implements IQnaService{
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public int getAllQnaBoardListCount() {
+		int cnt = 0;
+		try {
+			cnt = boardDao.getAllQnaBoardListCount(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
 	}
 }

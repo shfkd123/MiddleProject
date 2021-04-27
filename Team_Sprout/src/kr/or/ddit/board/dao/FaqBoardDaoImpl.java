@@ -77,8 +77,8 @@ public class FaqBoardDaoImpl implements IFaqBoardDao{
 	}
 
 	@Override
-	public int getAllFaqListCount(SqlMapClient smc) throws SQLException {
-		int cnt = (int)smc.queryForObject("faqBoard.getFaqAllCount");
+	public int getAllFaqBoardListCount(SqlMapClient smc) throws SQLException {
+		int cnt = (int)smc.queryForObject("faqBoard.getAllFaqBoardListCount");
 		return cnt;
 	}
 

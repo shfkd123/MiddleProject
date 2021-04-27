@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
-import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.project.vo.ProjectVO;
 
 public interface IProjectDao {
@@ -16,7 +15,7 @@ public interface IProjectDao {
 	 * @return List<ProjectVO>
 	 * @throws SQLException
 	 */
-	public List<ProjectVO> getAllProject(SqlMapClient smc, PagingVO pagingVO) throws SQLException;
+	public List<ProjectVO> getAllProject(SqlMapClient smc) throws SQLException;
 	
 	/**
 	 * 프로젝트를 확인하는 메서드
@@ -24,7 +23,7 @@ public interface IProjectDao {
 	 * @return List<ProjectVO>
 	 * @throws SQLException
 	 */
-	public ProjectVO getProject(SqlMapClient smc, String pjNm) throws SQLException;
+	public ProjectVO getProject(SqlMapClient smc, long pjNm) throws SQLException;
 
 	/**
 	 * 프로젝트 생성 메서드
@@ -32,7 +31,7 @@ public interface IProjectDao {
 	 * @return int
 	 * @throws SQLException
 	 */
-	public int insertProject(SqlMapClient smc, ProjectVO pv) throws SQLException;
+	public long insertProject(SqlMapClient smc, ProjectVO pv) throws SQLException;
 	
 	/**
 	 * 프로젝트를 수정하는 메서드

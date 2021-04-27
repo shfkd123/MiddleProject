@@ -4,11 +4,11 @@
 <%@page import="kr.or.ddit.comm.vo.AtchFileVO"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%
 	ProjectVO pv = (ProjectVO)request.getAttribute("pv");
-	ProjectOptionVO pov = (ProjectOptionVO)request.getAttribute("pov");
-	
+
+	List<ProjectVO> list = (List<ProjectVO>)request.getAttribute("list");
 
 	List<AtchFileVO> atchFileList = (List<AtchFileVO>) request.getAttribute("atchFileList");
 		
@@ -16,11 +16,11 @@
 	
 	/* pov.setPjNm(pjNm); */
 
-%>      
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Bootstrap Example</title>
+<title>프로젝트 목록</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -38,20 +38,23 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="/Team_Sprout/css/main/main.css">
-<link rel="stylesheet" type="text/css" href="/Team_Sprout/css/main/prjList.css">
+<link rel="stylesheet" type="text/css"
+	href="/Team_Sprout/css/main/main.css">
+<link rel="stylesheet" type="text/css"
+	href="/Team_Sprout/css/main/prjList.css">
 
 </head>
 <body>
-		<!-- 상단 전체   -->
-		<div class="col-sm-12">
-		
-			<!-- 왼쪽 공백 2 -->
-			<div class="col-sm-2"></div>
+	<!-- 상단 전체   -->
+	<div class="col-sm-12">
+
+		<!-- 왼쪽 공백 2 -->
+		<div class="col-sm-2"></div>
 
 		<!-- 검색창 10 -->
 		<div class="col-sm-8">
-		<br><br>
+			<br>
+			<br>
 			<h3 style="font-weight: bold">프로젝트 검색</h3>
 			<form action="/action_page.php">
 				<div class="input-group">
@@ -69,54 +72,61 @@
 		</div>
 
 		<!-- 오른쪽 공백 2 -->
-			<div class="col-sm-2"></div>
+		<div class="col-sm-2"></div>
 
-		</div>
+	</div>
 
-		<!-- 펀딩 리스트 12 -->	
+	<!-- 펀딩 리스트 12 -->
 	<div class="col-sm-12">
 		<!-- 왼쪽 공백 2 -->
 		<div class="col-sm-2"></div>
-<% 			List<ProjectVO> list = (List<ProjectVO>)request.getAttribute("list");
-
-			for(int i = 0; i < list.size(); i++){
-			String pjNm = list.get(i).getPjNm();	
-			
-%>		
 		<!-- 1번 항목 2-->
+		<%
+			for(int i = 0; i < list.size(); i++){
+			long pjNm = list.get(i).getPjNm();	
+			
+			ProjectVO pv2 = list.get(i);
+		%>
 		<div class="col-sm-2">
-			<img src="../../images/img1.jpg" class="img-rounded" style="width: 100%"
-				alt="Image">
-			<h4 onclick="projectSelect(pjNm)"><%=pv.getPjName() %></h4>
+
+			<img
+				src="<%=request.getContextPath()%>/filedownload.do?fileId=<%=pv2.getAtchFileId()%>&fileSn=1"
+				class="img-rounded" style="width: 100px; height: 100px" alt="Image">
+
+			<h4 onclick="projectSelect('<%=list.get(i).getPjName()%>')"><%=list.get(i).getPjName()%></h4>
 			<p>
-				<a href="#">아트북</a> | <a href="#">도감화화</a>
+				<a href="#"><%=list.get(i).getPjCategory()%></a>
 			</p>
 			<span class="gold">120% 달성</span>
 			<progress value="100" max="100"></progress>
 			<div class="time">
-				<span class="glyphicon glyphicon-time"></span>
-				<span>4일 남음</span>
+				<span>마감일 : <%=list.get(i).getPjDday()%></span>
 			</div>
 		</div>
-<%		}
-			if (list.size() <= 0){
-			%>
-				<p>등록된 프로젝트가 없습니다.</p>
 			<%
+				}
+				if (list.size() <= 0) {
+			%>
+		<div class="col-sm-2">	
+			<p>등록된 프로젝트가 없습니다.</p>
+		</div>
+		<%
 			}
-%>
-		
-	<!-- 여백 2-->	
-	<div class="col-sm-2"></div>
+		%>
+
+		<!-- 여백 2-->
+		<div class="col-sm-2"></div>
 	</div>
-	
+
 	<!-- top -->
 	<a style="display: scroll; position: fixed; bottom: 40px; right: 40px;"
-		href="#" title="top"><img src="../../images/topbutton.png" width="40px"></a>
-
+		href="#" title="top"><img src="../../images/topbutton.png"
+		width="40px"></a>
+	<button type="button" onclick="moveRegPage()">등록</button>
 	<!-- footer -->
 	<footer class="container-fluid text-center">
-		<br><br>
+		<br>
+		<br>
 		<p>Design By Seul-gi</p>
 		<p>
 			스프라우트는 플랫폼 제공자로서 프로젝트의 당사자가 아니며, 직접적인 통신판매를 진행하지 않습니다.<br> 프로젝트의
@@ -127,8 +137,8 @@
 			통신판매업 2021-1234-1234-123 | 대표전화 042) 000-1234</p>
 	</footer>
 	<form id="fm">
-		<input type="hidden" name="pjNm" id="pjNm">
-		<input type="hidden" name="flag" id="flag">
+		<input type="hidden" name="pjNm" id="pjNm"> <input
+			type="hidden" name="flag" id="flag">
 	</form>
 </body>
 <script type="text/javascript">
@@ -139,7 +149,16 @@
 		fm.method = "post";
 		fm.action = "projectBoard.do";
 		fm.submit();
-}
+	}
+	
+	function moveRegPage(){
+		document.getElementById("flag").value = "C";
+		
+		var fm = document.getElementById("fm");
+		fm.method = "get";
+		fm.action = "projectBoard.do";
+		fm.submit();
+	}
 
 </script>
 </html>

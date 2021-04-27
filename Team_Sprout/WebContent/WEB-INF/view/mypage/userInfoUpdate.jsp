@@ -1,37 +1,49 @@
 <%@page import="kr.or.ddit.user.vo.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/view/include/head.jsp"%>
 <!DOCTYPE html>
-<html lang="en">
 <head>
 <title>회원정보 수정</title>
 <%
-UserVO uv = (UserVO)session.getAttribute("userVO");
+ uv = (UserVO)session.getAttribute("userVO");
+
 %>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link href="https://fonts.googleapis.com/css?family=Lato"
-	rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Montserrat"
-	rel="stylesheet" type="text/css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="/Team_Sprout/css/mypage/mpInfoUpdate.css">
-  <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="/Team_Sprout/js/jquery-3.6.0.js"></script>
-<script src="/Team_Sprout/js/common/myUtil.js"></script>
+<link rel="stylesheet" type="text/css" href="/Team_Sprout/css/main/main.css">
+<style type="text/css">
+.col-sm-2 {
+    padding: 10px;
+}
+#side {
+    display: block;
+	width: 100%;
+    border-radius: 0px;
+}
+input#userId.form-control {
+	width: 300px;
+}
+input#userPw.form-control {
+	width: 300px;
+}
+input#userPw2.form-control {
+	width: 300px;
+}
+input#userName.form-control {
+	width: 300px;
+}
+input#userNickName.form-control {
+	display: inline;
+	width: 300px;
+}
+input#userBir.form-control {
+	width: 300px;
+}
+input#sample6_postcode.form-control {
+	display: inline;
+	width: 300px;
+}
+
+</style>
 </head>
 <body>
 	<!-- 회원정보 수정  -->
@@ -39,10 +51,18 @@ UserVO uv = (UserVO)session.getAttribute("userVO");
 		<!-- 왼쪽 공백 2 -->
 		<div class="col-sm-2"></div>
 
+
+		<!-- 좌측 메뉴 -->
+		<div class="col-sm-2">
+		<br>
+			<button type="button" class="btn" id="side" onclick="updateInfo()">회원정보수정</button>
+			<button type="button" class="btn" id="side" onclick="deleteInfo()">회원탈퇴</button>
+		</div>
+		
 		<!-- 회원정보 수정 -->
-		<div class="col-sm-8">
+		<div class="col-sm-6">
 			<form id="regiForm">
-					<h3>회원정보수정</h3>
+					<h3>회원 정보 수정</h3>
 					<br>
 				<!-- 아이디 -->
 				<div class="form-group">
@@ -63,7 +83,7 @@ UserVO uv = (UserVO)session.getAttribute("userVO");
 
 
 				<!-- 비밀번호 확인 -->
-				<div class="form-group">
+				<div class="form-group" >
 					<label for="userPw2">비밀번호 확인 </label>
 					<input type="password" id="userPw2" class="form-control">
 				</div>
@@ -73,11 +93,11 @@ UserVO uv = (UserVO)session.getAttribute("userVO");
 					<label>이름</label>
 					<input type="text" id="userName" class="form-control" value="<%=uv.getUserName() %>" readonly="readonly" name="userName" required>
 				</div>
-
+				
 				<!-- 닉네임 -->
-				<div class="form-group">
-					<label for="userNickName">닉네임 </label>
-					<input type="text" id="userNickName" name="userNickName" class="form-control" value="<%=uv.getUserName() %>">
+				<div class="form-group" >
+					<label for="userNickName">닉네임 </label><br>
+					<input type="text" id="userNickName" name="userNickName" class="form-control" value="<%=uv.getUserNickName() %>">
 					<input type="button" class="btn btn-success"
 								onclick="chkNickName()" value="중복검사">
 				</div>
@@ -122,10 +142,9 @@ UserVO uv = (UserVO)session.getAttribute("userVO");
 					</div>
 				</div>
 				<br>
-
-				<!-- 저장 버튼  -->
 				<div class="form-group">
-					<input type="text" style="display: none" name="flag" id="flag" value="U">
+					<input type="hidden" name="userId" id="userId" value="<%=uv.getUserId() %>">
+					<input type="hidden" name="flag" id="flag" value="U">
 					<input type="button" class="btn btn-success" onclick="save()" value="수정">
 				</div>
 			</form>
@@ -135,6 +154,15 @@ UserVO uv = (UserVO)session.getAttribute("userVO");
 	</div>
 </body>
 <script type="text/javascript">
+function updateInfo(){
+	location.href = "/Team_Sprout/mypage/userUpdatePwChk.do";
+}
+
+function deleteInfo(){
+	location.href = "/Team_Sprout/mypage/userInfoDelete.do";
+}
+
+
 function chkNickName(){
 	var userNickName = $("#userNickName").val();
 	

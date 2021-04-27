@@ -6,9 +6,8 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 
-import kr.or.ddit.project.dao.ProjectDaoImpl;
-import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.project.dao.IProjectDao;
+import kr.or.ddit.project.dao.ProjectDaoImpl;
 import kr.or.ddit.project.vo.ProjectVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
@@ -32,10 +31,10 @@ public class ProjectServiceImpl implements IProjectService{
 	}
 
 	@Override
-	public List<ProjectVO> getAllProjectList(PagingVO pagingVO) {
+	public List<ProjectVO> getAllProjectList() {
 		List<ProjectVO> list = new ArrayList<>();
 		try {
-			list = projectDao.getAllProject(smc, pagingVO);
+			list = projectDao.getAllProject(smc);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -43,7 +42,7 @@ public class ProjectServiceImpl implements IProjectService{
 	}
 
 	@Override
-	public ProjectVO getProject(String pjNm) {
+	public ProjectVO getProject(long pjNm) {
 		ProjectVO pv = new ProjectVO();
 		try {
 			pv = projectDao.getProject(smc, pjNm);
@@ -54,18 +53,18 @@ public class ProjectServiceImpl implements IProjectService{
 	}
 	
 	@Override
-	public int insertProject(ProjectVO pv) {
-		int cnt = 0;
+	public long insertProject(ProjectVO pv) {
+		long pjNm = 0;
 		try {
-			cnt = projectDao.insertProject(smc, pv);
+			pjNm = projectDao.insertProject(smc, pv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return cnt;
+		return pjNm;
 	}
 
 	@Override
-	public int updateProject(ProjectVO pv) {
+	public long updateProject(ProjectVO pv) {
 		int cnt = 0;
 		try {
 			cnt = projectDao.updateProject(smc, pv);

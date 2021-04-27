@@ -20,6 +20,7 @@ import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
 import kr.or.ddit.comm.vo.AtchFileVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.user.vo.UserVO;
 import kr.or.ddit.util.FileUploadRequestWrapper;
 
@@ -169,7 +170,6 @@ public class QnaBoardHandler implements CommandHandler {
 				List<AtchFileVO> atchFileList = fileService.getAtchFileList(fileVO);
 				
 				req.setAttribute("atchFileList", atchFileList);
-				
 			}
 			
 			req.setAttribute("qbv", qbv);
@@ -220,15 +220,23 @@ public class QnaBoardHandler implements CommandHandler {
 		}
 		
 		// 모든 게시글 조회
-		QnaBoardVO boardVO = new QnaBoardVO();
-		
-		BeanUtils.populate(boardVO, req.getParameterMap());
+		int pageNo = req.getParameter("pageNo") == null ?
+				1 : Integer.parseInt(req.getParameter("pageNo"));
+		PagingVO pv = new PagingVO();
 		
 		IQnaService service = QnaServiceImpl.getInstance();
 		
-		List<QnaBoardVO> list = service.getAllQnaBoardList();
+		int totalCount = service.getAllQnaBoardListCount();
+		pv.setTotalCount(totalCount);
+		pv.setCurrentPageNo(pageNo);
+		pv.setCountPerPage(15);
+		pv.setPageSize(5);
 		
+		List<QnaBoardVO> list = service.getAllQnaBoardList(pv);
+		
+		req.setAttribute("totalCount", totalCount);
 		req.setAttribute("list", list);
+		req.setAttribute("pv", pv);
 		
 		return "/WEB-INF/view/board/qnaBoardList.jsp";
 	}

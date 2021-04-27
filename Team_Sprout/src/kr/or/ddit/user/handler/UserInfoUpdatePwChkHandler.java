@@ -9,7 +9,7 @@ import kr.or.ddit.user.vo.UserVO;
 
 public class UserInfoUpdatePwChkHandler implements CommandHandler {
 
-	private static final String VIEW_PAGE = "/WEB-INF/view/mypage/userPassCheck.jsp";
+	private static final String VIEW_PAGE = "/WEB-INF/view/mypage/userUpdatePassCheck.jsp";
 	
 	@Override
 	public boolean isRedirect(HttpServletRequest req) {
@@ -31,7 +31,7 @@ public class UserInfoUpdatePwChkHandler implements CommandHandler {
 			} else {
 				req.setAttribute("chk", "F");
 			}
-			return VIEW_PAGE;
+			return "/WEB-INF/view/mypage/userInfoUpdate.jsp";
 		}
 	}
 

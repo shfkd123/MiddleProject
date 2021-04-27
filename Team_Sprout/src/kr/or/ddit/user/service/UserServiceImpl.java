@@ -163,4 +163,31 @@ public class UserServiceImpl implements IUserService {
 		}
 		return list;
 	}
+
+	//유저 포인트 조회
+	@Override
+	public int userPoint(String userId) {
+		int cnt = 0;
+		try {
+			cnt = userDao.userPoint(smc, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	//유저 포인트 수정(충전/환불)
+	@Override
+	public int userPointUpdate(UserVO uv) {
+		int cnt = 0;
+
+		try {
+			cnt = userDao.userPointUpdate(smc, uv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+	
+	
 }

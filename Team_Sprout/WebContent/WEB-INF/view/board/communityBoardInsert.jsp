@@ -1,6 +1,11 @@
+<%@page import="kr.or.ddit.board.vo.CommunityBoardVO"%>
+<%@page import="kr.or.ddit.comm.vo.AtchFileVO"%>
+<%@page import="java.util.List"%>
+<%@page import="kr.or.ddit.project.vo.ProjectVO"%>
 <%@page import="kr.or.ddit.user.vo.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,10 +32,9 @@
 			</thead>
 			<tbody>
 				<tr>
-					<th>프로젝트 이름</th>
+					<th>제목</th>
 					<td colspan="3">
 						<input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요.">
-						<select></select>
 					</td>
 				</tr>
 				<tr>
@@ -87,5 +91,7 @@
 			return;
 		}
 	}
+	
+
 </script>
 </html>

@@ -147,8 +147,8 @@ function makeUserLikey(data) {
 		if(i > 0 && i % 5 == 0){
 			likeyList += "<br><br>";
 		}
-		likeyList += "&emsp;<label><input type='radio' name='likey' value='&nbsp;"
-			+ data[i].likeyCode + "'>" 
+		likeyList += "&emsp;<label><input type='checkbox' id='likeyCode' name='likeyCode' value='"
+			+ data[i].likeyCode + "'>&nbsp;" 
 			+ data[i].likeyName + "</label>";
 	}
 	$("#likey").html(likeyList);
@@ -277,9 +277,14 @@ function save() {
 	
 	$("#userBir").val($("#year").val() + "-" + $("#month option:selected").val() + "-" + $("#day").val());
 	
-	$("userGender").val($('input[name=gender]:radio').val());
-	
-	$("userLikey").val($('input[name=likey]:radio').val());
+//	$("userGender").val($('input[name="gender"]:checked').val());
+//	
+	// 체크박스 값 가져오기
+	$("input[name='likeyCode']:checked").each(function() {
+		  var test = $(this).val(); 
+		  $("#userLikey").val(test);
+	});
+	console.log($("#userLikey").val());
 	
 	// 주소 입력 안했을때
 	if(!isEmpty($("#sample6_postcode").val())){
@@ -312,6 +317,7 @@ function save() {
 			}
 		}
 		, error : function(xhr) {
+			console.log(xhr);
 			alert("회원가입에 실패했습니다. 관리자에게 문의해주세요.\n오류코드 : " + xhr.status)
 		}
 	});

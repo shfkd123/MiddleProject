@@ -10,8 +10,10 @@
 	FaqBoardVO fbv = (FaqBoardVO)request.getAttribute("fbv");
 
 	List<AtchFileVO> atchFileList = (List<AtchFileVO>) request.getAttribute("atchFileList");
-		
-	 uv = (UserVO)session.getAttribute("userVO");
+	
+	AtchFileVO atchVO = new AtchFileVO();
+	
+	uv = (UserVO)session.getAttribute("userVO");
 
 %>
 <!DOCTYPE html>
@@ -78,7 +80,6 @@ div.col-sm-12 {
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td colspan="3"><%=fbv.getFaqContent() %></td>
 				</tr>
 				<tr>
 					<th>첨부파일</th>
@@ -121,17 +122,14 @@ div.col-sm-12 {
 </body>
 <script type="text/javascript">
 	$(document).ready(function(){
+		$("#updateWrite").css("display", "none");
+		$("#deleteWrite").css("display", "none");
 		<%
 		if(uv != null){
 			if(!uv.getUserNickName().equals(fbv.getFaqWriter())){
 			%>
-				$("#updateWrite").hide();
-				$("#deleteWrite").hide();
-			<%
-			} else if(uv.getUserNickName().equals(fbv.getFaqWriter())){
-			%>
-				$("#updateWrite").show();
-				$("#deleteWrite").show();
+			$("#updateWrite").css("display", "inline");
+			$("#deleteWrite").css("display", "inline");
 			<%
 			}
 		}

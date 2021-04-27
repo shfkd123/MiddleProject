@@ -2,40 +2,40 @@ package kr.or.ddit.project.vo;
 
 public class ProjectOptionVO {
 
-	private String PoNm;
-	private String PoName;
-	private String PoContent;
-	private String PoAddPrice;
-	private String PjNm;
-	public String getPoNm() {
-		return PoNm;
+	private long poNm;
+	private String poName;
+	private String poContent;
+	private long poAddPrice;
+	private long pjNm;
+	
+	public long getPoNm() {
+		return poNm;
 	}
-	public void setPoNm(String poNm) {
-		PoNm = poNm;
+	public void setPoNm(long poNm) {
+		this.poNm = poNm;
 	}
 	public String getPoName() {
-		return PoName;
+		return poName;
 	}
 	public void setPoName(String poName) {
-		PoName = poName;
+		this.poName = poName;
 	}
 	public String getPoContent() {
-		return PoContent;
+		return poContent;
 	}
 	public void setPoContent(String poContent) {
-		PoContent = poContent;
+		this.poContent = poContent;
 	}
-	public String getPoAddPrice() {
-		return PoAddPrice;
+	public long getPoAddPrice() {
+		return poAddPrice;
 	}
-	public void setPoAddPrice(String poAddPrice) {
-		PoAddPrice = poAddPrice;
+	public void setPoAddPrice(long poAddPrice) {
+		this.poAddPrice = poAddPrice;
 	}
-	public String getPjNm() {
-		return PjNm;
+	public long getPjNm() {
+		return pjNm;
 	}
-	public void setPjNm(String pjNm) {
-		PjNm = pjNm;
+	public void setPjNm(long pjNm) {
+		this.pjNm = pjNm;
 	}
-	
 }

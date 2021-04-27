@@ -6,11 +6,26 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.vo.ReportBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 
 
 public interface IReportBoardDao {
-
-	public List<ReportBoardVO> getAllReportBoard(SqlMapClient smc) throws SQLException;
+	/**
+	 * 글 목록 전체를 가져오는 메서드
+	 * @param smc
+	 * @param pv
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<ReportBoardVO> getAllReportBoard(SqlMapClient smc, PagingVO pv) throws SQLException;
+	
+	/**
+	 * 게시글의 총 수를 가져오는 메서드
+	 * @param smc
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getAllReportListCount(SqlMapClient smc) throws SQLException;
 	
 	/**
 	 * 게시글 조회

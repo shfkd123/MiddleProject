@@ -42,7 +42,7 @@ public class ProjectOptionServiceImpl implements IProjectOptionService{
 	}
 
 	@Override
-	public ProjectOptionVO getProjectOption(String pjNm) {
+	public ProjectOptionVO getProjectOption(long pjNm) {
 		ProjectOptionVO pov = new ProjectOptionVO();
 		try {
 			pov = projectOptionDao.getProjectOption(smc, pov.getPoNm());

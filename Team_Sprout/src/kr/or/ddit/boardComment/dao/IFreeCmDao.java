@@ -6,6 +6,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.boardComment.vo.FreeCmVO;
+import kr.or.ddit.comm.vo.PagingVO;
 
 public interface IFreeCmDao {
 	
@@ -15,7 +16,16 @@ public interface IFreeCmDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<FreeCmVO> getAllFreeCm(SqlMapClient smc, String freeNm) throws SQLException;
+	public List<FreeCmVO> getAllFreeCm(SqlMapClient smc, PagingVO pv) throws SQLException;
+	
+	/**
+	 * 자유게시판 한 글의 총 댓글수 메서드
+	 * @param smc
+	 * @param freeNm
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getAllFreeCmCount(SqlMapClient smc, String freeNm) throws SQLException;
 	
 	/**
 	 * 자유게시판 댓글 작성 메서드

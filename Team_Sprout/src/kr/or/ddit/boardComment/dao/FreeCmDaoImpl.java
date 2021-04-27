@@ -6,6 +6,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.boardComment.vo.FreeCmVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class FreeCmDaoImpl implements IFreeCmDao {
@@ -24,10 +25,10 @@ public class FreeCmDaoImpl implements IFreeCmDao {
 	}
 	
 	@Override
-	public List<FreeCmVO> getAllFreeCm(SqlMapClient smc, String freeNm) throws SQLException {
-		return smc.queryForList("freeCm.getAllFreeCm", freeNm);
+	public List<FreeCmVO> getAllFreeCm(SqlMapClient smc, PagingVO pv) throws SQLException {
+		return smc.queryForList("freeCm.getAllFreeCm", pv);
 	}
-
+	
 	@Override
 	public int insertFreeCm(SqlMapClient smc, FreeCmVO fcv) throws SQLException {
 		int cnt = 0;
@@ -62,6 +63,11 @@ public class FreeCmDaoImpl implements IFreeCmDao {
 			cnt = 1;
 		}
 		return cnt;
+	}
+
+	@Override
+	public int getAllFreeCmCount(SqlMapClient smc, String freeNm) throws SQLException {
+		return (int) smc.queryForObject("freeCm.getAllFreeCmCount", freeNm);
 	}
 
 }

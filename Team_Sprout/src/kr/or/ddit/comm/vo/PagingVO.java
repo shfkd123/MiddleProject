@@ -2,7 +2,18 @@ package kr.or.ddit.comm.vo;
 
 public class PagingVO {
 
+	private String boardNo;  			// 댓글을 볼 게시판 번호
+	
 	private int pageCount = 10;			// 페이지 목록 게시되는 페이지 수 (초기값: 10)
+	
+	public String getBoardNo() {
+		return boardNo;
+	}
+
+	public void setBoardNo(String boardNo) {
+		this.boardNo = boardNo;
+	}
+
 	private int countPerPage = 10;		// 한 페이지당 게시되는 게시물 건 수(초기값: 10)
 	private int currentPageNo;			// 현재 페이지 번호
 	private int totalCount;				// 전체 게시물 건 수

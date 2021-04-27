@@ -16,7 +16,7 @@ public interface IFaqBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<FaqBoardVO> getAllFaqBoard(SqlMapClient smc, PagingVO pagingVO ) throws SQLException;
+	public List<FaqBoardVO> getAllFaqBoard(SqlMapClient smc, PagingVO pagingVO) throws SQLException;
 	
 	/**
 	 * 게시글 조회
@@ -69,5 +69,5 @@ public interface IFaqBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int getAllFaqListCount(SqlMapClient smc) throws SQLException;
+	public int getAllFaqBoardListCount(SqlMapClient smc) throws SQLException;
 }

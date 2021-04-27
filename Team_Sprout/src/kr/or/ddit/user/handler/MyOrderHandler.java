@@ -23,8 +23,6 @@ public class MyOrderHandler implements CommandHandler {
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		
-		String flag = req.getParameter("flag");
 		HttpSession session = req.getSession();
 		UserVO uv = (UserVO) session.getAttribute("userVO");
 		IUserService service = UserServiceImpl.getInstance();
@@ -34,5 +32,4 @@ public class MyOrderHandler implements CommandHandler {
 		req.setAttribute("orderList", orderList);		
 		return VIEW_PAGE;
 	}
-
 }

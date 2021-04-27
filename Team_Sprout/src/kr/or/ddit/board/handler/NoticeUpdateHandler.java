@@ -60,8 +60,7 @@ public class NoticeUpdateHandler implements CommandHandler {
 				
 				atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
 			}
-			
-			
+		
 			return VIEW_PAGE;
 		}else { // POST방식의 경우
 

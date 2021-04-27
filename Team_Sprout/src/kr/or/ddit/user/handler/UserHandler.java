@@ -21,8 +21,7 @@ public class UserHandler implements CommandHandler {
 	@Override
 	public boolean isRedirect(HttpServletRequest req) {
 		String flag = (String)req.getParameter("flag");
-		
-		if("C".equals(flag) || "U".equals(flag)) {
+		if("U".equals(flag)) {
 			if(req.getMethod().equals("GET")) { 
 				return false;
 			}else { 
@@ -63,19 +62,15 @@ public class UserHandler implements CommandHandler {
 				return "/html/common/userChkResult.jsp";
 				
 			} else if("C".equals(flag)) {
-				if(req.getMethod().equals("GET")) {
-					return "/html/login/register.jsp";
-				} else {
-					UserVO uv = new UserVO();
-					
-					BeanUtils.populate(uv, req.getParameterMap());
-					
-					int cnt = service.signUpUser(uv);
-					
-					req.setAttribute("cnt", cnt);
-					
-					return "/html/common/userChkResult.jsp";
-				}
+				UserVO uv = new UserVO();
+				
+				BeanUtils.populate(uv, req.getParameterMap());
+				
+				int cnt = service.signUpUser(uv);
+				
+				req.setAttribute("cnt", cnt);
+				
+				return "/html/common/userChkResult.jsp";
 			} else if("U".equals(flag)) { // 유저 정보 수정
 				UserVO uv = new UserVO();
 				

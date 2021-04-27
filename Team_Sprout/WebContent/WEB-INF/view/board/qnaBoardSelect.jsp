@@ -14,7 +14,6 @@
 	List<QnaCmVO> qnaCmList = (List<QnaCmVO>)request.getAttribute("qnaCmList");
 	
 	uv = (UserVO)session.getAttribute("userVO");
-
 %>
 <!DOCTYPE html>
 <html>
@@ -44,7 +43,6 @@ div.col-sm-12 {
 	<div class="col-sm-12">
 		<div id="menu_title">
 			<p>
-			
 			<br><br><br>
 				<h3><b>Q & A</b></h3>
 				<br>
@@ -81,18 +79,7 @@ div.col-sm-12 {
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td colspan="3" id="imgPrint"><%=qbv.getQnaContent() %>
-								<%
-			if(atchFileList != null){
-				for(AtchFileVO atchFileVO : atchFileList){
-			%>
-			<img src='<%=atchFileVO.getImgUrl()%>' width="500px">
-			<%
-				}
-			}
-			 %>
-					
-					</td>
+					<td colspan="3"><%=qbv.getQnaContent() %></td>
 				</tr>
 				<tr>
 					<th>첨부파일</th>
@@ -102,9 +89,10 @@ div.col-sm-12 {
 						for(AtchFileVO atchFileVO : atchFileList){
 					%>
 						<div>
-							<a
-							href="<%=request.getContextPath() %>/filedownload.do?fileId=<%=atchFileVO.getAtchFileId() %>&fileSn=<%=atchFileVO.getFileSn()%>">
-							<%=atchFileVO.getOrignlFileNm() %></a>
+							<a href="<%=request.getContextPath() %>/filedownload.do?fileId=<%=atchFileVO.getAtchFileId() %>&fileSn=<%=atchFileVO.getFileSn()%>">
+								<%=atchFileVO.getOrignlFileNm() %><br>
+								<img src='<%=atchFileVO.getImgUrl()%>' width="200px">
+							</a>
 						</div>
 						<%	
 						}
@@ -357,6 +345,13 @@ div.col-sm-12 {
 	
 	function openModifyModal(qcNm){
 		$("#modalQcNm").val(qcNm);
+	}
+	
+	function showImg(){
+		$("img").show();
+	}
+	function hideImg(){
+		$("img").hide();
 	}
 </script>
 

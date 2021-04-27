@@ -45,7 +45,7 @@
 			<br>
 			<button type="button" class="btn btn-success btn-lg" onclick="location.href='/Team_Sprout/html/board/guide.jsp'">
 			메이커 가이드</button>
-			<button type="button" class="btn btn-success btn-lg">프로젝트
+			<button type="button" class="btn btn-success btn-lg" onclick="#">프로젝트
 				올리기</button>
 				<br><br>
 		</div>

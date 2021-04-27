@@ -165,17 +165,44 @@
 	
 	<!-- 유저의 후원 목록 -->
 	<select id="userOrderList" resultClass="kr.or.ddit.user.vo.OrderVO" parameterClass="String">
-		SELECT ORDER_NM 
-			 , ORDER_BILL 
-			 , ORDER_STATE 
-			 , PJ_NM 
-			 , USER_ID 
-			 , ORDER_TIME 
-			 , ORDER_PRICE 	
-		FROM   TB_ORDER
-		WHERE  USER_ID = (SELECT PJ_NM
+		SELECT A.ORDER_NM 
+			 , A.ORDER_BILL 
+			 , A.ORDER_STATE 
+			 , A.PJ_NM 
+             , B.PJ_NAME
+             , B.PJ_CONTENT
+             , B.PJ_CONDITION
+             , C.PO_NAME
+			 , A.USER_ID 
+			 , A.ORDER_TIME 
+			 , A.ORDER_PRICE 	
+		FROM   TB_ORDER A INNER JOIN PROJECT B ON(A.PJ_NM = B.PJ_NM)
+                          INNER JOIN PROJECT_OPTION C ON(B.PJ_NM = C.PJ_NM)
+		WHERE  A.PJ_NM = (SELECT PJ_NM
 						  FROM TB_USER
 						  WHERE USER_ID = #userId#	
 						)
 	</select>
+	
+	<!-- 유저 포인트 조회 -->
+	<select id="userpoint" parameterClass="kr.or.ddit.user.vo.UserVO" resultClass="String">
+		SELECT USER_MONEY userMoney
+		FROM TB_USER
+		WHERE  USER_ID = #userId#
+	</select>
+	
+	<!-- 유저 포인트 충전 -->
+	<update id="userpointUpdate" parameterClass="kr.or.ddit.user.vo.UserVO">
+		UPDATE TB_USER
+		SET USER_MONEY = USER_MONEY + #userMoney#
+		WHERE USER_ID = #userId#
+	</update>
+
+	<!-- 유저 포인트 환불 -->
+	<update id="userpointUpdateRefund" parameterClass="kr.or.ddit.user.vo.UserVO">
+		UPDATE TB_USER
+		SET USER_MONEY = #userMoney# - USER_MONEY 
+		WHERE USER_ID = #userId#
+	</update>
+	
 </sqlMap>

@@ -3,7 +3,6 @@ package kr.or.ddit.project.service;
 import java.util.List;
 
 import kr.or.ddit.project.vo.ProjectOptionVO;
-import kr.or.ddit.project.vo.ProjectVO;
 
 public interface IProjectOptionService {
 
@@ -17,7 +16,7 @@ public interface IProjectOptionService {
 	 * 프로젝트 옵션 조회 메서드
 	 * @return ProjectOptionVO
 	 */
-	public ProjectOptionVO getProjectOption(String pjNm);
+	public ProjectOptionVO getProjectOption(long pjNm);
 	
 	/**
 	 * 프로젝트 옵션 등록 메서드

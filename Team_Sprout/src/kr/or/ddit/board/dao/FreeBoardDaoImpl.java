@@ -6,6 +6,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.vo.FreeBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class FreeBoardDaoImpl implements IFreeBoardDao{
@@ -24,8 +25,8 @@ public class FreeBoardDaoImpl implements IFreeBoardDao{
 	}
 
 	@Override
-	public List<FreeBoardVO> getAllFreeBoard(SqlMapClient smc) throws SQLException {
-		return smc.queryForList("freeBoard.getAllFreeBoard");
+	public List<FreeBoardVO> getAllFreeBoard(SqlMapClient smc, PagingVO pv) throws SQLException {
+		return smc.queryForList("freeBoard.getAllFreeBoard", pv);
 	}
 
 	@Override
@@ -72,5 +73,10 @@ public class FreeBoardDaoImpl implements IFreeBoardDao{
 	@Override
 	public List<FreeBoardVO> searchFreeBoard(SqlMapClient smc, String str) throws SQLException {
 		return smc.queryForList("freeBoard.searchFreeBoard", str);
+	}
+
+	@Override
+	public int getAllFreeBoardListCount(SqlMapClient smc) throws SQLException {
+		return (int) smc.queryForObject("freeBoard.getFreeBoardListCount");
 	}
 }

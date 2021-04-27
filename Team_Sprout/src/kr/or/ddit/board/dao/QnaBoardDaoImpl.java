@@ -6,6 +6,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.vo.QnaBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class QnaBoardDaoImpl implements IQnaBoardDao {
@@ -24,8 +25,8 @@ public class QnaBoardDaoImpl implements IQnaBoardDao {
 	}
 
 	@Override
-	public List<QnaBoardVO> getAllQnaBoard(SqlMapClient smc) throws SQLException {
-		return smc.queryForList("qnaBoard.getAllQnaBoard");
+	public List<QnaBoardVO> getAllQnaBoard(SqlMapClient smc, PagingVO pv) throws SQLException {
+		return smc.queryForList("qnaBoard.getAllQnaBoard", pv);
 	}
 
 	@Override
@@ -72,5 +73,10 @@ public class QnaBoardDaoImpl implements IQnaBoardDao {
 	@Override
 	public List<QnaBoardVO> searchQnaBoard(SqlMapClient smc, String str) throws SQLException {
 		return smc.queryForList("qnaBoard.searchQnaBoard", str);
+	}
+
+	@Override
+	public int getAllQnaBoardListCount(SqlMapClient smc) throws SQLException {
+		return (int) smc.queryForObject("qnaBoard.getAllQnaBoardListCount");
 	}
 }

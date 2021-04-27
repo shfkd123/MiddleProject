@@ -12,16 +12,10 @@ import org.apache.commons.fileupload.FileItem;
 
 import kr.or.ddit.board.service.CommunityServiceImpl;
 import kr.or.ddit.board.service.ICommunityService;
-import kr.or.ddit.board.service.IQnaService;
-import kr.or.ddit.board.service.QnaServiceImpl;
 import kr.or.ddit.board.vo.CommunityBoardVO;
-import kr.or.ddit.board.vo.QnaBoardVO;
 import kr.or.ddit.boardComment.service.CommunityCmServiceImpl;
 import kr.or.ddit.boardComment.service.ICommunityCmService;
-import kr.or.ddit.boardComment.service.IQnaCmService;
-import kr.or.ddit.boardComment.service.QnaCmServiceImpl;
 import kr.or.ddit.boardComment.vo.CommunityCmVO;
-import kr.or.ddit.boardComment.vo.QnaCmVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
@@ -66,11 +60,11 @@ public class CommunityBoardHandler implements CommandHandler {
 				
 				ICommunityService service = CommunityServiceImpl.getInstance();
 				
-				String pjName = req.getParameter("pjName");
-//				String cbTitle = req.getParameter("cbTitle");
+//				String pjName = req.getParameter("pjName");
+				String cbTitle = req.getParameter("cbTitle");
 				String cbContent = req.getParameter("cbContent");
-				cbv.setPjName(pjName);
-//				cbv.setCbTitle(cbTitle);
+//				cbv.setPjName(pjName);
+				cbv.setCbTitle(cbTitle);
 				cbv.setCbContent(cbContent);
 				cbv.setCbWriter(userId);
 				

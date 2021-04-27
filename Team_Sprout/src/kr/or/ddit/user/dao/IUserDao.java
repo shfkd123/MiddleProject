@@ -107,4 +107,23 @@ public interface IUserDao {
 	 * @throws SQLException
 	 */
 	public List<ProjectVO> userOrderList(SqlMapClient smc, String userId) throws SQLException;
+	
+	/**
+	 * 유저 포인트 조회
+	 * @param smc
+	 * @param userId
+	 * @return
+	 * @throws SQLException
+	 */
+	public int userPoint(SqlMapClient smc, String userId) throws SQLException;
+		
+	/**
+	 * 유저 포인트 수정(충전/환불) 
+	 * @param smc
+	 * @param uv
+	 * @return
+	 * @throws SQLException
+	 */
+	public int userPointUpdate(SqlMapClient smc, UserVO uv) throws SQLException;
+	
 }

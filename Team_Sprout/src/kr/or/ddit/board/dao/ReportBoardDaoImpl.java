@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ibatis.sqlmap.client.SqlMapClient;
 import kr.or.ddit.board.vo.ReportBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class ReportBoardDaoImpl implements IReportBoardDao{
@@ -24,8 +25,8 @@ public class ReportBoardDaoImpl implements IReportBoardDao{
 	}
 
 	@Override
-	public List<ReportBoardVO> getAllReportBoard(SqlMapClient smc) throws SQLException {
-		return smc.queryForList("reportBoard.getAllReportBoard");
+	public List<ReportBoardVO> getAllReportBoard(SqlMapClient smc, PagingVO pv) throws SQLException {
+		return smc.queryForList("reportBoard.getAllReportBoard", pv);
 	}
 
 	@Override
@@ -72,6 +73,11 @@ public class ReportBoardDaoImpl implements IReportBoardDao{
 	@Override
 	public List<ReportBoardVO> searchReportBoard(SqlMapClient smc, String str) throws SQLException {
 		return smc.queryForList("reportBoard.searchReportBoard", str);
+	}
+
+	@Override
+	public int getAllReportListCount(SqlMapClient smc) throws SQLException {
+		return (int) smc.queryForObject("reportBoard.getAllReportListCount");
 	}
 
 }

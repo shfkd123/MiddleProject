@@ -9,6 +9,7 @@ public class QnaBoardVO {
 	private String qnaDate;
 	private String qnaWriter;
 	private long atchFileId = -1;
+	private int rNum;
 	
 	public String getQnaNm() {
 		return qnaNm;
@@ -52,6 +53,10 @@ public class QnaBoardVO {
 	public void setAtchFileId(long atchFileId) {
 		this.atchFileId = atchFileId;
 	}
-	
-	
+	public int getrNum() {
+		return rNum;
+	}
+	public void setrNum(int rNum) {
+		this.rNum = rNum;
+	}
 }

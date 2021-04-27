@@ -1,3 +1,4 @@
+<%@page import="kr.or.ddit.comm.vo.PagingVO"%>
 <%@page import="kr.or.ddit.user.vo.UserVO"%>
 <%@page import="kr.or.ddit.boardComment.vo.FreeCmVO"%>
 <%@page import="kr.or.ddit.comm.vo.AtchFileVO"%>
@@ -14,6 +15,8 @@
 	List<FreeCmVO> freeCmList = (List<FreeCmVO>)request.getAttribute("freeCmList");
 	
 	 uv = (UserVO)session.getAttribute("userVO");
+	
+	PagingVO pv = (PagingVO)request.getAttribute("pv");
 %>
 <!DOCTYPE html>
 <html>
@@ -78,7 +81,19 @@ div.col-sm-12 {
 				</tr>
 				<tr>
 					<th>내용</th>
-					<td colspan="3"><%=fv.getFreeContent() %></td>
+					<td colspan="3" id="imgPrint">
+					<p><%=fv.getFreeContent() %></p>
+				<%
+					if (atchFileList != null) {
+						for (AtchFileVO atchFileVO : atchFileList) {
+							System.out.println(atchFileVO.getImgUrl());
+				%>
+				<img src='<%=atchFileVO.getImgUrl()%>' >
+				<%
+					}
+					}
+				%>
+				</td>
 				</tr>
 				<tr>
 					<th>첨부파일</th>
@@ -124,45 +139,64 @@ div.col-sm-12 {
 			</thead>
 			<tbody>
 			<%
-			for(int i = 0; i < freeCmList.size(); i++){
-				if(freeCmList.size() == 0){
-				%>
-				<tr>
-					<td colspan="3" align="left">댓글이 없습니다.</td>
-				</tr>
-				<%	
-				} else {
-				%>
-				<tr>
-					<td style="text-align: left;">
-					<%=freeCmList.get(i).getFcWriter() %>
-					</td>
-					<td style="text-align: right;"><%=freeCmList.get(i).getFcContent() %></td>
-					<td><%=freeCmList.get(i).getFcDate() %>
-						<%if(uv != null) {
-							if(uv.getUserNickName().equals(freeCmList.get(i).getFcWriter())){
-							%>
-							<div class="btn-group" style="float: right;">
-								<button type="button" class="btn btn-default btn-xs dropdown-toggle"
-									data-toggle="dropdown">
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu" role="menu" id="cmtMenu">
-									<li><a data-toggle="modal" data-target="#myModal" onclick="openModifyModal('<%=freeCmList.get(i).getFcNm() %>')">수정</a>
-									</li>
-									<li><a href="#" onclick="cmDelete('<%=freeCmList.get(i).getFcNm() %>')">삭제</a></li>
-								</ul>
-							</div>
-							<%
-							}
-						}
+			if(freeCmList.size() == 0){
+			%>
+			<tr>
+				<td colspan="3" align="center">댓글이 없습니다.</td>
+			</tr>
+			<%	
+			} else {
+				for(int i = 0; i < freeCmList.size(); i++){
+			%>
+			<tr>
+				<td style="text-align: left;">
+				<%=freeCmList.get(i).getFcWriter() %>
+				</td>
+				<td style="text-align: left;"><%=freeCmList.get(i).getFcContent() %></td>
+				<td><%=freeCmList.get(i).getFcDate() %>
+					<%if(uv != null) {
+						if(uv.getUserNickName().equals(freeCmList.get(i).getFcWriter())){
 						%>
-					</td>
-				</tr>
+						<div class="btn-group" style="float: right;">
+							<button type="button" class="btn btn-default btn-xs dropdown-toggle"
+								data-toggle="dropdown">
+								<span class="caret"></span>
+							</button>
+							<ul class="dropdown-menu" role="menu" id="cmtMenu">
+								<li><a data-toggle="modal" data-target="#myModal" onclick="openModifyModal('<%=freeCmList.get(i).getFcNm() %>')">수정</a>
+								</li>
+								<li><a href="#" onclick="cmDelete('<%=freeCmList.get(i).getFcNm() %>')">삭제</a></li>
+							</ul>
+						</div>
+						<%
+						}
+					}
+					%>
+				</td>
+			</tr>
 			<%
 				}
 			}
 			%>
+			<!-- 페이징 처리 시작 -->
+			<%if(pv.getTotalCount() > 0) {%>
+			<tr align="center">
+				<td>
+				<%if(pv.getFirstPageNo() > pv.getPageSize()) { %>
+				<a href="freeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pv.getFirstPageNo() - pv.getPageSize() %>">이전</a>
+				<%} %>
+				<%for(int pNo = pv.getFirstPageNo(); pNo <= pv.getLastPageNo(); pNo++){ %>
+					<a href="freeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pNo %>">
+						<%=pNo %>
+					</a>
+				<%} %>
+				<%if(pv.getLastPageNo() < pv.getTotalPageCount()){ %>
+				<a href="freeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pv.getFirstPageNo() + pv.getPageSize() %>">다음</a>
+				<td>
+			</tr>
+			<%}
+			} %>
+		<!-- 페이징 처리 끝.. -->
 			</tbody>
 		</table>
 		<hr>
@@ -305,25 +339,24 @@ div.col-sm-12 {
 		var fcNm = $("#modalFcNm").val();
 		if(confirm("수정하시겠습니까?")){
 			alert("수정되었습니다.");
+			<%
+			if(uv != null){
+			%>
+			document.getElementById("userId").value = "<%=uv.getUserId() %>";
+			<%}	%>
+			document.getElementById("freeNmCm").value = "<%=fv.getFreeNm() %>";
+			document.getElementById("fmFcNm").value = fcNm;
+			document.getElementById("comment").value = $("#editCm").val();
+			document.getElementById("flagCm").value = "U";
+			var fm = document.getElementById("fmCm");
+			fmCm.method = "post";
+			fmCm.action = "freeBoardComment.do";
+			fmCm.submit();
 		}
-		<%
-		if(uv != null){
-		%>
-		document.getElementById("userId").value = "<%=uv.getUserId() %>";
-		<%
-		}
-		%>
-		document.getElementById("freeNm").value = "<%=fv.getFreeNm() %>";
-		document.getElementById("fmQnNm").value = fcNm;
-		document.getElementById("comment").value = $("#editCm").val();
-		document.getElementById("flag").value = "U";
-		var fm = document.getElementById("fmCm");
-		fmCm.method = "post";
-		fm.action = "freeBoardComment.do";
-		fm.submit();
+		return;
 	}
 	
-	function cmDelete(qcNm){
+	function cmDelete(fcNm){
 		if(confirm("정말 댓글을 삭제하시겠습니까?")){
 			alert("댓글이 삭제되었습니다.");
 			<%

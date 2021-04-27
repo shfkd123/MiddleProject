@@ -19,9 +19,7 @@
 		FROM   COMMUNITY_BOARD A INNER JOIN PROJECT B ON(A.PJ_NM = B.PJ_NM)
 		ORDER  BY 1 DESC
 	</select>
-	
-	<select id="getCommunityBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.CommunityBoardVO">
-		SELECT A.CB_NM     cbNm
+<!-- 		SELECT A.CB_NM     cbNm
 			, A.PJ_NM      pjNm
 			, A.CB_TITLE   cbTitle
 			, A.CB_CONTENT cbContent
@@ -35,7 +33,23 @@
 		FROM   COMMUNITY_BOARD A INNER JOIN PROJECT B ON(A.PJ_NM = B.PJ_NM)
 		WHERE 1=1
 		AND A.CB_NM = #cbNm#
-		ORDER  BY 1 DESC	
+		ORDER  BY 1 DESC -->	
+	
+	<select id="getCommunityBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.CommunityBoardVO">
+		SELECT A.CB_NM     cbNm
+			, A.PJ_NM      pjNm
+			, A.CB_TITLE   cbTitle
+			, A.CB_CONTENT cbContent
+			, A.CB_DATE    cbDate
+			, (            
+			 	SELECT USER_NICKNAME 
+			 	FROM   TB_USER
+			 	WHERE  USER_ID = A.USER_ID
+			 	)            cbWriter
+			, A.ATCH_FILE_ID atchFileId
+		FROM   COMMUNITY_BOARD
+		WHERE 1=1
+		AND A.CB_NM = #cbNm#
 	</select>
 	
 	<insert id="insertCommunityBoard" parameterClass="kr.or.ddit.board.vo.CommunityBoardVO">

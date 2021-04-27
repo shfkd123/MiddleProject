@@ -15,7 +15,14 @@ public class ReportBoardVO {
 	private String reportDate;
 	private String reportWriter;
 	private long atchFileId = -1;
+	private int rNum;
 	
+	public int getrNum() {
+		return rNum;
+	}
+	public void setrNum(int rNum) {
+		this.rNum = rNum;
+	}
 	public String getReportNm() {
 		return reportNm;
 	}

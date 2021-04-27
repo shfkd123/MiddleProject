@@ -9,6 +9,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import kr.or.ddit.board.dao.IReportBoardDao;
 import kr.or.ddit.board.dao.ReportBoardDaoImpl;
 import kr.or.ddit.board.vo.ReportBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 
@@ -32,10 +33,10 @@ public class ReportServiceImpl implements IReportService{
 	}	
 
 	@Override
-	public List<ReportBoardVO> getAllReportBoardList() {
+	public List<ReportBoardVO> getAllReportBoardList(PagingVO pv) {
 		List<ReportBoardVO> list = new ArrayList<>();
 		try {
-			list = reportBoardDao.getAllReportBoard(smc);
+			list = reportBoardDao.getAllReportBoard(smc, pv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -96,5 +97,16 @@ public class ReportServiceImpl implements IReportService{
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public int getAllReportListCount() {
+		int cnt = 0;
+		try {
+			cnt = reportBoardDao.getAllReportListCount(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
 	}
 }

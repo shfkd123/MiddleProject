@@ -9,6 +9,7 @@ public class FreeBoardVO {
 	private String freeDate;
 	private String freeWriter;
 	private long atchFileId = -1;
+	private int rNum;
 	
 	public String getFreeNm() {
 		return freeNm;
@@ -51,6 +52,12 @@ public class FreeBoardVO {
 	}
 	public void setAtchFileId(long atchFileId) {
 		this.atchFileId = atchFileId;
+	}
+	public int getRNum() {
+		return rNum;
+	}
+	public void setRNum(int rNum) {
+		this.rNum = rNum;
 	}
 	
 	

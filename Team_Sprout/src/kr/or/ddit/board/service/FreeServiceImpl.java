@@ -9,6 +9,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import kr.or.ddit.board.dao.FreeBoardDaoImpl;
 import kr.or.ddit.board.dao.IFreeBoardDao;
 import kr.or.ddit.board.vo.FreeBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class FreeServiceImpl implements IFreeService{
@@ -31,10 +32,10 @@ public class FreeServiceImpl implements IFreeService{
 	}
 
 	@Override
-	public List<FreeBoardVO> getAllFreeBoardList() {
+	public List<FreeBoardVO> getAllFreeBoardList(PagingVO pv) {
 		List<FreeBoardVO> list = new ArrayList<>();
 		try {
-			list = boardDao.getAllFreeBoard(smc);
+			list = boardDao.getAllFreeBoard(smc, pv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -94,5 +95,16 @@ public class FreeServiceImpl implements IFreeService{
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	@Override
+	public int getAllFreeBoardListCount() {
+		int cnt = 0;
+		try {
+			cnt = boardDao.getAllFreeBoardListCount(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
 	}
 }

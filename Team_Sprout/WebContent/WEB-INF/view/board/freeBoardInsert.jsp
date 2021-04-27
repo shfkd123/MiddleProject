@@ -71,9 +71,7 @@ div.col-sm-12 {
 							<input type="file" multiple="multiple" id="attachFileId" name="atchFileId" onchange="setThumbnail()">
 							<input type="hidden" name="flag" id="flag">
 						</form>
-							<div style="height: 100px">
 								<div id="imgPrint" style="width: 500px;"></div>
-							</div>
 					</td>
 				</tr>
 			</tbody>

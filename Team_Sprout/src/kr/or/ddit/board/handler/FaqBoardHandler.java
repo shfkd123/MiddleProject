@@ -223,25 +223,19 @@ public class FaqBoardHandler implements CommandHandler{
 		
 		PagingVO pagingVO = new PagingVO();
 		
-		
-		
-		FaqBoardVO boardVO = new FaqBoardVO();
-		
-		BeanUtils.populate(boardVO, req.getParameterMap());
-		
 		IFaqService service = FaqServiceImpl.getInstance();
 		
-		int totalCount = service.getAllFaqListCount();
+		int totalCount = service.getAllFaqBoardListCount();
 		pagingVO.setTotalCount(totalCount);
 		pagingVO.setCurrentPageNo(pageNo);
-		pagingVO.setCountPerPage(5);
+		pagingVO.setCountPerPage(15);
 		pagingVO.setPageSize(5);
 
-		List<FaqBoardVO> list = service.getAllFaqBoardList(pagingVO);
+		List<FaqBoardVO> list = service.getAllFaqBoard(pagingVO);
 		
-		   
+		req.setAttribute("totalCount", totalCount);
 		req.setAttribute("list", list);
-		req.setAttribute("pagingVO", pagingVO);
+		req.setAttribute("pv", pagingVO);
 		
 		return "/WEB-INF/view/board/faqBoardList.jsp";
 	}

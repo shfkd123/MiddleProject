@@ -14,6 +14,7 @@ public class UserVO {
 	private String userZip;
 	private String userAdd1;
 	private String userAdd2;
+	//private String userMoney = null;
 	private int userMoney = 0;
 	private String adminCk = "N";
 	
@@ -95,6 +96,7 @@ public class UserVO {
 	public void setUserMoney(int userMoney) {
 		this.userMoney = userMoney;
 	}
+	
 	public String getAdminCk() {
 		return adminCk;
 	}

@@ -9,6 +9,7 @@ public class FaqBoardVO {
 	private String faqDate;
 	private String faqWriter;
 	private long atchFileId = -1;
+	private int rNum;
 	
 	private int firstRecNo;				// 첫번째 레코드 번호
 	private int lastRecNo;
@@ -66,5 +67,11 @@ public class FaqBoardVO {
 	}
 	public void setAtchFileId(long atchFileId) {
 		this.atchFileId = atchFileId;
+	}
+	public int getrNum() {
+		return rNum;
+	}
+	public void setrNum(int rNum) {
+		this.rNum = rNum;
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.vo.FreeBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 
 public interface IFreeBoardDao {
 	
@@ -15,7 +16,15 @@ public interface IFreeBoardDao {
 	 * @return List<FreeBoardVO>
 	 * @throws SQLException
 	 */
-	public List<FreeBoardVO> getAllFreeBoard(SqlMapClient smc) throws SQLException;
+	public List<FreeBoardVO> getAllFreeBoard(SqlMapClient smc, PagingVO pv) throws SQLException;
+	
+	/**
+	 * 전체 게시글 수를 반환하는 메서드
+	 * @param smc
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getAllFreeBoardListCount(SqlMapClient smc) throws SQLException;
 	
 	/**
 	 * 게시글을 확인하는 메서드

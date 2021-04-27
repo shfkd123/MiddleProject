@@ -9,6 +9,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 import kr.or.ddit.boardComment.dao.IFreeCmDao;
 import kr.or.ddit.boardComment.dao.FreeCmDaoImpl;
 import kr.or.ddit.boardComment.vo.FreeCmVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class FreeCmServiceImpl implements IFreeCmService{
@@ -30,10 +31,10 @@ public class FreeCmServiceImpl implements IFreeCmService{
 	}
 	
 	@Override
-	public List<FreeCmVO> getAllFreeCm(String freeNm) {
+	public List<FreeCmVO> getAllFreeCm(PagingVO pv) {
 		List<FreeCmVO> list = new ArrayList<>();
 		try {
-			list = freeCmDao.getAllFreeCm(smc, freeNm);
+			list = freeCmDao.getAllFreeCm(smc, pv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -67,6 +68,17 @@ public class FreeCmServiceImpl implements IFreeCmService{
 		int cnt = 0;
 		try {
 			cnt = freeCmDao.deleteFreeCm(smc, fcv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public int getAllFreeCmCount(String freeNm) {
+		int cnt = 0;
+		try {
+			cnt = freeCmDao.getAllFreeCmCount(smc, freeNm);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

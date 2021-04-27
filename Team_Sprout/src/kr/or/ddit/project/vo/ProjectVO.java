@@ -1,26 +1,41 @@
 package kr.or.ddit.project.vo;
 
 public class ProjectVO {
-	private String pjNm;
+	private long pjNm;
 	private String pjType;
 	private String pjName;
 	private String pjContent;
-	private String pjPriceAmount;
+	private long pjPriceAmount;
 	private String pjCondition;
 	private String pjDday;
 	private String pjOpenday;
 	private String pjReward;
 	private String userId;
 	private long atchFileId = - 1;
-	private String PjCategory;
+	private String pjCategory;
+	private String pjAcntBank;
+	private String pjAcntNum;
+	private String pjAcntHolder;
 
 	
 	
 	
-	public String getPjNm() {
+	public String getPjAcntBank() {
+		return pjAcntBank;
+	}
+	public void setPjAcntBank(String pjAcntBank) {
+		this.pjAcntBank = pjAcntBank;
+	}
+	public String getPjAcntNum() {
+		return pjAcntNum;
+	}
+	public void setPjAcntNum(String pjAcntNum) {
+		this.pjAcntNum = pjAcntNum;
+	}
+	public long getPjNm() {
 		return pjNm;
 	}
-	public void setPjNm(String pjNm) {
+	public void setPjNm(long pjNm) {
 		this.pjNm = pjNm;
 	}
 	public String getPjType() {
@@ -47,10 +62,10 @@ public class ProjectVO {
 	public void setAtchFileId(long atchFileId) {
 		this.atchFileId = atchFileId;
 	}
-	public String getPjPriceAmount() {
+	public long getPjPriceAmount() {
 		return pjPriceAmount;
 	}
-	public void setPjPriceAmount(String pjPriceAmount) {
+	public void setPjPriceAmount(long pjPriceAmount) {
 		this.pjPriceAmount = pjPriceAmount;
 	}
 	public String getPjCondition() {
@@ -84,9 +99,15 @@ public class ProjectVO {
 		this.userId = userId;
 	}
 	public String getPjCategory() {
-		return PjCategory;
+		return pjCategory;
 	}
 	public void setPjCategory(String pjCategory) {
-		PjCategory = pjCategory;
+		this.pjCategory = pjCategory;
+	}
+	public String getPjAcntHolder() {
+		return pjAcntHolder;
+	}
+	public void setPjAcntHolder(String pjAcntHolder) {
+		this.pjAcntHolder = pjAcntHolder;
 	}
 }

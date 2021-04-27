@@ -7,7 +7,26 @@
 <!-- 프로젝트 수정은 불가능합니다 -->
 
 	<select id="getAllProject" parameterClass="kr.or.ddit.project.vo.ProjectVO" resultClass="kr.or.ddit.project.vo.ProjectVO">
- 			
+		SELECT   A.PJ_NM            pjNm
+				,A.PJ_TYPE          pjType
+				,A.PJ_NAME          pjName
+				,A.PJ_CONTENT       pjContent
+				,A.PJ_PRICE_AMOUNT  pjPriceAmount
+				,A.PJ_CONDITION     pjCondition
+				,A.PJ_DDAY          pjDday
+				,A.PJ_OPENDAY       pjOpenday
+				,A.PJ_REWARD        pjReward
+				,(
+				 	SELECT USER_NICKNAME 
+				 	FROM   TB_USER
+				 	WHERE  USER_ID = A.USER_ID
+			 	)                   pjWriter
+				,NVL(ATCH_FILE_ID, 0)       atchFileId
+				,A.PJ_CATEGORY      pjCategory
+				,A.PJ_ACNTBANK      pjAcntBank
+				,A.PJ_ACNTNUM       pjAcntNum
+				,A.PJ_ACNTHOLDER    pjAcntHolder
+		FROM  PROJECT A		
 	</select>
 
 	<select id="getProject" parameterClass="String" resultClass="kr.or.ddit.project.vo.ProjectVO">
@@ -27,12 +46,18 @@
 			 	)                   pjWriter
 				,NVL(ATCH_FILE_ID, 0)       atchFileId
 				,A.PJ_CATEGORY      pjCategory
+				,A.PJ_ACNTBANK      pjAcntBank
+				,A.PJ_ACNTNUM       pjAcntNum
+				,A.PJ_ACNTHOLDER    pjAcntHolder
 		FROM  PROJECT A		
 		WHERE  1=1
 		AND    A.PJ_NM = #pjNm#
 	</select>
 	
 	<insert id="insertProject" parameterClass="kr.or.ddit.project.vo.ProjectVO">
+		<selectKey keyProperty="pjNm" resultClass="Long">
+		SELECT PROJECT_SEQ.NEXTVAL AS pjNm FROM DUAL
+		</selectKey>
 	    INSERT INTO PROJECT(
 	        PJ_NM
 	        , PJ_TYPE
@@ -45,10 +70,13 @@
 	        , PJ_REWARD
 	        , USER_ID
 	        , ATCH_FILE_ID
-	        , PJ_CATEGORY      
+	        , PJ_CATEGORY
+	        , PJ_ACNTBANK
+	        , PJ_ACNTNUM
+	        , PJ_ACNTHOLDER       
 	        ) 
 	    VALUES (
-	        PROJECT_SEQ.NEXTVAL 
+	        #pjNm# 
 	        , #pjType#          
 	        , #pjName#          
 	        , #pjContent#       
@@ -59,9 +87,11 @@
 	        , #pjReward#
 	        , #userId#
 	        , #atchFileId#   
-	        , #pjCategory#     
-	    );
-	    
+	        , #pjCategory#
+	        , #pjAcntBank#
+	        , #pjAcntNum#
+	        , #pjAcntHolder#     
+	    )
 	</insert>
 	
 	<delete id="deleteProject" parameterClass="kr.or.ddit.project.vo.ProjectVO">
@@ -82,6 +112,9 @@
 				,b.user_nickname    pjWriter
 				,A.ATCH_FILE_ID     atchFileId
 				,A.PJ_CATEGORY      pjCategory
+				,A.PJ_ACNTBANK      pjAcntBank
+				,A.PJ_ACNTNUM       pjAcntNum
+				,A.PJ_ACNTHOLDER    pjAcntHolder
 		FROM   PROJECT A INNER JOIN TB_USER B ON(A.USER_ID = B.USER_ID)
         WHERE 1=1
 		OR     A.PJ_TYPE       LIKE '%' || #pjType#      || '%'                                  

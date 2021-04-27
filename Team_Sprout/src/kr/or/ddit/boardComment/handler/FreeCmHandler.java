@@ -16,6 +16,7 @@ import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
 import kr.or.ddit.comm.vo.AtchFileVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.user.vo.UserVO;
 
 public class FreeCmHandler implements CommandHandler {
@@ -53,6 +54,18 @@ public class FreeCmHandler implements CommandHandler {
 				
 				req.setAttribute("atchFileList", atchFileList);
 			}
+			
+			int pageNo = req.getParameter("pageNo") == null ? 
+					1 : Integer.parseInt(req.getParameter("pageNo"));
+			PagingVO pv = new PagingVO();
+			
+			int totalCount = service.getAllFreeCmCount(req.getParameter("freeNmCm"));
+			pv.setBoardNo(req.getParameter("freeNmCm"));
+			pv.setTotalCount(totalCount);
+			pv.setCurrentPageNo(pageNo);
+			pv.setCountPerPage(10);
+			pv.setPageSize(5);
+			
 			FreeCmVO fcv = new FreeCmVO();
 			fcv.setFcContent(req.getParameter("fcContent"));
 			fcv.setFcWriter(userId);
@@ -61,13 +74,14 @@ public class FreeCmHandler implements CommandHandler {
 			
 			service.insertFreeCm(fcv);
 			
-			List<FreeCmVO> freeCmList = service.getAllFreeCm(req.getParameter("freeNmCm"));
+			List<FreeCmVO> freeCmList = service.getAllFreeCm(pv);
 			
 			req.setAttribute("freeCmList", freeCmList);
+			req.setAttribute("pv", pv);
 			
 			return "/WEB-INF/view/board/freeBoardSelect.jsp";
 			
-		} else if ("U".equals(flag)) { // 댓글 목록
+		} else if ("U".equals(flag)) { // 댓글 수정
 			FreeBoardVO fv = new FreeBoardVO();
 			fv.setFreeNm(req.getParameter("freeNmCm"));
 			fv = boardService.getFreeBoard(fv);
@@ -84,28 +98,42 @@ public class FreeCmHandler implements CommandHandler {
 				
 				req.setAttribute("atchFileList", atchFileList);
 			}
+			
 			FreeCmVO fcv = new FreeCmVO();
 			fcv.setFcContent(req.getParameter("fcContent"));
 			fcv.setFcNm(req.getParameter("fcNmCm"));
 			fcv.setFreeNm(req.getParameter("freeNmCm"));
 			service.updateFreeCm(fcv);
-			List<FreeCmVO> cmList = service.getAllFreeCm(req.getParameter("freeNmCm"));
 			
-			req.setAttribute("freeCmList", cmList);
+			int pageNo = req.getParameter("pageNo") == null ? 
+					1 : Integer.parseInt(req.getParameter("pageNo"));
+			PagingVO pv = new PagingVO();
+			
+			int totalCount = service.getAllFreeCmCount(req.getParameter("freeNmCm"));
+			pv.setBoardNo(req.getParameter("freeNmCm"));
+			pv.setTotalCount(totalCount);
+			pv.setCurrentPageNo(pageNo);
+			pv.setCountPerPage(10);
+			pv.setPageSize(5);
+			
+			List<FreeCmVO> freeCmList = service.getAllFreeCm(pv);
+			
+			req.setAttribute("freeCmList", freeCmList);
+			req.setAttribute("pv", pv);
 			
 			return "/WEB-INF/view/board/freeBoardSelect.jsp";
 			
-		} else if("D".equals(flag)) { // 댓글 수정
+		} else if("D".equals(flag)) { // 댓글 삭제
 			FreeCmVO fcv = new FreeCmVO();
 			FreeBoardVO fv = new FreeBoardVO();
 			fv.setFreeNm(req.getParameter("freeNmCm"));
 			fv = boardService.getFreeBoard(fv);
 			
-			fcv.setFreeNm(req.getParameter("fcNm"));
+			fcv.setFcNm(req.getParameter("fcNmCm"));
 			fcv.setFreeNm(req.getParameter("freeNmCm"));
 			
 			service.deleteFreeCm(fcv);
-			List<FreeCmVO> freeCmList = service.getAllFreeCm(req.getParameter("fcNmCm"));
+			
 			if(fv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
 				AtchFileVO fileVO = new AtchFileVO();
 				
@@ -117,11 +145,64 @@ public class FreeCmHandler implements CommandHandler {
 				
 				req.setAttribute("atchFileList", atchFileList);
 			}
-			req.setAttribute("freeCmList", freeCmList);
+			
+			int pageNo = req.getParameter("pageNo") == null ? 
+					1 : Integer.parseInt(req.getParameter("pageNo"));
+			PagingVO pv = new PagingVO();
+			
+			int totalCount = service.getAllFreeCmCount(req.getParameter("freeNmCm"));
+			pv.setBoardNo(req.getParameter("freeNmCm"));
+			pv.setTotalCount(totalCount);
+			pv.setCurrentPageNo(pageNo);
+			pv.setCountPerPage(10);
+			pv.setPageSize(5);
+			
+			List<FreeCmVO> freeCmList = service.getAllFreeCm(pv);
 			req.setAttribute("fv", fv);
+			req.setAttribute("freeCmList", freeCmList);
+			req.setAttribute("pv", pv);
 			
 			return "/WEB-INF/view/board/freeBoardSelect.jsp";
 		} 
+		String freeNm = req.getParameter("freeNm");
+		
+		FreeBoardVO fv = new FreeBoardVO();
+		fv.setFreeNm(freeNm);
+		
+		fv = boardService.getFreeBoard(fv);
+		
+		if(fv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
+			AtchFileVO fileVO = new AtchFileVO();
+			
+			fileVO.setAtchFileId(fv.getAtchFileId());
+			
+			IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+			
+			List<AtchFileVO> atchFileList = fileService.getAtchFileList(fileVO);
+			
+			req.setAttribute("atchFileList", atchFileList);
+		}
+		
+		req.setAttribute("fv", fv);
+		
+		
+		int pageNo = req.getParameter("pageNo") == null ?
+				1 : Integer.parseInt(req.getParameter("pageNo"));
+		
+		PagingVO pv = new PagingVO();
+		
+		int totalCount = service.getAllFreeCmCount(freeNm);
+		pv.setBoardNo(req.getParameter("freeNm"));
+		pv.setTotalCount(totalCount);
+		pv.setCurrentPageNo(pageNo);
+		pv.setCountPerPage(10);
+		pv.setPageSize(5);
+		
+		List<FreeCmVO> cmList = service.getAllFreeCm(pv);
+		
+		req.setAttribute("freeCmList", cmList);
+		req.setAttribute("pv", pv);
+		
 		return "/WEB-INF/view/board/freeBoardSelect.jsp";
 	}
 

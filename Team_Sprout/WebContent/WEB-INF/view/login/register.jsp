@@ -24,7 +24,6 @@
 			<img src="/Team_Sprout/images/logo.png" width="100px">
 		</div>
 		<form id="regiForm">
-
 			<!-- 아이디 -->
 			<div class="field">
 				<input type="text" id="userId" name="userId" required> <label>아이디</label>
@@ -70,7 +69,7 @@
 				<label>닉네임</label>
 			</div>
 
-			<div class="span">
+			<div class="span" align="center">
 				<span id="spNickNameReq"
 					style="display: none; color: red"> 숫자, 영어, 한국어와 언더스코어, 공백을
 					허용하며 최소 2자 이상 </span>
@@ -103,9 +102,9 @@
 				<br>
 				<h3>성별</h3>
 				<div class="content">
-					<label><input type="radio" id="male" value="남자"
+					<label><input type="radio" name="userGender" id="male" value="남자"
 						checked="checked"> 남자</label> 
-					<label><input type="radio" value="여자"
+					<label><input type="radio" name="userGender" value="여자"
 						 id="female"> 여자</label>
 				</div>
 			</div>
@@ -158,7 +157,7 @@
 			<div class="field">
 				<input type="hidden" id="flag" name="flag" value="C">
 				<input type="hidden" id="userBir" name="userBir">
-				<input type="hidden" id="userGender" name="userGender">
+<!-- 				<input type="hidden" id="userGender" name="userGender"> -->
 				<input type="hidden" id="userLikey" name="likeyCode">
 				<input type="button" onclick="save()" value="회원가입">
 			</div>

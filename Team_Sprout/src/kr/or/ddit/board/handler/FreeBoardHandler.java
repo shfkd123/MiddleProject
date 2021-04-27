@@ -20,6 +20,7 @@ import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
 import kr.or.ddit.comm.vo.AtchFileVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.user.vo.UserVO;
 import kr.or.ddit.util.FileUploadRequestWrapper;
 
@@ -165,13 +166,27 @@ public class FreeBoardHandler implements CommandHandler {
 				
 				req.setAttribute("atchFileList", atchFileList);
 			}
+			
 			req.setAttribute("fv", fv);
 			
 			IFreeCmService cmService = FreeCmServiceImpl.getInstance();
 			
-			List<FreeCmVO> cmList = cmService.getAllFreeCm(freeNm);
+			int pageNo = req.getParameter("pageNo") == null ?
+					1 : Integer.parseInt(req.getParameter("pageNo"));
+			
+			PagingVO pv = new PagingVO();
+			
+			int totalCount = cmService.getAllFreeCmCount(freeNm);
+			pv.setBoardNo(req.getParameter("freeNm"));
+			pv.setTotalCount(totalCount);
+			pv.setCurrentPageNo(pageNo);
+			pv.setCountPerPage(10);
+			pv.setPageSize(5);
+			
+			List<FreeCmVO> cmList = cmService.getAllFreeCm(pv);
 			
 			req.setAttribute("freeCmList", cmList);
+			req.setAttribute("pv", pv);
 			
 			return "/WEB-INF/view/board/freeBoardSelect.jsp";
 			
@@ -215,15 +230,24 @@ public class FreeBoardHandler implements CommandHandler {
 		}
 		
 		// 모든 게시글 조회
-		FreeBoardVO boardVO = new FreeBoardVO();
+		int pageNo = req.getParameter("pageNo") == null ?
+				1 : Integer.parseInt(req.getParameter("pageNo"));
 		
-		BeanUtils.populate(boardVO, req.getParameterMap());
+		PagingVO pv = new PagingVO();
 		
 		IFreeService service = FreeServiceImpl.getInstance();
 		
-		List<FreeBoardVO> list = service.getAllFreeBoardList();
+		int totalCount = service.getAllFreeBoardListCount();
+		pv.setTotalCount(totalCount);
+		pv.setCurrentPageNo(pageNo);
+		pv.setCountPerPage(15);
+		pv.setPageSize(5);
 		
+		List<FreeBoardVO> list = service.getAllFreeBoardList(pv);
+		
+		req.setAttribute("totalCount", totalCount);
 		req.setAttribute("list", list);
+		req.setAttribute("pv", pv);
 		
 		return "/WEB-INF/view/board/freeBoardList.jsp";
 	}

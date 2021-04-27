@@ -3,7 +3,7 @@
 	PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
 	"http://ibatis.apache.org/dtd/sql-map-2.dtd">
 
-<sqlMap namespace="project">
+<sqlMap namespace="projectOption">
 
 	<select id="getAllProjectOption" parameterClass="kr.or.ddit.project.vo.ProjectOptionVO" resultClass="kr.or.ddit.project.vo.ProjectOptionVO">
 		SELECT  PO_NM          poNm
@@ -34,14 +34,13 @@
 			,PO_CONTENT
 			,PO_ADD_PRICE
 			,PJ_NM
-	    	)
-	    VALUES (
-		    	
-	    	#poName#
+	    ) VALUES (
+		    PROJECT_OPTION_SEQ.NEXTVAL
+	    	,#poName#
 	    	,#poContent#
 	    	,#poAddPrice#
 	    	,#pjNm#
-	    )	
+	    )
 	</insert>
 	                                                             
 </sqlMap>

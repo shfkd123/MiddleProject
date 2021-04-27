@@ -14,7 +14,7 @@
 		
 	UserVO uv = (UserVO)session.getAttribute("userVO");
 	
-	String pjNm = pv.getPjNm();
+	long pjNm = pv.getPjNm();
 	
 	pov.setPjNm(pjNm);
 

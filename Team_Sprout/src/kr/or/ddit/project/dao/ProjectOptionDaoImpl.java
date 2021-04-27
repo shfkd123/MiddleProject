@@ -6,7 +6,6 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.project.vo.ProjectOptionVO;
-import kr.or.ddit.project.vo.ProjectVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class ProjectOptionDaoImpl implements IProjectOptionDao {
@@ -30,7 +29,7 @@ public class ProjectOptionDaoImpl implements IProjectOptionDao {
 	}
 
 	@Override
-	public ProjectOptionVO getProjectOption(SqlMapClient smc, String pjNm) throws SQLException {
+	public ProjectOptionVO getProjectOption(SqlMapClient smc, long pjNm) throws SQLException {
 		return (ProjectOptionVO) smc.queryForObject("projectOption.getProjectOption", pjNm);
 	}
 

@@ -6,6 +6,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.vo.QnaBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 
 public interface IQnaBoardDao {
 	
@@ -15,7 +16,15 @@ public interface IQnaBoardDao {
 	 * @return List<QnaBoardVO>
 	 * @throws SQLException
 	 */
-	public List<QnaBoardVO> getAllQnaBoard(SqlMapClient smc) throws SQLException;
+	public List<QnaBoardVO> getAllQnaBoard(SqlMapClient smc, PagingVO pv) throws SQLException;
+	
+	/**
+	 * 전체 게시글 수를 반환하는 메서드
+	 * @param smc
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getAllQnaBoardListCount(SqlMapClient smc) throws SQLException;
 	
 	/**
 	 * 게시글을 확인하는 메서드

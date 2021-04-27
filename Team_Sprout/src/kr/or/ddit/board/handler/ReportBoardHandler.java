@@ -11,14 +11,18 @@ import org.apache.commons.fileupload.FileItem;
 
 import kr.or.ddit.board.service.FaqServiceImpl;
 import kr.or.ddit.board.service.IFaqService;
+import kr.or.ddit.board.service.IQnaService;
 import kr.or.ddit.board.service.IReportService;
+import kr.or.ddit.board.service.QnaServiceImpl;
 import kr.or.ddit.board.service.ReportServiceImpl;
 import kr.or.ddit.board.vo.FaqBoardVO;
+import kr.or.ddit.board.vo.QnaBoardVO;
 import kr.or.ddit.board.vo.ReportBoardVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
 import kr.or.ddit.comm.vo.AtchFileVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.user.vo.UserVO;
 import kr.or.ddit.util.FileUploadRequestWrapper;
 
@@ -66,16 +70,21 @@ public class ReportBoardHandler implements CommandHandler {
 				rbv.setReportContent(reportContent);
 				rbv.setReportWriter(userId);
 				
-				if((String)req.getParameter("attachFile") == "") {
-					FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
-					AtchFileVO atchFileVO = new AtchFileVO();
+				FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
+				
+				AtchFileVO atchFileVO = new AtchFileVO();
+				
+				atchFileVO.setAtchFileId(req.getParameter("atchFileId") == null ?
+						-1 : Long.parseLong(req.getParameter("atchFileId")));
+				
+				if(item != null && !item.getName().equals("")) {
 					
 					IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-					atchFileVO = fileService.saveAtchFile(item, userId);
+					
+					atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
 					
 					rbv.setAtchFileId(atchFileVO.getAtchFileId());
 				}
-				
 				int cnt = service.insertReportBoard(rbv);
 
 				String msg = "";
@@ -212,15 +221,29 @@ public class ReportBoardHandler implements CommandHandler {
 		}
 		
 		// 모든 게시글 조회
+		int pageNo = 
+				req.getParameter("pageNo") == null ? 
+				1 : Integer.parseInt(req.getParameter("pageNo"));
+			
+		PagingVO pagingVO = new PagingVO();
+		
+		IReportService service = ReportServiceImpl.getInstance();
+		
+		int totalCount = service.getAllReportListCount();
+		pagingVO.setTotalCount(totalCount);
+		pagingVO.setCurrentPageNo(pageNo);
+		pagingVO.setCountPerPage(15);
+		pagingVO.setPageSize(5);
+		
 		ReportBoardVO boardVO = new ReportBoardVO();
 		
 		BeanUtils.populate(boardVO, req.getParameterMap());
 		
-		IReportService service = ReportServiceImpl.getInstance();
+		List<ReportBoardVO> list = service.getAllReportBoardList(pagingVO);
 		
-		List<ReportBoardVO> list = service.getAllReportBoardList();
-		
+		req.setAttribute("totalCount", totalCount);
 		req.setAttribute("list", list);
+		req.setAttribute("pv", pagingVO);
 		
 		return "/WEB-INF/view/board/reportBoardList.jsp";
 	}

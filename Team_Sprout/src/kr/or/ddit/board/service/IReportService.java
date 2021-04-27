@@ -3,6 +3,7 @@ package kr.or.ddit.board.service;
 import java.util.List;
 
 import kr.or.ddit.board.vo.ReportBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 
 public interface IReportService {
 
@@ -11,7 +12,13 @@ public interface IReportService {
 	 * 신고 게시판 전체 목록 조회 메서드
 	 * @return List<ReportBoardVO>
 	 */
-	public List<ReportBoardVO> getAllReportBoardList();
+	public List<ReportBoardVO> getAllReportBoardList(PagingVO pv);
+	
+	/**
+	 * 신고게시판 모든 글 수 조회 메서드
+	 * @return
+	 */
+	public int getAllReportListCount();
 	
 	/**
 	 * 게시글 조회 메서드
