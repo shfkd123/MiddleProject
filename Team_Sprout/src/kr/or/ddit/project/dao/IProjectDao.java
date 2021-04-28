@@ -50,12 +50,21 @@ public interface IProjectDao {
 	public int deleteProject(SqlMapClient smc, ProjectVO pv) throws SQLException;
 	
 	/**
-	 * 프로젝트를 검색하는 메서드
+	 * 프로젝트 이름을 검색하는 메서드
 	 * @param smc
 	 * @return
 	 * @throws SQLException
 	 */
-	public List<ProjectVO> searchProject(SqlMapClient smc, String str) throws SQLException;
+	public List<ProjectVO> searchProject(SqlMapClient smc, String pjName) throws SQLException;
+
+	/**
+	 * 프로젝트 카테고리 검색
+	 * @param smc
+	 * @param pjCategory
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<ProjectVO> searchProjectSelect(SqlMapClient smc, String pjCategory) throws SQLException;
 
 	/**
 	 * 전체 프로젝트 카운트
@@ -64,6 +73,7 @@ public interface IProjectDao {
 	 * @throws SQLException
 	 */
 	public int getAllProjectListCount(SqlMapClient smc) throws SQLException;
+
 }
 
 

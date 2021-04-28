@@ -21,7 +21,7 @@ public class UserPointHandler implements CommandHandler {
 	public boolean isRedirect(HttpServletRequest req) {
 		String flag = (String) req.getParameter("flag");
 
-		if ("C".equals(flag) || "U".equals(flag)) {
+		if ("C".equals(flag) || "U".equals(flag) || "UF".equals(flag)) {
 			if (req.getMethod().equals("GET")) {
 				return false;
 			} else {
@@ -43,13 +43,13 @@ public class UserPointHandler implements CommandHandler {
 		if (req.getMethod().equals("GET")) {
 			return VIEW_PAGE;
 		} else {
+			
 			if ("U".equals(flag)) { // 포인트 정보 수정
 
 				HttpSession session = req.getSession();
 				
 				UserVO uv = (UserVO) session.getAttribute("userVO");
-				//객체 생성
-				IUserService userService = UserServiceImpl.getInstance();
+		
 				
 				int userMoney = Integer.parseInt(req.getParameter("userMoney"));			
 
@@ -67,13 +67,53 @@ public class UserPointHandler implements CommandHandler {
 				} else {
 					msg = "실패";
 				}
+				UserVO userv = new UserVO();
+				
+				userv = service.getUser(uv.getUserId());
+				
+				session.setAttribute("userVO", userv);
 				
 				String redirectUrl = req.getContextPath() + "/mypage/userPointHandler.do?msg=" + URLEncoder.encode(msg, "UTF-8");
 				
 				return redirectUrl;
 			}
+			else if("UF".equals(flag)) {
+				HttpSession session = req.getSession();
+				
+				UserVO uv = (UserVO) session.getAttribute("userVO");
+				
+				int userMoney = Integer.parseInt(req.getParameter("userMoney"));			
 
-		/*	// 포인트 정보 조회
+				UserVO userVO = new UserVO();
+				
+				userVO.setUserMoney(userMoney);
+				userVO.setUserId(uv.getUserId());
+				
+				int cnt = service.userPointUpdateRefund(userVO);
+
+				String msg = "";
+				if (cnt > 0) {
+					msg = "성공";
+				} else {
+					msg = "실패";
+				}
+				
+				UserVO userv = new UserVO();
+			
+				userv = service.getUser(uv.getUserId());
+				
+				session.setAttribute("userVO", userv);
+				
+				String redirectUrl = req.getContextPath() + "/mypage/userPointHandler.do?msg=" + URLEncoder.encode(msg, "UTF-8");
+				
+				return redirectUrl;
+			}
+			return VIEW_PAGE;
+		}
+	}
+}
+
+/*	// 포인트 정보 조회
 			IUserService userService = UserServiceImpl.getInstance();
 
 			String userId = req.getParameter("userId");
@@ -81,8 +121,3 @@ public class UserPointHandler implements CommandHandler {
 			int point = userService.userPoint(userId);
 
 			req.setAttribute("point", point);*/
-
-			return VIEW_PAGE;
-		}
-	}
-}

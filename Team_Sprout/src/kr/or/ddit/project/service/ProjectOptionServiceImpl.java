@@ -42,14 +42,14 @@ public class ProjectOptionServiceImpl implements IProjectOptionService{
 	}
 
 	@Override
-	public ProjectOptionVO getProjectOption(long pjNm) {
-		ProjectOptionVO pov = new ProjectOptionVO();
+	public List<ProjectOptionVO> getProjectOption(ProjectOptionVO pov) {
+		List<ProjectOptionVO> list = new ArrayList<>();
 		try {
-			pov = projectOptionDao.getProjectOption(smc, pov.getPoNm());
+			list = projectOptionDao.getProjectOption(smc, pov);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return pov;
+		return list;
 	}
 
 	@Override

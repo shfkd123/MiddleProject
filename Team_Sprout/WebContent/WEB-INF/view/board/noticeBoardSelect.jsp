@@ -81,7 +81,7 @@ div.col-sm-12 {
 			</thead>
 				<tr>
 					<th>작성자</th>
-					<td colspan="3"><%=noticeVO.getUserId()%></td>
+					<td colspan="3"><%=noticeVO.getNoticeWriter()%></td>
 				</tr>
 				<tr>
 					<th>제목</th>

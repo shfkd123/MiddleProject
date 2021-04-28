@@ -41,11 +41,21 @@ public interface IProjectService {
 	 * @param pv
 	 * @return List<ProjectVO>
 	 */
-	public List<ProjectVO> searchProject(String str);
+	public List<ProjectVO> searchProject(String pjName);
+	
+	/**
+	 * 프로젝트 카테고리 검색하는 메서드 
+	 * @param pjCategory
+	 * @return
+	 */
+	
+	public List<ProjectVO> searchProjectSelect(String pjCategory);
 	
 	/**
 	 * 전체 프로젝트 게시글 수 반환하는 메서드
 	 * @return 전체 게시글 수 
 	 */
 	public int getAllProjectListCount();
-}
+
+
+	}

@@ -1,20 +1,20 @@
-<%@page import="kr.or.ddit.comm.vo.AtchFileVO"%>
 <%@page import="kr.or.ddit.board.vo.NoticeBoardVO"%>
+<%@page import="kr.or.ddit.comm.vo.AtchFileVO"%>
 <%@page import="java.util.List"%>
 <%@page import="kr.or.ddit.user.vo.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/view/include/head.jsp"%>
-    <%
-    NoticeBoardVO noticeVO = (NoticeBoardVO)request.getAttribute("noticeNm");
-    List<AtchFileVO> atchFileList = (List<AtchFileVO>) request.getAttribute("atchFileList");
-    %>
+<%
+	NoticeBoardVO nv = (NoticeBoardVO)request.getAttribute("nv");
 
-<!DOCTYPE html">
+	List<AtchFileVO> atchFileList = (List<AtchFileVO>) request.getAttribute("atchFileList");
+%>
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>게시글 수정</title>
+<meta charset="UTF-8">
+<title>공지사항 수정</title>
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/main.css">
 <link rel="stylesheet" href="/Team_Sprout/css/main/boardWrite.css">
@@ -47,6 +47,7 @@ div.col-sm-12 {
 	<!-- 전체-->
 	<div class="col-sm-12">
 
+
 		<!-- 왼쪽 여백 -->
 		<div class="col-sm-2"></div>
 
@@ -55,7 +56,7 @@ div.col-sm-12 {
 			<h4>
 				<b>수정하기</b>
 			</h4>
-			<table class="table">
+		<table class="table">
 			<thead>
 			</thead>
 			<tbody>
@@ -63,13 +64,13 @@ div.col-sm-12 {
 					<th>제목</th>
 					<td colspan="3">
 						<input type="text" class="form-control" id="title" placeholder="제목을 입력해주세요."
-							value="<%=noticeVO.getNoticeTitle()%>">
+							value="<%=nv.getNoticeTitle() %>">
 					</td>
 				</tr>
 				<tr>
 					<th>내용</th>
 					<td colspan="3"><textarea class="form-control" id="content" rows="20"
-							placeholder="내용을 입력해주세요."><%=noticeVO.getNoticeContent()%></textarea></td>
+							placeholder="내용을 입력해주세요."><%=nv.getNoticeContent() %></textarea></td>
 				</tr>
 				<%
 				if (atchFileList != null) {
@@ -99,21 +100,23 @@ div.col-sm-12 {
 					<td>새로운 첨부파일</td>
 					<td>
 						<form id="fm" enctype="multipart/form-data">
-							<input type="hidden" id="noticeNm" name="noticeNm">
-							<input type="hidden" id="noticeTitle" name="noticeTitle">
-							<input type="hidden" id="noticeContent" name="noticeContent">
+							<input type="hidden" id="fmNm" name="noticeNm">
+							<input type="hidden" id="fmTitle" name="noticeTitle">
+							<input type="hidden" id="fmContent" name="noticeContent">
 							<input type="file" multiple="multiple" id="attachFile" name="atchFileId" onchange="setThumbnail()" 
-									value="<%=noticeVO.getAtchFileId() %>">
+									value="<%=nv.getAtchFileId() %>">
+							<input type="hidden" name="flag" id="flag">
 						</form>	
 					</td>
 				</tr>
 			</tbody>
 		</table>
 		<hr>
-		<div id="btn">
-			<button type="button" class="btn btn-success" id="noticeList">목록</button>
-			<button type="button" class="btn btn-success" onclick="noticeUpdateSave()">저장</button>
- </div>
+		<!-- 등록 수정 삭제 버튼  -->
+		<div id="btn" align="right">
+			<button type="button" class="btn btn-success" onclick="cancel()">취소</button>
+			<button type="button" class="btn btn-success" onclick="upload()">수정</button>
+		</div>
 			<hr>
 		</div>
 
@@ -122,40 +125,30 @@ div.col-sm-12 {
 	</div>
 </body>
 <script type="text/javascript">
-$("#noticeList").click(function(){
-	if(confirm("목록으로 돌아가면 수정하시던 글이 사라집니다.")){
-		var fm = document.getElementById("fm");
-		fm.method = "post";
-		fm.action = "noticeList.do";
-		fm.submit();		
-	}else {
-		return;
+	function upload(){
+		if(confirm("게시글을 수정 하시겠습니까?")){
+			alert("게시글 수정이 완료되었습니다.");
+			document.getElementById("fmNm").value = "<%=nv.getBoardNm() %>";
+			document.getElementById("fmTitle").value = $("#title").val();
+			document.getElementById("fmContent").value = $("#content").val();
+			document.getElementById("flag").value = "U";
+			var fm = document.getElementById("fm");
+			fm.method = "post";
+			fm.action = "noticeBoard.do";
+			fm.submit();
+		} else {
+			return;
+		}
 	}
-});
-
-/*  $("#noticeUpdate").click(function(){
-	//location.href = "noticeUpdate.do";
-	if(confirm("게시글 수정 하시겠습니까>"))
-	 var fm = document.getElementById("fm");
-		fm.action = "noticeList.do";
-		fm.submit();
-}); */
-
-function noticeUpdateSave(){
-	if(confirm("게시글을 수정 하시겠습니까?")){
-		alert("게시글 수정이 완료되었습니다.");
- 		document.getElementById("noticeNm").value = "<%=noticeVO.getBoardNm()%>";
-		document.getElementById("noticeTitle").value = "<%=noticeVO.getNoticeTitle()%>";
-		document.getElementById("noticeContent").value = "<%=noticeVO.getNoticeContent()%>";
-
-		var fm = document.getElementById("fm");
-		fm.method = "post";
-		fm.action = "noticeUpdate.do";
-		fm.submit();
-	} else {
-		return;
-	}	
-}
-
+	
+	function cancel(){
+		if(confirm("글 수정을 취소하시겠습니까?")){
+			alert("취소하였습니다.");
+			history.back();
+		} else {
+			return;
+		}
+	}
 </script>
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

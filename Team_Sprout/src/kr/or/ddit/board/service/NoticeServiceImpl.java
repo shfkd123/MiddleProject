@@ -15,6 +15,7 @@ import kr.or.ddit.boardComment.vo.NoticeCmVO;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
 import kr.or.ddit.comm.vo.AtchFileVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class NoticeServiceImpl implements INoticeService{
@@ -59,11 +60,11 @@ public class NoticeServiceImpl implements INoticeService{
 	
 	//공지글 조회
 	@Override
-	public List<NoticeBoardVO> getNoticeBoardList() {
+	public List<NoticeBoardVO> getNoticeBoardList(PagingVO pv) {
 		List<NoticeBoardVO> noticeList = new ArrayList<>();
 
 		try {
-			noticeList = noticeDao.getNoticeBoardList(smc);
+			noticeList = noticeDao.getNoticeBoardList(smc, pv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,12 +75,12 @@ public class NoticeServiceImpl implements INoticeService{
 
 	//공지글 삭제
 	@Override
-	public int deleteNoticeBoard(String noticeNm) {
+	public int deleteNoticeBoard(NoticeBoardVO noticeVO) {
 		
 		int cnt = 0;
 
 		try {
-			cnt = noticeDao.deleteNoticeBoard(smc, noticeNm);
+			cnt = noticeDao.deleteNoticeBoard(smc, noticeVO);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -143,4 +144,17 @@ public class NoticeServiceImpl implements INoticeService{
 		}
 		return noticeList;
 	}
+
+	@Override
+	public int getNoticeBoardListCount() {
+		int cnt = 0;
+		try {
+			cnt = noticeDao.getNoticeBoardListCount(smc);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+
 }

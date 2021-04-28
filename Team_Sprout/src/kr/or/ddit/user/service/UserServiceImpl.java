@@ -188,6 +188,29 @@ public class UserServiceImpl implements IUserService {
 		}
 		return cnt;
 	}
+
+	@Override
+	public int userPointUpdateRefund(UserVO uv) {
+		int cnt = 0;
+
+		try {
+			cnt = userDao.userPointUpdateRefund(smc, uv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
+
+	@Override
+	public List<ProjectVO> userSelfMadeProjectList(String userId) {
+		List<ProjectVO> list = new ArrayList<>();
+		try {
+			list = userDao.userSelfMadeProjectList(smc, userId);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 	
 	
 }

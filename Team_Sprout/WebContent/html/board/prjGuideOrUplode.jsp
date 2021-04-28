@@ -27,7 +27,6 @@
 	margin-top: 20px;
 	margin-bottom: 20px;
 }
-
 </style>
 </head>
 <body>
@@ -40,20 +39,62 @@
 		<!-- 내용 -->
 		<div class="col-sm-8" id="selDiv">
 			<img src="/Team_Sprout/images/logo_big.png" style="width: 400px;">
-			<p><h3><b>마음 속 프로젝트 아이디어, 스프라우트에서 현실로.</b></h3></p>
-			<p><h5><b>크라우드펀딩으로 프로젝트를 위한 자금도 모으고, 든든한 후원자 네트워크도 확보할 수 있습니다.</b></h5></p>
+			<p>
+			<h3>
+				<b>마음 속 프로젝트 아이디어, 스프라우트에서 현실로.</b>
+			</h3>
+			</p>
+			<p>
+			<h5>
+				<b>크라우드펀딩으로 프로젝트를 위한 자금도 모으고, 든든한 후원자 네트워크도 확보할 수 있습니다.</b>
+			</h5>
+			</p>
 			<br>
-			<button type="button" class="btn btn-success btn-lg" onclick="location.href='/Team_Sprout/html/board/guide.jsp'">
-			메이커 가이드</button>
-			<button type="button" class="btn btn-success btn-lg" onclick="#">프로젝트
+			<button type="button" class="btn btn-success btn-lg"
+				onclick="location.href='/Team_Sprout/html/board/guide.jsp'">
+				메이커 가이드</button>
+			<button type="button" id="prjInsertBtn"
+				class="btn btn-success btn-lg" onclick="moveRegPage()">프로젝트
 				올리기</button>
-				<br><br>
+			<br>
+			<br>
 		</div>
 
 		<!-- 오른쪽 여백 -->
 		<div class="col-sm-2"></div>
-
+		<form id="fm">
+			<input type="hidden" name="flag" id="flag">
+		</form>
 	</div>
 </body>
+<script type="text/javascript">
+
+
+
+function moveRegPage(){
+	<%if (session.getAttribute("userVO") == null) {%>
+	alert("회원만 프로젝트를 등록할 수 있습니다.");	
+	location.href = "/Team_Sprout/user/register.do";
+<%} else {%>
+		document.getElementById("flag").value = "C";
+		
+		var fm = document.getElementById("fm");
+		fm.method = "get";
+		fm.action = "/Team_Sprout/project/projectBoard.do";
+		fm.submit();
+<%}%>		
+	};
+	
+	
+// function moveRegPage(){
+// 		document.getElementById("flag").value = "C";
+		
+// 		var fm = document.getElementById("fm");
+// 		fm.method = "get";
+// 		fm.action = "/Team_Sprout/project/projectBoard.do";
+// 		fm.submit();
+// 	}
+
+</script>
 <%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

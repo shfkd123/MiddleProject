@@ -118,12 +118,29 @@ public interface IUserDao {
 	public int userPoint(SqlMapClient smc, String userId) throws SQLException;
 		
 	/**
-	 * 유저 포인트 수정(충전/환불) 
+	 * 유저 포인트 수정(충전) 
 	 * @param smc
 	 * @param uv
 	 * @return
 	 * @throws SQLException
 	 */
 	public int userPointUpdate(SqlMapClient smc, UserVO uv) throws SQLException;
+
+	/**
+	 * 유저 포인트 수정(환불) 
+	 * @param smc
+	 * @param uv
+	 * @return
+	 * @throws SQLException
+	 */
+	public int userPointUpdateRefund(SqlMapClient smc, UserVO uv) throws SQLException;
+
+	/**
+	 * 유저가 만든 프로젝트 리스트 
+	 * @param  smc
+	 * @param  userId
+	 * @return 
+	 */
+	public List<ProjectVO> userSelfMadeProjectList(SqlMapClient smc, String userId) throws SQLException;
 	
 }

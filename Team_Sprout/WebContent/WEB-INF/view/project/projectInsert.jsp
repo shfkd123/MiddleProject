@@ -5,61 +5,53 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/view/include/head.jsp"%>
 <%
-	ProjectVO pv = (ProjectVO)request.getAttribute("pv");
+	ProjectVO pv = (ProjectVO) request.getAttribute("pv");
 
-	List<ProjectVO> list = (List<ProjectVO>)request.getAttribute("list");
+	List<ProjectVO> list = (List<ProjectVO>) request.getAttribute("list");
 
-	ProjectOptionVO pov = (ProjectOptionVO)request.getAttribute("pov");
-	
-	List<ProjectOptionVO> listOption = (List<ProjectOptionVO>)request.getAttribute("listOption");
-	
+	ProjectOptionVO pov = (ProjectOptionVO) request.getAttribute("pov");
+
+	List<ProjectOptionVO> listOption = (List<ProjectOptionVO>) request.getAttribute("listOption");
+
 	List<AtchFileVO> atchFileList = (List<AtchFileVO>) request.getAttribute("atchFileList");
-		
-	UserVO uv = (UserVO)session.getAttribute("userVO");
-	
-	/* pov.setPjNm(pjNm); */
 
+	uv = (UserVO) session.getAttribute("userVO");
+
+	/* pov.setPjNm(pjNm); */
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="/Team_Sprout/css/prj/prjInsert.css">
+<link rel="stylesheet" type="text/css"
+	href="/Team_Sprout/css/main/main.css">
+<link rel="stylesheet" href="/Team_Sprout/css/prj/prjInsert.css">
 <script type="text/javascript">
-
-function addOp(){
-	var opDiv = $('#addOpDiv').children().length; 
-	var str = "<div>" 
-			+ "<p>옵션</p>"
-			+ "<label>리워드명 </label><br><input type='text' class='form-control' id='poName' name='poName'><br>"
-			+ "<label>후원금액 </label><br><input type='text' class='form-control' id='poAddPrice' name='poAddPrice'>원<br>"
-			+ "<label>내용 </label><br><input type='text' class='form-control' id='poContent' name='poContent'>"
-			+ "<button type='button' class='btn btn-success' onclick='removeOp(this)'>삭제</button>"
-			 + "</div>";
-	if (opDiv < 2){
-			 $("#addOpDiv").append(str);
-	} else {
-		alert("리워드 옵션은 최대 3개까지 가능합니다.");
+	function addOp() {
+		var opDiv = $('#addOpDiv').children().length;
+		var str = "<div>"
+				+ "<p><h4>추가 옵션</h4></p>"
+				+ "<label>리워드명 </label><br><input type='text' class='form-control' id='poName' name='poName'><br>"
+				+ "<label>내용 </label><br><input type='text' class='form-control' id='poContent' name='poContent'>"
+				+ "<label>후원금액 </label><br><input type='text' class='form-control' id='poAddPrice' name='poAddPrice'>원<br><br>"
+				+ "<button type='button' class='btn btn-success' onclick='removeOp(this)'>옵선 삭제</button><hr>"
+				+ "</div>";
+		if (opDiv < 2) {
+			$("#addOpDiv").append(str);
+		} else {
+			alert("리워드 옵션은 최대 3개까지 가능합니다.");
+		}
 	}
-}
 
-function removeOp(obj){
-    document.getElementById('addOpDiv').removeChild(obj.parentNode);
-}
+	function removeOp(obj) {
+		document.getElementById('addOpDiv').removeChild(obj.parentNode);
+	}
 
-</script>
-<script type="text/javascript">
 	function setThumbnail() {
-		var files = document.getElementById("attachFileId").files;
+		var files = document.getElementById("atchFileId").files;
 		var file = files[0];
 
 		/* 선택된 파일이 없을때 경고문 출력 */
@@ -77,8 +69,6 @@ function removeOp(obj){
 		var reader = new FileReader();
 		/* 1.이미지 파일일 경우 파일내용 불러오기*/
 		if (file.type.substr(0, 5) == "image") {
-			// == if(file.type.match("image")){ 
-			// == if(file.type.indexOf("image") == 0 ){ 
 			reader.readAsDataURL(file);
 
 			/* 2.그 외의 경우 파일내용 불러오기*/
@@ -101,7 +91,36 @@ function removeOp(obj){
 			}
 		}
 	}
-</script>	
+</script>
+<style type="text/css">
+input#pjPriceAmount.form-control {
+	width: 300px;
+}
+
+input#pjDday.form-control {
+	width: 300px;
+}
+
+select#pjAcntBank.form-control {
+	width: 300px;
+}
+
+input#pjAcntHolder.form-control {
+	width: 300px;
+}
+
+input#poAddPrice.form-control {
+	width: 300px;
+}
+
+input#pjAcntNum.form-control {
+	width: 300px;
+}
+
+#btnDiv {
+	text-align: right;
+}
+</style>
 </head>
 <body>
 	<!-- 상단 전체   -->
@@ -112,90 +131,140 @@ function removeOp(obj){
 
 		<!-- 프로젝트 등록 창 -->
 		<div class="col-sm-8">
-
-			<form id="pj" enctype="multipart/form-data">
+			<br>
+			<h3>
+				<b>프로젝트 올리기</b>
+			</h3>
+			<form id="pj" enctype="multipart/form-data" method="post">
 				<div class="form-group">
-					<br><br>
-					<!-- 프로젝트 제목 -->
-					<label>프로젝트 제목 </label>
 					<br>
-					<input type="text" class="form-control" id="pjName" name='pjName'>
+					<br>
+					<!-- 프로젝트 제목 -->
+					<label>프로젝트 제목 </label> <br> <input type="text"
+						class="form-control" id="pjName" name='pjName'>
 
 					<!-- 프로젝트 카테고리 -->
-					<br><br><label>프로젝트 카테고리</label><br>
-					<select class="form-control" id="pjCategory" name="pjCategory">
-						<option>주얼리</option>
-						<option>전자제품</option>
-						<option>영화/음반</option>
+					<br>
+					<br>
+					<label>프로젝트 카테고리</label><br> <select class="form-control"
+						id="pjCategory" name="pjCategory">
+						<option>게임</option>
+						<option>공연</option>
+						<option>디자인</option>
+						<option>만화</option>
+						<option>예술</option>
+						<option>공예</option>
+						<option>사진</option>
+						<option>영화</option>
+						<option>음식</option>
+						<option>책</option>
+						<option>테크</option>
+						<option>패션</option>
 					</select>
 
 					<!-- 프로젝트 대표 이미지 (썸네일) -->
-					<br><br><label>프로젝트 대표 이미지 </label><br>
-					<input type="file" multiple="multiple" id="atchFileId" name="atchFileId" onchange="setThumbnail()">
+					<br>
+					<br>
+					<label>프로젝트 대표 이미지 </label><br> <input type="file"
+						multiple="multiple" id="atchFileId" name="atchFileId"
+						onchange="setThumbnail()">
 					<div id="imgPrint" style="width: 100px; height: 100px;"></div>
 
 					<!-- 프로젝트  -->
-					<br><br><label>프로젝트 목표 금액</label><br>
-					<input type="text" class="form-control" id="pjPriceAmount" name="pjPriceAmount">원
+					<br>
+					<br>
+					<label>프로젝트 목표 금액</label><br> <input type="text"
+						class="form-control" id="pjPriceAmount" name="pjPriceAmount">원
 
-					
 					<!-- 프로젝트 마감일 -->
-					<br><br><label>프로젝트 마감일</label><br>
-					<input type="date" class="form-control" id="pjDday" name="pjDday">
+					<br>
+					<br>
+					<label>프로젝트 마감일</label><br> <input type="date"
+						class="form-control" id="pjDday" name="pjDday">
 
 					<!-- 프로젝트 소개글 -->
-					<br><br><label>프로젝트 소개글</label><br>
-					<textarea rows="20" class="form-control" id="pjContent" name="pjContent">
-					</textarea>
-					
-					<!-- 은행선택 -->
-					<br><br><label>은행선택</label>
-					 <span style="color: red;">* 프로젝트 성공시 후원금을 입금받을 계좌를 입력하세요.</span>
 					<br>
-					<select class="form-control" id="pjAcntBank" name="pjAcntBank">
+					<br>
+					<label>프로젝트 소개글</label><br>
+					<textarea rows="20" class="form-control" id="pjContent"
+						name="pjContent"></textarea>
+
+					<!--  프로젝트 리워드 옵션  -->
+					<br>
+					<br>
+					<p>
+					<h4>프로젝트 리워드 옵션</h4>
+					</p>
+					<span style="color: red;">* 프로젝트 성공 시 후원자에게 전달할 리워드를 입력해주세요.</span>
+					<br>
+					<br>
+
+					<!-- 리워드 옵션 부분 -->
+					<div id="option">
+						<h4><p><b>필수 옵션<b></p></h4>
+						<label>리워드명 </label><br> <input type="text"
+							class="form-control" id='poName' name='poName'><br>
+						<br>
+						<label>내용 </label><br> <input type="text"
+							class="form-control" id='poContent' name='poContent'><br>
+						<br> <br>
+						<label>후원금액 </label><br> <input type="text"
+							class="form-control" id='poAddPrice' name='poAddPrice'>원<br>
+						<br>
+					</div>
+
+					<!-- 옵션 추가될 곳 -->
+					<div id="addOpDiv"></div>
+
+					<!-- 옵션 추가 버튼 -->
+					<br>
+					<button type="button" class="btn btn-success" onclick="addOp()">옵션
+						추가</button>
+					<br>
+					<br>
+
+					<!-- 은행선택 -->
+					<br>
+					<br>
+					<label>은행선택</label> <span style="color: red;">* 프로젝트 성공시
+						후원금을 입금받을 계좌를 입력하세요.</span> <br> <select class="form-control"
+						id="pjAcntBank" name="pjAcntBank">
 						<option>은행을 선택해주세요.</option>
 						<option>국민은행</option>
 						<option>우리은행</option>
 						<option>우체국</option>
 						<option>기업은행</option>
+						<option>제주은행</option>
+						<option>부산은행</option>
+						<option>대구은행</option>
+						<option>농협</option>
+						<option>수협</option>
+						<option>우체국</option>
+						<option>카카오뱅크</option>
+						<option>케이뱅크</option>
 					</select>
-					
+
 					<!-- 예금주 -->
-					<br><br><label>예금주</label><br>
-					<input type="text" class="form-control" id="pjAcntHolder" name="pjAcntHolder">
-					
+					<br>
+					<br>
+					<label>예금주</label><br> <input type="text" class="form-control"
+						id="pjAcntHolder" name="pjAcntHolder">
+
 					<!-- 계좌번호 -->
-					<br><br><label>계좌번호</label><br>
-					<input type="text" class="form-control" id="pjAcntNum" name="pjAcntNum">
-					
-					<br><br>
-					<input type="hidden" name="pjCondition" id="pjCondition" value="심사중" >
-					<input type="hidden" name="flag" id="flag">
+					<br>
+					<br>
+					<label>계좌번호</label><br> <input type="text"
+						class="form-control" id="pjAcntNum" name="pjAcntNum"> <br>
+					<br> <input type="hidden" name="pjCondition" id="pjCondition"
+						value="심사중"> <input type="hidden" name="flag" id="flag">
 				</div>
-				<!--  프로젝트 리워드 옵션  -->
-				<br><br><p><h4>프로젝트 리워드 옵션 </h4></p>  
-				<span style="color: red;">* 프로젝트 성공 시 후원자에게 전달할 리워드를 입력해주세요.</span>
-				<br><br>
-				
-				<!-- 리워드 옵션 부분 -->
-				<div id="option">
-					<p>옵션</p> 
-					<label>리워드명 </label><br>
-					<input type="text" class="form-control" id='poName' name='poName'><br>
-					<br><label>후원금액 </label><br>
-					<input type="text" class="form-control" id='poAddPrice' name='poAddPrice'>원<br><br>
-					<br><label>내용 </label><br>
-					<input type="text" class="form-control" id='poContent' name='poContent'><br><br>
-				</div>
-				
-				<!-- 옵션 추가될 곳 -->
-				<div id="addOpDiv"></div>
-				
-				<!-- 옵션 추가 버튼 -->
-				<button type="button" class="btn btn-success" onclick="addOp()">옵션 추가</button>
+
+
 				<!-- 신청하기 버튼 -->
-				<button type="button" class="btn btn-success" onclick="upload()">신청하기</button>
-				<button type="button" class="btn btn-success" onclick="cancel()">취소하기</button>
+				<div id="btnDiv">
+					<button type="button" class="btn btn-success" onclick="upload()">신청하기</button>
+					<button type="button" class="btn btn-success" onclick="cancel()">취소하기</button>
+				</div>
 			</form>
 		</div>
 
@@ -206,18 +275,17 @@ function removeOp(obj){
 <script type="text/javascript">
 	function upload() {
 		if (confirm("프로젝트를 등록 하시겠습니까?")) {
-			alert("프로젝트 심사요청이 완료되었습니다. 심사는 영업일 기준 4일에서 10정도 소요됩니다.");
+			alert("프로젝트 심사요청이 완료되었습니다. 심사는 영업일 기준 4일에서 10일 정도 소요됩니다.");
 			document.getElementById("flag").value = "C";
 			var pj = document.getElementById("pj");
 			pj.method = "post";
 			pj.action = "projectBoard.do";
 			pj.submit();
-			
+
 		} else {
 			return;
 		}
-	}	
-	
+	}
 
 	function cancel() {
 		if (confirm("글 작성을 취소하시겠습니까?")) {
@@ -231,4 +299,5 @@ function removeOp(obj){
 		}
 	}
 </script>
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

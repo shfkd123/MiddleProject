@@ -133,4 +133,5 @@ input#userMoney.form-control {
 	}
 </script>
 </body>
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

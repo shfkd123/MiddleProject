@@ -96,10 +96,22 @@ public class UserDaoImpl implements IUserDao {
 		return (int) smc.queryForObject("user.userpoint", userId);
 	}
 
-	//유저 포인트 수정(충전/환불)
+	//유저 포인트 수정(충전)
 	@Override
 	public int userPointUpdate(SqlMapClient smc, UserVO uv) throws SQLException {
-		return (int) smc.update("user.userpointUpdate",uv);
+		return (int) smc.update("user.userpointUpdate", uv);
+	}
+
+	//유저 포인트 수정(충전)
+	@Override
+	public int userPointUpdateRefund(SqlMapClient smc, UserVO uv) throws SQLException {
+		return (int) smc.update("user.userpointUpdateRefund", uv);
+
+	}
+
+	@Override
+	public List<ProjectVO> userSelfMadeProjectList(SqlMapClient smc, String userId) throws SQLException {
+		return smc.queryForList("user.userSelfMadeProjectList", userId);
 	}
 
 	

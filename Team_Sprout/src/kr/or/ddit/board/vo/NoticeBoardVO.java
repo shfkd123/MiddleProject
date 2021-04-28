@@ -12,8 +12,9 @@ public class NoticeBoardVO {
 	private String noticeTitle;
 	private String noticeContent;
 	private String noticeDate;
-	private String userId; 
+	private String noticeWriter; 
 	private long atchFileId = -1;
+	private int rNum;
 	
 	private List<AtchFileVO> atchFileVOList;
 	private List<NoticeCmVO> noticeCmVOList;
@@ -50,12 +51,6 @@ public class NoticeBoardVO {
 		this.noticeDate = noticeDate;
 	}
 	
-	public String getUserId() {
-		return userId;
-	}
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
 	public long getAtchFileId() {
 		return atchFileId;
 	}
@@ -74,5 +69,19 @@ public class NoticeBoardVO {
 	public void setNoticeCmVOList(List<NoticeCmVO> noticeCmVOList) {
 		this.noticeCmVOList = noticeCmVOList;
 	}
+	public String getNoticeWriter() {
+		return noticeWriter;
+	}
+	public void setNoticeWriter(String noticeWriter) {
+		this.noticeWriter = noticeWriter;
+	}
+	public int getrNum() {
+		return rNum;
+	}
+	public void setrNum(int rNum) {
+		this.rNum = rNum;
+	}
+	
+	
 	
 }

@@ -11,6 +11,31 @@
 %>
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/main.css">
+<style type="text/css">
+.col-sm-2 {
+    padding: 10px;
+}
+#side {
+    display: block;
+	width: 100%;
+    border-radius: 0px;
+}
+#deleteInfo1 {
+ width: 100%;
+	background-color: #fafafa;
+	border: 1px solid #efefef;
+	padding: 20px;
+}
+#deleteInfo2 {
+ width: 100%;
+	background-color: #fafafa;
+	border: 1px solid #efefef;
+	padding: 20px;
+}
+#btnRight {
+	text-align: right;
+}
+</style>
 </head>
 <body>
 	<!-- 회원정보 수정  -->
@@ -67,13 +92,23 @@
 			<br><br>
 			<input type="checkbox"> 해당 내용을 모두 확인했으며, 회원 탈퇴에 동의 합니다. 
 			<br><br>
+			<div id="btnRight">
 			<button type="button" class="btn btn-success" onclick="deleteUser()">회원탈퇴</button>
-			
+			</div>
 		</div>
 		
 		<!-- 여백 2-->
 		<div class="col-sm-2"></div>
 	</div>
+	<script type="text/javascript">
+	function updateInfo(){
+		location.href = "/Team_Sprout/mypage/userUpdatePwChk.do";
+	}
+	
+	function deleteInfo(){
+		location.href = "/Team_Sprout/mypage/userInfoDelete.do";
+	}
+</script>
 	<script type="text/javascript">
 	 function deleteUser(){
 		 if(!confirm("정말로 탈퇴하시겠습니까?")){
@@ -83,4 +118,5 @@
 	 }
 	</script>
 </body>
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

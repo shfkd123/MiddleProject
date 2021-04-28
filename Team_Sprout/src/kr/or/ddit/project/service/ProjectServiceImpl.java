@@ -86,11 +86,23 @@ public class ProjectServiceImpl implements IProjectService{
 	}
 
 	@Override
-	public List<ProjectVO> searchProject(String str) {
+	public List<ProjectVO> searchProject(String pjNama) {
 		List<ProjectVO> list = new ArrayList<>();
 		
 		try {
-			list = projectDao.searchProject(smc, str);
+			list = projectDao.searchProject(smc, pjNama);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	@Override
+	public List<ProjectVO> searchProjectSelect(String pjCategory) {
+		List<ProjectVO> list = new ArrayList<>();
+		
+		try {
+			list = projectDao.searchProjectSelect(smc, pjCategory);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

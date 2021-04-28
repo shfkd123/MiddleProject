@@ -31,12 +31,6 @@ public class OrderVO {
 	public void setPjCondition(String pjCondition) {
 		this.pjCondition = pjCondition;
 	}
-	public String getPoName() {
-		return poName;
-	}
-	public void setPoName(String poName) {
-		this.poName = poName;
-	}
 	public String getOrderNm() {
 		return orderNm;
 	}
@@ -79,7 +73,11 @@ public class OrderVO {
 	public void setOrderPrice(int orderPrice) {
 		this.orderPrice = orderPrice;
 	}
-	
-	
+	public String getPoName() {
+		return poName;
+	}
+	public void setPoName(String poName) {
+		this.poName = poName;
+	}
 	
 }

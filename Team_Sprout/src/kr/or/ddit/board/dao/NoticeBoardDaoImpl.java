@@ -6,6 +6,7 @@ import java.util.List;
 import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.vo.NoticeBoardVO;
+import kr.or.ddit.comm.vo.PagingVO;
 import kr.or.ddit.util.SqlMapClientUtil;
 
 public class NoticeBoardDaoImpl implements INoticeBoardDao {
@@ -34,9 +35,9 @@ private static INoticeBoardDao noticeDao;
 		return cnt;
 	}
 	
-	@Override //공지사항 게시글 조회
-	public List<NoticeBoardVO> getNoticeBoardList(SqlMapClient smc) throws SQLException {
-		return smc.queryForList("noticeBoard.getNoticeBoardList");
+	@Override //전체 조회
+	public List<NoticeBoardVO> getNoticeBoardList(SqlMapClient smc, PagingVO pv) throws SQLException {
+		return smc.queryForList("noticeBoard.getNoticeBoardList", pv);
 	}
 	
 	@Override //공지사항 게시글 수정
@@ -50,13 +51,19 @@ private static INoticeBoardDao noticeDao;
 	}
 	
 	@Override //공지사항 삭제
-	public int deleteNoticeBoard(SqlMapClient smc, String noticeNm) throws SQLException {
-		return smc.update("noticeBoard.deleteNoticeBoard", noticeNm);
+	public int deleteNoticeBoard(SqlMapClient smc, NoticeBoardVO nv) throws SQLException {
+		return smc.update("noticeBoard.deleteNoticeBoard", nv);
 	}
 	
 	@Override //공지사항 단건 조회
 	public NoticeBoardVO getNoticeBoard(SqlMapClient smc, String noticeNm) throws SQLException {
 		return (NoticeBoardVO)smc.queryForObject("noticeBoard.getNoticeBoardInfo", noticeNm);
+	}
+
+	@Override
+	public int getNoticeBoardListCount(SqlMapClient smc) throws SQLException {
+		int cnt = (int)smc.queryForObject("noticeBoard.getNoticeBoardListCount");
+		return cnt;
 	}
 	
 }

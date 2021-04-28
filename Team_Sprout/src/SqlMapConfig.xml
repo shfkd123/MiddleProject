@@ -32,4 +32,5 @@
 	<sqlMap resource="kr/or/ddit/project/dao/projectOption.xml"/>
 	<sqlMap resource="kr/or/ddit/board/dao/communityBoard.xml"/>
 	<sqlMap resource="kr/or/ddit/boardComment/dao/communityCm.xml"/>
+	<sqlMap resource="kr/or/ddit/user/dao/order.xml"/>
 </sqlMapConfig>

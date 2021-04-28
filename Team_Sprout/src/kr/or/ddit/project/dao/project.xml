@@ -13,7 +13,7 @@
 				,A.PJ_CONTENT       pjContent
 				,A.PJ_PRICE_AMOUNT  pjPriceAmount
 				,A.PJ_CONDITION     pjCondition
-				,A.PJ_DDAY          pjDday
+				,TO_CHAR(A.PJ_DDAY, 'YYYY-MM-DD')          pjDday
 				,A.PJ_OPENDAY       pjOpenday
 				,A.PJ_REWARD        pjReward
 				,(
@@ -29,14 +29,14 @@
 		FROM  PROJECT A		
 	</select>
 
-	<select id="getProject" parameterClass="String" resultClass="kr.or.ddit.project.vo.ProjectVO">
+	<select id="getProject" parameterClass="long" resultClass="kr.or.ddit.project.vo.ProjectVO">
 		SELECT   A.PJ_NM            pjNm
 				,A.PJ_TYPE          pjType
 				,A.PJ_NAME          pjName
 				,A.PJ_CONTENT       pjContent
 				,A.PJ_PRICE_AMOUNT  pjPriceAmount
 				,A.PJ_CONDITION     pjCondition
-				,A.PJ_DDAY          pjDday
+				,TO_CHAR(A.PJ_DDAY, 'YYYY-MM-DD') pjDday
 				,A.PJ_OPENDAY       pjOpenday
 				,A.PJ_REWARD        pjReward
 				,(
@@ -49,6 +49,8 @@
 				,A.PJ_ACNTBANK      pjAcntBank
 				,A.PJ_ACNTNUM       pjAcntNum
 				,A.PJ_ACNTHOLDER    pjAcntHolder
+				,NVL(A.PJ_PRICE, 0) pjPrice
+				,NVL(A.PJ_FAN, 0)   pjFan
 		FROM  PROJECT A		
 		WHERE  1=1
 		AND    A.PJ_NM = #pjNm#
@@ -81,7 +83,7 @@
 	        , #pjName#          
 	        , #pjContent#       
 	        , #pjPriceAmount#   
-	        , #pjCondition#     
+	        , '심사중'     
 	        , #pjDday#          
 	        , SYSDATE       
 	        , #pjReward#
@@ -106,7 +108,7 @@
 				,A.PJ_CONTENT       pjContent
 				,A.PJ_PRICE_AMOUNT  pjPriceAmount
 				,A.PJ_CONDITION     pjCondition
-				,A.PJ_DDAY          pjDday
+				,TO_CHAR(A.PJ_DDAY, 'YYYY-MM-DD')          pjDday
 				,A.PJ_OPENDAY       pjOpenday
 				,A.PJ_REWARD        pjReward
 				,b.user_nickname    pjWriter
@@ -117,11 +119,30 @@
 				,A.PJ_ACNTHOLDER    pjAcntHolder
 		FROM   PROJECT A INNER JOIN TB_USER B ON(A.USER_ID = B.USER_ID)
         WHERE 1=1
-		OR     A.PJ_TYPE       LIKE '%' || #pjType#      || '%'                                  
-		OR     A.PJ_NAME       LIKE '%' || #pjName#      || '%'  
-		OR     A.PJ_CONDITION  LIKE '%' || #pjCondition# || '%'  
-		OR     A.PJ_CATEGORY   LIKE '%' || #pjCategory#  || '%'  
-		OR     B.USER_NICKNAME LIKE '%' || #pjWriter#    || '%'  	
+		AND     A.PJ_NAME LIKE '%' || #pjName# || '%'  
+	
+	</select>
+	
+	<select id="searchProjectSelect" parameterClass="String" resultClass="kr.or.ddit.project.vo.ProjectVO">
+		SELECT   A.PJ_NM            pjNm
+				,A.PJ_TYPE          pjType
+				,A.PJ_NAME          pjName
+				,A.PJ_CONTENT       pjContent
+				,A.PJ_PRICE_AMOUNT  pjPriceAmount
+				,A.PJ_CONDITION     pjCondition
+				,TO_CHAR(A.PJ_DDAY, 'YYYY-MM-DD')          pjDday
+				,A.PJ_OPENDAY       pjOpenday
+				,A.PJ_REWARD        pjReward
+				,b.user_nickname    pjWriter
+				,A.ATCH_FILE_ID     atchFileId
+				,A.PJ_CATEGORY      pjCategory
+				,A.PJ_ACNTBANK      pjAcntBank
+				,A.PJ_ACNTNUM       pjAcntNum
+				,A.PJ_ACNTHOLDER    pjAcntHolder
+		FROM   PROJECT A INNER JOIN TB_USER B ON(A.USER_ID = B.USER_ID)
+        WHERE 1=1
+		AND     A.PJ_CATEGORY LIKE '%' || #pjCategory# || '%'  
+	
 	</select>                    
 
 	<select id="getProjectAllCount" resultClass="int">

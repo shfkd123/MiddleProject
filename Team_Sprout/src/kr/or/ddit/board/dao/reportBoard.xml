@@ -93,15 +93,20 @@
 	</delete>
 	
 	<select id="searchReportBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.ReportBoardVO">
-	SELECT REPORT_NM            reportNm
-		 , REPORT_TITLE         reportTitle
-		 , REPORT_CONTENT       reportContent
-		 , TO_CHAR(REPORT_DATE, 'YYYY-MM-DD') reportDate
-		 , USER_ID              reportWriter       
-	FROM  REPORT_BOARD
+	SELECT A.REPORT_NM            reportNm
+		 , A.REPORT_TITLE         reportTitle
+		 , A.REPORT_CONTENT       reportContent
+		 , TO_CHAR(A.REPORT_DATE, 'YYYY-MM-DD') reportDate
+		 , ( 
+			 SELECT B.USER_NICKNAME
+			 FROM TB_USER B
+			 WHERE B.USER_ID = A.USER_ID
+		   )				reportWriter
+		  , A.ATCH_FILE_ID atchFileId  					     
+	FROM  REPORT_BOARD A
 	WHERE 1=1
-	AND   REPORT_STATE = 'Y'
-	AND   REPORT_TITLE LIKE '%' || #reportTitle# || '%'
+	AND   A.REPORT_STATE = 'Y'
+	AND   A.REPORT_TITLE LIKE '%' || #reportTitle# || '%'
 	OR    (
 			SELECT B.USER_NICKNAME
 			FROM   TB_USER B

@@ -13,12 +13,22 @@ $(document).ready(function(){
 });
 
 </script>
-
 <head>
 <title>마이페이지 - 포인트 </title>
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/main.css">
+<style type="text/css">
+#pointDiv {
+ width: 100%;
+ height: 300px;
+	background-color: #fafafa;
+	border: 1px solid #efefef;
+	padding: 30px;
+	text-align: center;
+}
+
+</style>
 </head>
 <body>
 
@@ -71,10 +81,11 @@ $(document).ready(function(){
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<input type="text" value="" name="">
+						<input type="text" id="pointRefundInput" value="" name="RefundPoint">
 					</div>
 				</div>
 				<div class="modal-footer">
+					<p style="color: red;">※ 환불은 현재 보유 포인트가 1000 포인트 이상일 때만 환불이 가능합니다.</p>
 					<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
 					<button type="button" class="btn btn-success" onclick="refund()">확인</button>
 				</div>
@@ -90,10 +101,12 @@ $(document).ready(function(){
 
 		<!-- 회원정보 수정 -->
 		<div class="col-sm-8">
+		<br><br>
+			<div id="pointDiv">
 			<form action="#" id="regiForm">
 				<h3>포인트 충전/환불</h3>
 				<br>
-				<h4>현재 보유포인트 <%=uv.getUserMoney()%></h4>
+				<h4 style="text-align: center;">현재 보유포인트 <%=uv.getUserMoney()%></h4>
 				<br>
 				<!-- Trigger the modal with a button -->
 				<button type="button" class="btn btn-success"
@@ -107,6 +120,7 @@ $(document).ready(function(){
 						가능합니다.</p>
 				</div>
 			</form>
+			</div>
 		</div>
 
 		<!-- 여백 2-->
@@ -164,7 +178,7 @@ function charge(){
 var point = $("#pointSel option:selected").val();
 
 	if(point == 1000){
-		if (confirm(point + "충전하시겠습니까?")){
+
 		alert(point + " 포인트 충전이 완료되었습니다.");
 		document.getElementById("userMoney").value = 1000;
 	 	var fm = document.getElementById("fm");
@@ -172,9 +186,9 @@ var point = $("#pointSel option:selected").val();
 		document.getElementById("flag").value = "U";
 		fm.method = "post";
 		fm.submit();
-		}
+
 	}else if(point == 5000){
-		if (confirm(point + "충전하시겠습니까?")){
+
 		alert(point + " 포인트 충전이 완료되었습니다.");
 		document.getElementById("userMoney").value = 5000;
 	 	var fm = document.getElementById("fm");
@@ -182,9 +196,9 @@ var point = $("#pointSel option:selected").val();
 		document.getElementById("flag").value = "U";
 		fm.method = "post";
 		fm.submit();
-		}
+
 	}else if(point == 10000){
-		if (confirm(point + "충전하시겠습니까?")){
+
 		alert(point + " 포인트 충전이 완료되었습니다.");
 	 	document.getElementById("userMoney").value = 10000;
 	 	var fm = document.getElementById("fm");
@@ -192,9 +206,9 @@ var point = $("#pointSel option:selected").val();
 		document.getElementById("flag").value = "U";
 		fm.method = "post";
 		fm.submit();
-		}
+
 	}else if(point == 30000){
-		if (confirm(point + "충전하시겠습니까?")){
+		
 		alert(point + " 포인트 충전이 완료되었습니다.");
 		document.getElementById("userMoney").value = 30000;
 	 	var fm = document.getElementById("fm");
@@ -202,9 +216,9 @@ var point = $("#pointSel option:selected").val();
 		document.getElementById("flag").value = "U";
 		fm.method = "post";
 		fm.submit();
-		}
+
 	}else if(point == 50000){
-		if (confirm(point + "충전하시겠습니까?")){
+	
 		alert(point + " 포인트 충전이 완료되었습니다.");
 		document.getElementById("userMoney").value = 50000;
 	 	var fm = document.getElementById("fm");
@@ -212,18 +226,30 @@ var point = $("#pointSel option:selected").val();
 		document.getElementById("flag").value = "U";
 		fm.method = "post";
 		fm.submit();
-		}
+
 	}
 	
 }
 
-function refund(userId){
-	document.getElementById("userMoney").value = userMoney;
- 	var fm = document.getElementById("fm");
-	fm.action = "userPointHandler.do";
-	document.getElementById("flag").value = "U";
-	fm.method = "post";
-	fm.submit();
+function refund(){
+
+	var refundPoint = $("#pointRefundInput").val();
+	
+	if(refundPoint < <%=uv.getUserMoney() %>){
+		document.getElementById("userMoney").value = refundPoint;
+			var fm = document.getElementById("fm");
+		fm.action = "userPointHandler.do";
+		document.getElementById("flag").value = "UF";
+		fm.method = "post";
+		fm.submit();
+	}else if(refundPoint > <%=uv.getUserMoney() %>){
+		alert("환불 가능한 금액이 아닙니다.");
+		$("#pointRefundInput").focus();
+		$("#pointRefundInput").val('');
+		return;
+	}
+
+	
 }
 </script>
 <%@include file="/WEB-INF/view/include/footer.jsp"%>

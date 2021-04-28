@@ -52,29 +52,31 @@
 		<%
 		} else {
 			for(int i = 0; i < orderList.size(); i++){
-				if("Y".equals(orderList.get(i).getOrderState())){
-				%>
-				<!-- 왼쪽 공백 2 -->
-				<div class="col-sm-2"></div>
-				
-				<!-- 항목들 -->
-				<div class="col-sm-2">
-					<p>후원일 <%=orderList.get(i).getOrderTime() %></p>
-					<img src="/images/img1.jpg" class="img-rounded" style="width: 100%"
-						alt="Image">
-					<h4><a href="#"><%=orderList.get(i).getPjName() %></a></h4>
-					<div id="divReult">
-						<h4>후원 금액</h4>
-						<p><%=orderList.get(i).getOrderPrice() %>원</p>
-						<h4>선택 옵션</h4>
-						<p><%=orderList.get(i).getPoName() %></p>
-						<h4>주문상태</h4>
-						<p><%=orderList.get(i).getOrderState() %></p>
-					</div>
-					<button type="button" class="btn btn-success btn-lg" id="payBtn">후원취소</button>
+			%>
+			<!-- 왼쪽 공백 2 -->
+			<div class="col-sm-2"></div>
+			
+			<!-- 항목들 -->
+			<div class="col-sm-2">
+				<p>후원일 <%=orderList.get(i).getOrderTime() %></p>
+				<img src="/images/img1.jpg" class="img-rounded" style="width: 100%"
+					alt="Image">
+				<h4>
+					<a href="/Team_Sprout/project/projectBoard.do?flag=SEL&pjNm=<%=orderList.get(i).getPjNm() %>">
+						<%=orderList.get(i).getPjName() %>
+					</a>
+				</h4>
+				<div id="divReult">
+					<h4>후원 금액</h4>
+					<p><%=orderList.get(i).getOrderPrice() %>원</p>
+					<h4>선택 옵션</h4>
+					<p><%=orderList.get(i).getPoName() %></p>
+					<h4>주문상태</h4>
+					<p><%=orderList.get(i).getOrderState() %></p>
 				</div>
-				<%	
-				}
+				<button type="button" class="btn btn-success btn-lg" id="payBtn">후원취소</button>
+			</div>
+			<%	
 			}
 		} %>
 

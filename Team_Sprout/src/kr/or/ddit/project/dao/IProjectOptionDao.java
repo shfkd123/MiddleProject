@@ -23,7 +23,7 @@ public interface IProjectOptionDao {
 	 * @return List<ProjectVO>
 	 * @throws SQLException
 	 */
-	public ProjectOptionVO getProjectOption(SqlMapClient smc, long pjNm) throws SQLException;
+	public List<ProjectOptionVO> getProjectOption(SqlMapClient smc, ProjectOptionVO pov) throws SQLException;
 
 	/**
 	 * 프로젝트옵션 생성 메서드

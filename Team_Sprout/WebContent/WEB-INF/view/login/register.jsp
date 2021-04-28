@@ -21,7 +21,7 @@
 	<br>
 	<div class="wrapper">
 		<div class="title">
-			<img src="/Team_Sprout/images/logo.png" width="100px">
+			<a href="/Team_Sprout/html/main/main.jsp"><img src="/Team_Sprout/images/logo.png" width="100px"></a>
 		</div>
 		<form id="regiForm">
 			<!-- 아이디 -->

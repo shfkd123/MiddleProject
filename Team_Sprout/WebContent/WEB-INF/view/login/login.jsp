@@ -35,7 +35,7 @@
 <body>
     <div class="wrapper">
 	    <div class="title">
-		<a href="/Team_Sprout/user/logOut.do"><img src="/Team_Sprout/images/logo.png" width="100px"></a>
+		<a href="/Team_Sprout/html/main/main.jsp"><img src="/Team_Sprout/images/logo.png" width="100px"></a>
 	</div>
 		<form action="signIn.do" method="post">
 	      	<div class="field">

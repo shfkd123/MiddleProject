@@ -16,7 +16,7 @@ public interface IProjectOptionService {
 	 * 프로젝트 옵션 조회 메서드
 	 * @return ProjectOptionVO
 	 */
-	public ProjectOptionVO getProjectOption(long pjNm);
+	public List<ProjectOptionVO> getProjectOption(ProjectOptionVO pov);
 	
 	/**
 	 * 프로젝트 옵션 등록 메서드

@@ -49,8 +49,13 @@ public class ProjectDaoImpl implements IProjectDao {
 	}
 
 	@Override
-	public List<ProjectVO> searchProject(SqlMapClient smc, String str) throws SQLException {
-		return smc.queryForList("project.searchProject", str);
+	public List<ProjectVO> searchProject(SqlMapClient smc, String pjName) throws SQLException {
+		return smc.queryForList("project.searchProject", pjName);
+	}
+	
+	@Override
+	public List<ProjectVO> searchProjectSelect(SqlMapClient smc, String pjCategory) throws SQLException {
+		return smc.queryForList("project.searchProjectSelect", pjCategory);
 	}
 	
 	@Override

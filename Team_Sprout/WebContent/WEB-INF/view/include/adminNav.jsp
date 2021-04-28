@@ -62,10 +62,13 @@
 			</a>
 			<div class="collapse" id="collapseBoards"
 				aria-labelledby="headingOne" data-parent="#sidenavAccordion">
-				<nav class="sb-sidenav-menu-nested nav"> <a class="nav-link"
-					href="#">공지사항</a> <a class="nav-link" href="#">커뮤니티</a> <a
-					class="nav-link" href="#">후기</a> <a class="nav-link" href="#">Q&A</a>
-				<a class="nav-link" href="#">F&Q</a> <a class="nav-link" href="/Team_Sprout/admin/adminReportBoard.do">신고</a>
+				<nav class="sb-sidenav-menu-nested nav"> 
+				<a class="nav-link" href="/Team_Sprout/admin/adminNoticeBoard.do">공지사항</a>
+				<a class="nav-link" href="/Team_Sprout/admin/adminfreeBoard.do">커뮤니티</a>
+				<a class="nav-link" href="/Team_Sprout/admin/adminCommunityBoard.do">후기</a>
+				<a class="nav-link" href="/Team_Sprout/admin/adminQnaBoard.do">Q&A</a>
+				<a class="nav-link" href="/Team_Sprout/admin/adminFaqBoard.do">F&Q</a>
+				<a class="nav-link" href="/Team_Sprout/admin/adminReportBoard.do">신고</a>
 				</nav>
 			</div>
 
@@ -83,17 +86,12 @@
 			<div class="collapse" id="collapseProjects"
 				aria-labelledby="headingOne" data-parent="#sidenavAccordion">
 				<nav class="sb-sidenav-menu-nested nav"> <a class="nav-link"
-					href="#">프로젝트 승인</a> <a class="nav-link" href="#">카테고리</a> <a
+					href="/Team_Sprout/admin/adminProject.do">프로젝트 승인</a> <a class="nav-link" href="#">카테고리</a> <a
 					class="nav-link" href="#">추천프로젝트</a> </nav>
 			</div>
-
-
 		</div>
-
 	</div>
-
-
 	</nav>
-	</div>
+
 </body>
 </html>

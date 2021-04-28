@@ -113,9 +113,24 @@ public interface IUserService {
 	public int userPoint(String userId);
 	
 	/**
-	 * 유저 포인트 수정 (충전/환불)
+	 * 유저 포인트 수정 (충전)
 	 * @param uv
 	 * @return
 	 */
 	public int userPointUpdate(UserVO uv);
+	
+	/**
+	 * 유저 포인트 수정 (환불)
+	 * @param uv
+	 * @return
+	 */
+	public int userPointUpdateRefund(UserVO uv);
+	
+	/**
+	 * 유저가 올린 프로젝트 리스트
+	 * @param userId
+	 * @return
+	 */
+	public List<ProjectVO> userSelfMadeProjectList(String userId);
+	
 }

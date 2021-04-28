@@ -135,7 +135,7 @@ public class WebController extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		LOGGER.info("viewPage : " + viewPage);
+//		LOGGER.info("viewPage : " + viewPage);
 		
 		// VIEW 화면 처리
 		if(viewPage != null) { // 뷰페이지가 존재하는 경우...

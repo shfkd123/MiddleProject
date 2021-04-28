@@ -5,188 +5,240 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 
 import kr.or.ddit.board.service.INoticeService;
 import kr.or.ddit.board.service.NoticeServiceImpl;
 import kr.or.ddit.board.vo.NoticeBoardVO;
+import kr.or.ddit.boardComment.service.INoticeCmService;
+import kr.or.ddit.boardComment.service.NoticeCmServiceImpl;
+import kr.or.ddit.boardComment.vo.NoticeCmVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
 import kr.or.ddit.comm.vo.AtchFileVO;
+import kr.or.ddit.comm.vo.PagingVO;
+import kr.or.ddit.user.vo.UserVO;
 import kr.or.ddit.util.FileUploadRequestWrapper;
 
 public class NoticeBoardHandler implements CommandHandler {
 
 	@Override
 	public boolean isRedirect(HttpServletRequest req) {
+		String flag = (String) req.getParameter("flag");
 
+		if ("C".equals(flag) || "U".equals(flag)) {
+			if (req.getMethod().equals("GET")) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		if ("D".equals(flag)) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public String process(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-		String flag = req.getParameter("flag");
-		try {
-			// if(flag.equals("L")) {
-			if ("L".equals(flag)) { // 목록조회
-				// 1. 서비스 객체 생성하기
-				INoticeService noticeService = NoticeServiceImpl.getInstance();
-
-				// 2. 회원정보 조회
-				List<NoticeBoardVO> noticeList = noticeService.getNoticeBoardList();
-
-				req.setAttribute("noticeList", noticeList);
-
-				return "/WEB-INF/view/board/noticeBoardlist.jsp";
-
-			} else if ("C".equals(flag)) { // 등록
-				if (req.getMethod().equals("GET")) { // GET
-					return "/WEB-INF/view/board/noticeBoardInsert.jsp";
-				} else if (req.getMethod().equals("POST")) { // Post방식인 경우isRedirect를 한다.
-
-					FileItem item = ((FileUploadRequestWrapper) req).getFileItem("atchFile");
-					String userId = req.getParameter("userId");
-
-					AtchFileVO atchFileVO = new AtchFileVO();
-
+		String flag = (String) req.getParameter("flag");
+		
+		HttpSession session = req.getSession();
+		
+		UserVO uv = (UserVO) session.getAttribute("userVO");
+		
+		if("C".equals(flag)) { // 게시글 작성
+			if(req.getMethod().equals("GET")) {
+				return "/WEB-INF/view/board/noticeBoardInsert.jsp";
+			} else {
+				String userId = uv.getUserId();
+				
+				NoticeBoardVO nv = new NoticeBoardVO();
+				
+				INoticeService service = NoticeServiceImpl.getInstance();
+				
+				String noticeTitle = req.getParameter("noticeTitle");
+				String noticeContent = req.getParameter("noticeContent");
+				nv.setNoticeTitle(noticeTitle);
+				nv.setNoticeContent(noticeContent);
+				nv.setNoticeWriter(userId);
+				
+				FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
+				
+				AtchFileVO atchFileVO = new AtchFileVO();
+				
+				atchFileVO.setAtchFileId(req.getParameter("atchFileId") == null ?
+						-1 : Long.parseLong(req.getParameter("atchFileId")));
+				
+				if(item != null && !item.getName().equals("")) {
+					
 					IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-					atchFileVO = fileService.saveAtchFile(item, userId);
-
-					// 1. 요청파라미터 정보 가져오기
-					String noticeTitle = req.getParameter("noticeTitle");
-					String noticeContent = req.getParameter("noticeContent");
-
-					// 2. 서비스 객체 생성하기
-					INoticeService noticeService = NoticeServiceImpl.getInstance();
-
-					// 3. 게시글 등록하기
-					NoticeBoardVO nv = new NoticeBoardVO();
-
-					nv.setNoticeTitle(noticeTitle);
-					nv.setNoticeContent(noticeContent);
+					
+					atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
+					
 					nv.setAtchFileId(atchFileVO.getAtchFileId());
-
-					int cnt = noticeService.insertNoticeBoard(nv);
-
-					String msg = "";
-
-					if (cnt > 0) {
-						msg = "성공";
-					} else {
-						msg = "실패";
-					}
-
-					// 4. 목록 조회화면으로 이동 - Redirect
-					String redirectUrl = req.getContextPath() + "/board/noticeBoardList.do?msg="
-							+ URLEncoder.encode(msg, "UTF-8");
-
-					return redirectUrl;
-
 				}
-				return null;
-
-			} else if ("U".equals(flag)) { // 수정
-				if (req.getMethod().equals("GET")) { // GET 방식인 경우 redirect를 하지 않는다.
-
-					String noticeNm = req.getParameter("noticeNm");
-
-					INoticeService noticeservice = NoticeServiceImpl.getInstance();
-					NoticeBoardVO nv = noticeservice.getNoticeBoard(noticeNm);
-
-					if (nv.getAtchFileId() > 0) { // 첨부파일이 존재하면
-						// 첨부파일 정보 조회
-
-						AtchFileVO fileVO = new AtchFileVO();
-						fileVO.setAtchFileId(nv.getAtchFileId());
-
-						IAtchFileService atchFileService = AtchFileServiceImpl.getInstance();
-						atchFileService.getAtchFileList(fileVO);
-
-						List<AtchFileVO> atchFileList = atchFileService.getAtchFileList(fileVO);
-
-						req.setAttribute("atchFileList", atchFileList);
-					}
-
-					// 2. 모델정보 등록
-					req.setAttribute("NoticeBoardVO", nv);
-
-					return "/WEB-INF/view/board/updateForm.jsp";
-				} else { // POST방식의 경우
-
-					FileItem item = ((FileUploadRequestWrapper) req).getFileItem("atchFile");
-					String userId = req.getParameter("userId");
-					AtchFileVO atchFileVO = new AtchFileVO();
-
-					// 기존 첨부파일 아이디 정보 가져오기
-					atchFileVO.setAtchFileId(
-							req.getParameter("atchFile") == null ? -1 : Long.parseLong(req.getParameter("atchFile")));
-
-					if (item != null && !item.getName().equals("")) {
-
-						IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-
-						atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
-
-					}
-					// 1.요청 파라미터 정보 가져오기
-					String noticeTitle = req.getParameter("noticeNm");
-					String noticeContent = req.getParameter("noticeContent");
-
-					// 2. 서비스 객체 생성하기
-					INoticeService noticeService = NoticeServiceImpl.getInstance();
-
-					// 3. 회원정보 수정하기
-					NoticeBoardVO nv = new NoticeBoardVO();
-
-					nv.setNoticeTitle(noticeTitle);
-					nv.setNoticeContent(noticeContent);
-					nv.setAtchFileId(atchFileVO.getAtchFileId());
-
-					int cnt = noticeService.updateNoticeBoard(nv);
-
-					String msg = "";
-
-					if (cnt > 0) {
-						msg = "성공";
-					} else {
-						msg = "실패";
-					}
-
-					// 4. 목록 조회화면으로 이동
-					String redirectUrl = req.getContextPath() + "/board/noticeBoardList.do?msg="
-							+ URLEncoder.encode(msg, "UTF-8");
-
-					return redirectUrl;
-				}
-
-			} else if ("D".equals(flag)) { // 삭제
-				// 1.요청파라미터 정보 가져오기
-				String noticeNm = req.getParameter("noticeNm");
-
-				// 2. 삭제처리
-				INoticeService noticeService = NoticeServiceImpl.getInstance();
-
-				int cnt = noticeService.deleteNoticeBoard(noticeNm);
+				int cnt = service.insertNoticeBoard(nv);
 
 				String msg = "";
-
-				if (cnt > 0) {
+				
+				if(cnt > 0) {
 					msg = "성공";
 				} else {
 					msg = "실패";
 				}
-
-				// 4. 목록 조회화면으로 이동
-				String redirectUrl = req.getContextPath() + "/board/noticeBoardList.do?msg="
+				String redirectUrl = req.getContextPath() 
+						+ "/board/noticeBoard.do?msg=" 
 						+ URLEncoder.encode(msg, "UTF-8");
-
 				return redirectUrl;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			
+		} else if("U".equals(flag)) { // 게시글 수정
+			
+			String userId = uv.getUserId();
+
+			INoticeService service = NoticeServiceImpl.getInstance();
+			
+			NoticeBoardVO nv = new NoticeBoardVO();
+			
+			nv.setNoticeNm(req.getParameter("noticeNm"));
+			nv.setNoticeTitle(req.getParameter("noticeTitle"));
+			nv.setNoticeContent(req.getParameter("noticeContent"));
+			
+			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
+			
+			AtchFileVO atchFileVO = new AtchFileVO();
+			
+			atchFileVO.setAtchFileId(req.getParameter("atchFileId") == null ?
+					-1 : Long.parseLong(req.getParameter("atchFileId")));
+			
+			if(item !=null && !item.getName().equals("")) {
+				
+				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+				
+				atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
+				
+				nv.setAtchFileId(atchFileVO.getAtchFileId());
+			}
+			
+			int cnt = service.updateNoticeBoard(nv);
+			
+			String msg = "";
+			if(cnt > 0) {
+				msg = "성공";
+			}else {
+				msg = "실패";
+			}
+			String redirectUrl = req.getContextPath() + "/board/noticeBoard.do?msg=" + URLEncoder.encode(msg, "UTF-8");
+			return redirectUrl;	
+		} else if("D".equals(flag)) { // 게시글 삭제
+			NoticeBoardVO nv = new NoticeBoardVO();
+			
+			nv.setNoticeNm(req.getParameter("noticeNm"));
+			
+			INoticeService service = NoticeServiceImpl.getInstance();
+			
+			int cnt = service.deleteNoticeBoard(nv);
+			
+			String msg = "";
+			if(cnt > 0){
+				msg = "성공";
+			} else {
+				msg = "실패";
+			}
+			
+			String redirectUrl = req.getContextPath() + "/board/noticeBoard.do?msg=" + URLEncoder.encode(msg, "UTF-8");
+			return redirectUrl;
+		} else if("SEL".equals(flag)) { // 한 게시글 조회
+			String noticeNm = req.getParameter("noticeNm");
+			
+			INoticeService service = NoticeServiceImpl.getInstance();
+			
+			NoticeBoardVO nv = service.getNoticeBoard(noticeNm);
+			
+			if(nv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
+				AtchFileVO fileVO = new AtchFileVO();
+				
+				fileVO.setAtchFileId(nv.getAtchFileId());
+				
+				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+				
+				List<AtchFileVO> atchFileList = fileService.getAtchFileList(fileVO);
+				
+				req.setAttribute("atchFileList", atchFileList);
+			}
+			
+			req.setAttribute("nv", nv);
+
+			// 댓글 전부 보여줌
+			INoticeCmService cmService = NoticeCmServiceImpl.getInstance();
+			
+			List<NoticeCmVO> cmList = cmService.getNoticeCmListByNoticeNm(noticeNm);
+			
+			req.setAttribute("noticeCmList", cmList);
+			
+			return "/WEB-INF/view/board/noticeBoardSelect.jsp";
+			
+		} else if("SCH".equals(flag)) { // 게시글 검색
+			String notice_title = req.getParameter("notice_title");
+			
+			// 1. 서비스 객체 생성하기
+			INoticeService noticeService = NoticeServiceImpl.getInstance();
+			NoticeBoardVO nv = new NoticeBoardVO();
+			
+			//검색된 정보 조회
+			List<NoticeBoardVO> noticeList = noticeService.getSearchNoticeBoardList(notice_title);
+			
+			req.setAttribute("notice_title", notice_title);
+			req.setAttribute("noticeList", noticeList);
+			
+			return "/WEB-INF/view/board/noticeBoardList.jsp";
+		} else if("INS".equals(flag)) { // 게시글 등록하는 페이지로 이동
+			return "/WEB-INF/view/board/noticeBoardInsert.jsp";
+		} else if("UPD".equals(flag)) { // 게시글 수정하는 페이지로 이동
+			String noticNm = (String)req.getParameter("noticNm");
+			
+			INoticeService service = NoticeServiceImpl.getInstance();
+			
+			NoticeBoardVO nv = service.getNoticeBoard(noticNm);
+			
+			if(nv.getAtchFileId() > 0) {
+				AtchFileVO fileVO = new AtchFileVO();
+				fileVO.setAtchFileId(nv.getAtchFileId());
+				
+				IAtchFileService atchFileService = AtchFileServiceImpl.getInstance();
+				List<AtchFileVO> atchFileList = atchFileService.getAtchFileList(fileVO);
+				
+				req.setAttribute("atchFileList", atchFileList);
+			}
+			
+			req.setAttribute("nv", nv);
+			
+			return "/WEB-INF/view/board/noticeBoardUpdate.jsp";
 		}
-		return null;
+		
+		// 모든 게시글 조회
+		int pageNo = req.getParameter("pageNo") == null ?
+				1 : Integer.parseInt(req.getParameter("pageNo"));
+		PagingVO pv = new PagingVO();
+		
+		INoticeService service = NoticeServiceImpl.getInstance();
+		
+		int totalCount = service.getNoticeBoardListCount();
+		pv.setTotalCount(totalCount);
+		pv.setCurrentPageNo(pageNo);
+		pv.setCountPerPage(15);
+		pv.setPageSize(5);
+		
+		List<NoticeBoardVO> list = service.getNoticeBoardList(pv);
+		
+		req.setAttribute("totalCount", totalCount);
+		req.setAttribute("list", list);
+		req.setAttribute("pv", pv);
+		
+		return "/WEB-INF/view/board/noticeBoardList.jsp";
 	}
 }

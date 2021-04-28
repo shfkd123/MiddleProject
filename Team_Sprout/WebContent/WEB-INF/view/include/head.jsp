@@ -79,7 +79,7 @@
 
 </head>
 <body>
-<%
+	<%
 	UserVO uv = null;
 	if(session != null && session.getAttribute("userVO") != null){
 		uv = (UserVO)session.getAttribute("userVO");
@@ -96,60 +96,84 @@
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a href="/Team_Sprout/user/logOut.do"><img src="/Team_Sprout/images/logo.png" id="logoImg" style="width: 100px; margin:5px;"></a>
+				<a href="/Team_Sprout/html/main/main.jsp"><img
+					src="/Team_Sprout/images/logo.png" id="logoImg"
+					style="width: 100px; margin: 5px;"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li><a href="/Team_Sprout/project/projectBoard.do" class="a_title">프로젝트검색</a></li>
-					<li><a href="/Team_Sprout/html/board/prjGuideOrUplode.jsp" class="a_title">프로젝트올리기</a></li>
-										<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#">커뮤니티 <span class="glyphicon glyphicon-chevron-down"></span></a>
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#">프로젝트둘러보기 <span
+							class="glyphicon glyphicon-chevron-down"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="/Team_Sprout/board/noticeList.do">공지사항</a></li>
-							<li><a href="/Team_Sprout/board/freeBoard.do" class="a_title">자유커뮤니티</a></li>
+							<li class="dropdown-header">전체프로젝트</li>
+							<li><a href="/Team_Sprout/project/projectBoard.do">조회 및 검색</a></li>
+							<li class="dropdown-header">카테고리별</li>
+							<li><a href="#">게임</a></li>
+							<li><a href="#">공연</a></li>
+							<li><a href="#">디자인</a></li>
+							<li><a href="#">만화</a></li>
+							<li><a href="#">예술</a></li>
+							<li><a href="#">공예</a></li>
+							<li><a href="#">사진</a></li>
+							<li><a href="#">영화</a></li>
+							<li><a href="#">음식</a></li>
+							<li><a href="#">책</a></li>
+							<li><a href="#">테크</a></li>
+							<li><a href="#">패션</a></li>
+						</ul></li>
+
+					<li><a href="/Team_Sprout/html/board/prjGuideOrUplode.jsp"
+						class="a_title">프로젝트올리기</a></li>
+					<li class="dropdown"><a class="dropdown-toggle"
+						data-toggle="dropdown" href="#">커뮤니티 <span
+							class="glyphicon glyphicon-chevron-down"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="/Team_Sprout/board/noticeBooard.do">공지사항</a></li>
+							<li><a href="/Team_Sprout/board/freeBoard.do"
+								class="a_title">자유커뮤니티</a></li>
 							<li><a href="/Team_Sprout/board/communityBoard.do">구매후기</a></li>
 							<li><a href="/Team_Sprout/board/faqBoard.do">FAQ</a></li>
 							<li><a href="/Team_Sprout/board/qnaBoard.do">Q&#38;A</a></li>
 							<li><a href="/Team_Sprout/board/reportBoard.do">신고</a></li>
-						</ul>
-						</li>
-				</ul>			
+						</ul></li>
+				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<%
 					if(uv == null) {
 					%>
-					<li id="notlog"><a href="/Team_Sprout/user/signIn.do" class="btn-lg"><span
-							class="glyphicon glyphicon-user"></span></a></li>
+					<li id="notlog"><a href="/Team_Sprout/user/signIn.do"
+						class="btn-lg"><span class="glyphicon glyphicon-user"></span></a></li>
 					<%
 					} else {
 					%>
-					<li id="userInfo" class="dropdown">
-						<a class="btn-lg"class="dropdown-toggle" data-toggle="dropdown"  href="#">
-						<span id="mypage">
-						<%=uv.getUserNickName() %> 님 <span class="glyphicon glyphicon-chevron-down"></span></span>
-						</a>
+					<li id="userInfo" class="dropdown"><a class="btn-lg"
+						class="dropdown-toggle" data-toggle="dropdown" href="#"> <span
+							id="mypage"> <%=uv.getUserNickName() %> 님 <span
+								class="glyphicon glyphicon-chevron-down"></span></span>
+					</a>
 						<ul class="dropdown-menu">
-							<li><a href="/Team_Sprout/dist/adminMain.jsp">관리자페이지</a></li>
+							<%if("Y".equals(uv.getAdminCk())) {%>
+							<li><a href="/Team_Sprout/html/admin/adminMain.jsp">관리자페이지</a></li>
+							<%} %>
 							<li><a href="/Team_Sprout/mypage/userInfo.do">회원정보</a></li>
 							<li><a href="/Team_Sprout/mypage/userPointHandler.do">포인트충전/환불</a></li>
 							<li><a href="/Team_Sprout/mypage/myOrder.do">후원현황</a></li>
 							<li><a href="#">관심프로젝트</a></li>
-							<li><a href="#">내가 만든 프로젝트</a></li>
+							<li><a href="/Team_Sprout/user/selfmadeProject.do">내가 만든
+									프로젝트</a></li>
 							<li><a href="#">메세지</a></li>
-						</ul>
-					</li>
-					
-					<li id="yeslog">
-						<a href="#" onclick="LogOut()" class="btn-lg">
-						<span><span class="glyphicon glyphicon-log-out"></span> LOGOUT</span>
-						</a>
-					</li>
+						</ul></li>
+
+					<li id="yeslog"><a href="#" onclick="LogOut()" class="btn-lg">
+							<span><span class="glyphicon glyphicon-log-out"></span>
+								LOGOUT</span>
+					</a></li>
 					<%	
 					}
 					%>
 				</ul>
 			</div>
 		</div>
-
 </body>
 </html>

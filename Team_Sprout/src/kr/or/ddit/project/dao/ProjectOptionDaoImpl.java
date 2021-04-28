@@ -29,8 +29,8 @@ public class ProjectOptionDaoImpl implements IProjectOptionDao {
 	}
 
 	@Override
-	public ProjectOptionVO getProjectOption(SqlMapClient smc, long pjNm) throws SQLException {
-		return (ProjectOptionVO) smc.queryForObject("projectOption.getProjectOption", pjNm);
+	public List<ProjectOptionVO> getProjectOption(SqlMapClient smc, ProjectOptionVO pov) throws SQLException {
+		return smc.queryForList("projectOption.getProjectOption", pov);
 	}
 
 	@Override

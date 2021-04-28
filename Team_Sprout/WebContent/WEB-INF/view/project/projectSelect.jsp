@@ -7,16 +7,14 @@
     pageEncoding="UTF-8"%>
 <%
 	ProjectVO pv = (ProjectVO)request.getAttribute("pv");
-	ProjectOptionVO pov = (ProjectOptionVO)request.getAttribute("pov");
-	
 
 	List<AtchFileVO> atchFileList = (List<AtchFileVO>) request.getAttribute("atchFileList");
+	
+	List<ProjectOptionVO> listOption = (List<ProjectOptionVO>)request.getAttribute("listOption");
 		
 	UserVO uv = (UserVO)session.getAttribute("userVO");
 	
 	long pjNm = pv.getPjNm();
-	
-	pov.setPjNm(pjNm);
 
 %>    
 <!DOCTYPE html>
@@ -51,10 +49,10 @@
 		<!-- 제목 -->
 		<div class="col-sm-8" id="divCategory">
 			<br>
-			<br> <span id="spanCategory"><%=pv.getPjCategory() %></span>
+			<br> <span id="pjCategory" name=""pjCategory""><%=pv.getPjCategory() %></span>
 			<h2><%=pv.getPjName() %></h2>
 			<br>
-			<h4>WHY</h4>
+			<h4><%=pv.getPjNm() %></h4>
 		</div>
 
 		<!-- 오른쪽 공백 2 -->
@@ -69,28 +67,40 @@
 
 		<!-- 썸네일 -->
 		<div class="col-sm-5">
-			<img src="/images/thum1.jpg" id="thumImage">
+							<%
+					if (atchFileList != null) {
+						for (AtchFileVO atchFileVO : atchFileList) {
+				%>
+				<img src='<%=atchFileVO.getImgUrl()%>' >
+				<%
+					}
+					}
+				%>
 		</div>
 		<!-- 설명 -->
 		<div class="col-sm-3">
+			<p>목표금액</p>
+			<h3>
+				<p><%=pv.getPjPriceAmount() %>원</p>
+			</h3>
 			<p>모인금액</p>
 			<h3>
-				<p>22,000,000원</p>
+				<p><%=pv.getPjPrice() %>원</p>
 			</h3>
 			<br>
 			<p>프로젝트 마감일</p>
 			<h3>
-				<p>2021년 5월 30일</p>
+				<p><%=pv.getPjDday() %></p>
 			</h3>
 			<br>
 			<p>후원자</p>
 			<h3>
-				<p>876명</p>
+				<p><%=pv.getPjFan() %>명</p>
 			</h3>
 			<br>
 			<br>
 			<br>
-			<button type="button" class="btn btn-default btn-lg">큰 버튼</button>
+			<button type="button" class="btn btn-default btn-lg" onclick="goDonation()">후원하기</button>
 		</div>
 
 		<!-- 오른쪽 공백 2 -->
@@ -105,12 +115,16 @@
 
 		<!-- 옵션 -->
 		<div class="col-sm-2">
+		<% for(int i = 0; i < listOption.size(); i++){%>
 			<div id="divOption">
-				<p>옵션<%=pov.getPoNm() %>
-				<p><%=pov.getPoName() %>
-				<h4><%=pov.getPoAddPrice() %></h4>
-				<span><%=pov.getPoContent() %></span>
+				<p>옵션<%=i+1 %></p><br><br>
+				<p><%=listOption.get(i).getPoName() %><br>
+				<h4><%=listOption.get(i).getPoAddPrice() %></h4><br>
+				<span><%=listOption.get(i).getPoContent() %></span>
 			</div>
+			<%
+		}
+			%>
 			<br>
 		</div>
 		<!-- 상세 설명 -->
@@ -128,5 +142,27 @@
 	<a style="display: scroll; position: fixed; bottom: 40px; right: 40px;"
 		href="#" title="top"><img src="/images/topbutton.png"
 		width="40px"></a>
+	<form id="fm">
+		<input type="hidden" name="pjNm" id="pjNm">
+		<input type="hidden" name="flag" id="flag">
+	</form>	
+<script type="text/javascript">
+function optionSelect(pjNm){
+	document.getElementById("pjNm").value = pjNm;
+	document.getElementById("flag").value = "OPT";
+	var fm = document.getElementById("fm");
+	fm.method = "post";
+	fm.action = "projectBoard.do";
+	fm.submit();
+}
+
+function goDonation(){
+	document.getElementById("pjNm").value = "<%=pv.getPjNm() %>";
+	var fm = document.getElementById("fm");
+	fm.method = "post";
+	fm.action = "donation.do";
+	fm.submit();
+}
+</script>	
 </body>
 </html>

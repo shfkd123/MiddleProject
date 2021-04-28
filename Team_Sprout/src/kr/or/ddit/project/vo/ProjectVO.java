@@ -16,10 +16,36 @@ public class ProjectVO {
 	private String pjAcntBank;
 	private String pjAcntNum;
 	private String pjAcntHolder;
-
+	private long pjPrice = 0;
+	private String pjExpDate;
+	private int pjPricePer;
+	private int pjFan;
 	
 	
-	
+	public int getPjFan() {
+		return pjFan;
+	}
+	public void setPjFan(int pjFan) {
+		this.pjFan = pjFan;
+	}
+	public int getPjPricePer() {
+		return pjPricePer;
+	}
+	public void setPjPricePer(int pjPricePer) {
+		this.pjPricePer = pjPricePer;
+	}
+	public long getPjPrice() {
+		return pjPrice;
+	}
+	public void setPjPrice(long pjPrice) {
+		this.pjPrice = pjPrice;
+	}
+	public String getPjExpDate() {
+		return pjExpDate;
+	}
+	public void setPjExpDate(String pjExpDate) {
+		this.pjExpDate = pjExpDate;
+	}
 	public String getPjAcntBank() {
 		return pjAcntBank;
 	}

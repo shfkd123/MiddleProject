@@ -13,6 +13,9 @@ import org.apache.commons.fileupload.FileItem;
 import kr.or.ddit.board.service.FreeServiceImpl;
 import kr.or.ddit.board.service.IFreeService;
 import kr.or.ddit.board.vo.FreeBoardVO;
+import kr.or.ddit.boardComment.service.FreeCmServiceImpl;
+import kr.or.ddit.boardComment.service.IFreeCmService;
+import kr.or.ddit.boardComment.vo.FreeCmVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
@@ -59,7 +62,6 @@ public class ProjectHandler implements CommandHandler{
 			if(req.getMethod().equals("GET")) {
 				return "/WEB-INF/view/project/projectInsert.jsp";
 			} else {
-				
 				String userId = uv.getUserId();
 
 				IProjectService service = ProjectServiceImpl.getInstance();
@@ -69,32 +71,18 @@ public class ProjectHandler implements CommandHandler{
 				BeanUtils.populate(pv, req.getParameterMap());
 				pv.setUserId(userId);
 				
-//				if((String)req.getParameter("atchFileId") == "") {
-//					FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
-//					AtchFileVO atchFileVO = new AtchFileVO();
-//					
-//					IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-//					atchFileVO = fileService.saveAtchFile(item, userId);
-//					
-//					pv.setAtchFileId(atchFileVO.getAtchFileId());
-//				}
-//				
-				long newPjNm = service.insertProject(pv);
-				
-				
 				FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
-				
 				AtchFileVO atchFileVO = new AtchFileVO();
 				
-				atchFileVO.setAtchFileId(req.getParameter("atchFileId") == null ?
-						-1 : Long.parseLong(req.getParameter("atchFileId")));
 				
-				if(item !=null && !item.getName().equals("")) {
+				if(item != null && !item.getName().equals("")) {
 					IAtchFileService fileService = AtchFileServiceImpl.getInstance();
 					atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
 					pv.setAtchFileId(atchFileVO.getAtchFileId());
 				}
 				
+				long newPjNm = service.insertProject(pv);		
+				System.out.println(">>>>>>>>"+newPjNm);
 				/*프로젝트 옵션 전송*/
 				String[] poName = req.getParameterValues("poName");
 				String[] poAddPrice = req.getParameterValues("poAddPrice");
@@ -126,7 +114,7 @@ public class ProjectHandler implements CommandHandler{
 		}  else if("D".equals(flag)) { // 프로젝트 삭제
 			ProjectVO pv = new ProjectVO();
 			
-			pv.setPjNm(Integer.parseInt(req.getParameter("PjNm")));
+			pv.setPjNm(Integer.parseInt(req.getParameter("pjNm")));
 			
 			IProjectService service = ProjectServiceImpl.getInstance();
 			
@@ -149,8 +137,18 @@ public class ProjectHandler implements CommandHandler{
 			IProjectService service = ProjectServiceImpl.getInstance();
 			IProjectOptionService serviceOption = ProjectOptionServiceImpl.getInstance();
 			
-			ProjectVO pv = service.getProject(pjNm);
-			ProjectOptionVO pov = serviceOption.getProjectOption(pjNm);
+			ProjectVO pv = new ProjectVO();
+			ProjectOptionVO pov = new ProjectOptionVO();
+			
+			pv.setPjNm(pjNm);
+			
+			pov.setPjNm(pjNm);
+			
+			pv = service.getProject(pjNm);
+			
+			List<ProjectOptionVO> list = serviceOption.getProjectOption(pov);
+			
+			req.setAttribute("listOption", list);
 			
 			if(pv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
 				AtchFileVO fileVO = new AtchFileVO();
@@ -164,30 +162,87 @@ public class ProjectHandler implements CommandHandler{
 				req.setAttribute("atchFileList", atchFileList);
 			}
 			
+			req.setAttribute("listOption", list);
+			
 			req.setAttribute("pv", pv);
 			
 			return "/WEB-INF/view/project/projectSelect.jsp";
 			
 		} else if("SCH".equals(flag)) { // 게시글 검색
-			String pjName = "";
-			String pjCategory = "";
-
-			pjName = req.getParameter("pjName");
+			String pjName = req.getParameter("pjName");
 			
 			IProjectService service = ProjectServiceImpl.getInstance();
 			
 			List<ProjectVO> list = service.searchProject(pjName);
 			
-			req.setAttribute("pjName", pjName);
-			req.setAttribute("list", list);
+			req.setAttribute("list", list);	
+			
+			ProjectVO pv = new ProjectVO();
+			
+			if(pv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
+				AtchFileVO fileVO = new AtchFileVO();
+				
+				fileVO.setAtchFileId(pv.getAtchFileId());
+				
+				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+				
+				List<AtchFileVO> atchFileList = fileService.getAtchFileList(fileVO);
+				
+				req.setAttribute("atchFileList", atchFileList);
+			}
 			
 			return "/WEB-INF/view/project/projectList.jsp";
+			
+		} else if("SCHS".equals(flag)) { // 게시글 검색
+			String pjCategory = req.getParameter("pjCategory");
+			
+			IProjectService service = ProjectServiceImpl.getInstance();
+			
+			List<ProjectVO> list = service.searchProjectSelect(pjCategory);
+			
+			req.setAttribute("list", list);	
+			
+			ProjectVO pv = new ProjectVO();
+			
+			if(pv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
+				AtchFileVO fileVO = new AtchFileVO();
+				
+				fileVO.setAtchFileId(pv.getAtchFileId());
+				
+				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+				
+				List<AtchFileVO> atchFileList = fileService.getAtchFileList(fileVO);
+				
+				req.setAttribute("atchFileList", atchFileList);
+			}
+			
+			return "/WEB-INF/view/project/projectList.jsp";
+		} else if("OPT".equals(flag)) { // 리워드 선택
+			long pjNm = Long.parseLong(req.getParameter("pjNm"));
+			
+			IProjectService service = ProjectServiceImpl.getInstance();
+			IProjectOptionService serviceOption = ProjectOptionServiceImpl.getInstance();
+			
+			ProjectVO pv = new ProjectVO();
+			ProjectOptionVO pov = new ProjectOptionVO();
+			
+			pv.setPjNm(pjNm);
+			
+			pov.setPjNm(pjNm);
+			
+			pv = service.getProject(pjNm);
+			
+			List<ProjectOptionVO> list = serviceOption.getProjectOption(pov);
+			
+			req.setAttribute("listOption", list);
+			
+			req.setAttribute("pv", pv);
+			
+			return "/WEB-INF/view/project/projectOptionSelect.jsp";
 			
 		} else if("INS".equals(flag)) {
 			return "/WEB-INF/view/project/projectInsert.jsp";
 		} 
-		
-	
 		ProjectVO projectVO = new ProjectVO();
 		
 		BeanUtils.populate(projectVO, req.getParameterMap());
