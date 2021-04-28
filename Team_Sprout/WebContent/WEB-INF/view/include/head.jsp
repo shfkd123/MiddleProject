@@ -129,7 +129,7 @@
 						data-toggle="dropdown" href="#">커뮤니티 <span
 							class="glyphicon glyphicon-chevron-down"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="/Team_Sprout/board/noticeBooard.do">공지사항</a></li>
+							<li><a href="/Team_Sprout/board/noticeBoard.do">공지사항</a></li>
 							<li><a href="/Team_Sprout/board/freeBoard.do"
 								class="a_title">자유커뮤니티</a></li>
 							<li><a href="/Team_Sprout/board/communityBoard.do">구매후기</a></li>

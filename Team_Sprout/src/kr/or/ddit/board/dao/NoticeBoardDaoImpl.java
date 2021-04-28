@@ -36,8 +36,8 @@ private static INoticeBoardDao noticeDao;
 	}
 	
 	@Override //전체 조회
-	public List<NoticeBoardVO> getNoticeBoardList(SqlMapClient smc, PagingVO pv) throws SQLException {
-		return smc.queryForList("noticeBoard.getNoticeBoardList", pv);
+	public List<NoticeBoardVO> getAllNoticeBoard(SqlMapClient smc, PagingVO pv) throws SQLException {
+		return smc.queryForList("noticeBoard.getAllNoticeBoard", pv);
 	}
 	
 	@Override //공지사항 게시글 수정

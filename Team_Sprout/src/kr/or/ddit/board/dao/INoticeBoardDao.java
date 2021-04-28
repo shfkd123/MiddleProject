@@ -17,7 +17,7 @@ public interface INoticeBoardDao {
 	 * @return list
 	 * @throws SQLException
 	 */
-	public List<NoticeBoardVO> getNoticeBoardList(SqlMapClient smc, PagingVO pv) throws SQLException;
+	public List<NoticeBoardVO> getAllNoticeBoard(SqlMapClient smc, PagingVO pv) throws SQLException;
 	
 	/**
 	 * 전체 게시글 수를 반환하는 메서드 

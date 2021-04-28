@@ -8,6 +8,7 @@ import com.ibatis.sqlmap.client.SqlMapClient;
 
 import kr.or.ddit.board.dao.INoticeBoardDao;
 import kr.or.ddit.board.dao.NoticeBoardDaoImpl;
+import kr.or.ddit.board.vo.FaqBoardVO;
 import kr.or.ddit.board.vo.NoticeBoardVO;
 import kr.or.ddit.boardComment.service.INoticeCmService;
 import kr.or.ddit.boardComment.service.NoticeCmServiceImpl;
@@ -60,11 +61,11 @@ public class NoticeServiceImpl implements INoticeService{
 	
 	//공지글 조회
 	@Override
-	public List<NoticeBoardVO> getNoticeBoardList(PagingVO pv) {
+	public List<NoticeBoardVO> getAllNoticeBoard(PagingVO pv) {
 		List<NoticeBoardVO> noticeList = new ArrayList<>();
 
 		try {
-			noticeList = noticeDao.getNoticeBoardList(smc, pv);
+			noticeList = noticeDao.getAllNoticeBoard(smc, pv);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -102,32 +103,12 @@ public class NoticeServiceImpl implements INoticeService{
 
 	//공지글 단건조회
 	@Override
-	public NoticeBoardVO getNoticeBoard(String noticNm) {
-		NoticeBoardVO nv = null;
-
+	public NoticeBoardVO getNoticeBoard(String noticeNm) {
+		NoticeBoardVO nv = new NoticeBoardVO();
 		try {
-			nv = noticeDao.getNoticeBoard(smc, noticNm);
-			
-			// 첨부파일 정보 조회
-			if(nv.getAtchFileId() > 0) { //첨부파일 존재하면...
-				//첨부파일 정보 조회
-				AtchFileVO fileVO = new AtchFileVO();
-				fileVO.setAtchFileId(nv.getAtchFileId());
-				
-				IAtchFileService atchFileService = AtchFileServiceImpl.getInstance();
-				List<AtchFileVO> atchFileVOList = atchFileService.getAtchFileList(fileVO);
-				
-				nv.setAtchFileVOList(atchFileVOList);
-				
-			}
-			
-			// 댓글 정보 조회
-			INoticeCmService noticeCmService = NoticeCmServiceImpl.getInstance();
-			List<NoticeCmVO> noticeCmVOList = noticeCmService.getNoticeCmListByNoticeNm(noticNm);
-			nv.setNoticeCmVOList(noticeCmVOList);
-			
-		} catch (SQLException ex) {
-			ex.printStackTrace();
+			nv = noticeDao.getNoticeBoard(smc, noticeNm);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		return nv;
 	}

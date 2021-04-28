@@ -75,12 +75,19 @@ div.col-sm-12 {
 						<td><%=totalCount - list.get(i).getrNum() + 1 %></td>
 						<td><a href="#" onclick="boardSelect('<%=noticeNm%>')"> <%=list.get(i).getNoticeTitle()%>
 						</a></td>
-						<td><%=list.get(i).getNoticeContent()%></td>
+						<td><%=list.get(i).getNoticeWriter()%></td>
 						<td><%=list.get(i).getNoticeDate()%></td>
 					</tr>
 					<%
 						}
+						if (list.size() <= 0){
 					%>
+					<tr>
+					<td colspan="5" style="text-align: center">게시글이 없습니다.</td>
+				</tr>
+				<%
+				}
+				%>
 				</tbody>
 			</table>
 			<div class="text-center">
@@ -118,9 +125,9 @@ div.col-sm-12 {
 					onclick="insertBoard()">등록</button>
 			</div>
 			<form id="fm">
-				<input type="hidden" name="noticeNm" id="noticeNm"> <input
-					type="hidden" name="flag" id="flag"> <input type="hidden"
-					id="schInput2" name="search">
+				<input type="hidden" name="noticeNm" id="noticeNm">
+				<input type="hidden" name="noticeTitle" id="noticeTitle">
+				<input type="hidden" name="flag" id="flag"> 
 			</form>
 		</div>
 
@@ -156,7 +163,7 @@ div.col-sm-12 {
 
 	function searchBoard() {
 		document.getElementById("flag").value = "SCH";
-		document.getElementById("schInput2").value = $("#schInput").val();
+		document.getElementById("noticeTitle").value = $("#schInput").val();
 
 		var fm = document.getElementById("fm");
 		fm.method = "post";

@@ -12,7 +12,7 @@ public interface INoticeService {
 	 * 전체 공지사항 목록 조회 메서드
 	 * @return 공지사항 정보를 담고있는 List
 	 */
-	public List<NoticeBoardVO> getNoticeBoardList(PagingVO pv);
+	public List<NoticeBoardVO> getAllNoticeBoard(PagingVO pv);
 	
 	/**
 	 * 게시글 수 반환

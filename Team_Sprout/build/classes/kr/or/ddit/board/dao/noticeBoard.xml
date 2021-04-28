@@ -27,29 +27,20 @@
 </insert>
 
 <!-- 공지사항 조회 -->
-<select id="getNoticeBoardList" resultClass="kr.or.ddit.board.vo.NoticeBoardVO">
-	SELECT B.*
-		FROM 
-			(SELECT AAA.*, ROWNUM RNUM
-			FROM(
-					SELECT AA.NOTICE_NM       noticeNm
-			 			 , AA.NOTICE_TITLE    noticeTitle
-			 			 , AA.NOTICE_CONTENT  noticeContent
-			 			 , TO_CHAR(AA.NOTICE_DATE, 'YYYY-MM-DD')     noticeDate
-			 			 , (
-			 				SELECT USER_NICKNAME 
-			 				FROM   TB_USER
-			 				WHERE  USER_ID = AA.USER_ID
-			 				)            noticeWriter
-						 , AA.ATCH_FILE_ID atchFileId
-					FROM   (SELECT A.*
-								 , ROWNUM AS RNUM
-							FROM   NOTICE_BOARD A) AA
-					WHERE  AA.NOTICE_STATE = 'Y'
-					ORDER  BY 1 DESC) AAA
-				) B
-		WHERE RNUM
-		BETWEEN #firstRecNo# AND #lastRecNo#
+<select id="getAllNoticeBoard" resultClass="kr.or.ddit.board.vo.NoticeBoardVO">
+	SELECT  NOTICE_NM         noticeNm
+	        ,NOTICE_TITLE     noticeTitle
+	        ,NOTICE_CONTENT   noticeContent
+	        , TO_CHAR(NOTICE_DATE, 'YYYY-MM-DD') noticeDate
+	        , (
+			 	SELECT USER_NICKNAME 
+			 	FROM   TB_USER
+			 	WHERE  USER_ID = A.USER_ID
+			 	)			  noticeWriter
+	        ,ATCH_FILE_ID     atchFileId
+	        ,NOTICE_STATE     noticeState
+	FROM NOTICE_BOARD A
+
 </select>
 
 <!-- 공지사항 수정 -->
@@ -58,7 +49,7 @@
 	SET 
 	 NOTICE_TITLE = #noticeTitle#
 	, NOTICE_CONTENT = #noticeContent#
-	, ,NOTICE_DATE    = SYSDATE
+	, NOTICE_DATE    = SYSDATE
 	, ATCH_FILE_ID = #atchFileId#
 	WHERE NOTICE_NM = #noticeNm#
 </update>
@@ -83,20 +74,19 @@
 
 <!-- 해당번호에 해당하는 공지사항 조회 -->
 <select id="getNoticeBoardInfo" resultClass="kr.or.ddit.board.vo.NoticeBoardVO">
-	SELECT A.NOTICE_NM      noticeNm
-			 , A.NOTICE_TITLE   noticeTitle
-			 , A.NOTICE_CONTENT noticeContent
-			 , A.NOTICE_DATE    noticeDate
-			 , (
+	SELECT  NOTICE_NM         noticeNm
+	        ,NOTICE_TITLE     noticeTitle
+	        ,NOTICE_CONTENT   noticeContent
+	        , TO_CHAR(NOTICE_DATE, 'YYYY-MM-DD') noticeDate
+	        , (
 			 	SELECT USER_NICKNAME 
 			 	FROM   TB_USER
 			 	WHERE  USER_ID = A.USER_ID
-			 	)			  noticeWriter 
-			 , A.ATCH_FILE_ID atchFileId
-		FROM   NOTICE_BOARD A			
-		WHERE  1=1
-		AND    A.NOTICE_NM = #noticeNm#
-		AND    A.NOTICE_STATE = 'Y'
+			 	)			  noticeWriter
+	        ,ATCH_FILE_ID     atchFileId
+	        ,NOTICE_STATE     noticeState
+	FROM NOTICE_BOARD A
+	WHERE NOTICE_NM = #noticeNm#
 </select>
 
 <!-- 모든 게시글의 갯수 -->
