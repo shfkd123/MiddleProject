@@ -12,6 +12,7 @@ import org.apache.commons.fileupload.FileItem;
 
 import kr.or.ddit.board.service.IReportService;
 import kr.or.ddit.board.service.ReportServiceImpl;
+
 import kr.or.ddit.board.vo.ReportBoardVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
@@ -188,6 +189,21 @@ public class AdminReportBoardHandler implements CommandHandler {
 			
 			List<ReportBoardVO> list = service.searchReportBoard(str);
 			
+			// 모든 게시글 조회
+			int pageNo = 
+					req.getParameter("pageNo") == null ? 
+					1 : Integer.parseInt(req.getParameter("pageNo"));
+				
+			PagingVO pagingVO = new PagingVO();
+			
+			int totalCount = list.size();
+			pagingVO.setTotalCount(totalCount);
+			pagingVO.setCurrentPageNo(pageNo);
+			pagingVO.setCountPerPage(15);
+			pagingVO.setPageSize(5);
+			
+			req.setAttribute("totalCount", totalCount);
+			req.setAttribute("pv", pagingVO);			
 			req.setAttribute("list", list);
 			
 			return "/WEB-INF/view/admin/adminReportBoardList.jsp";
@@ -213,6 +229,19 @@ public class AdminReportBoardHandler implements CommandHandler {
 			req.setAttribute("rbv", rbv);
 			
 			return "/WEB-INF/view/admin/adminReportBoardUpdate.jsp";
+		} else if("D2".equals(flag)) {
+			String reportNm = req.getParameter("reportNm");
+			String[] reportNms = reportNm.split("/");
+			
+			IReportService reportService = ReportServiceImpl.getInstance();
+			
+			ReportBoardVO rbv = new ReportBoardVO();
+			for(int i = 0; i < reportNms.length; i++) {
+				rbv.setReportNm(reportNms[i]);
+				reportService.deleteReportBoard(rbv);
+			}			
+			String redirectUrl = req.getContextPath() + "/admin/adminReportBoard.do";
+			return redirectUrl;
 		}
 		
 		// 모든 게시글 조회

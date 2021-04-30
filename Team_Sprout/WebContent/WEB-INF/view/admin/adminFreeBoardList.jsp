@@ -12,7 +12,7 @@
 <title>자유게시판</title>
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/main.css">
-<link rel="stylesheet" href="/Team_Sprout/css/main/board.css">
+<link rel="stylesheet" href="/Team_Sprout/css/main/adminBoard.css">
 
 </head>
 <body>
@@ -37,6 +37,7 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
+					<th><input type="checkbox" id="AllCheck"></th>
 					<th>번호</th>
 					<th>제목</th>
 					<th>작성자</th>
@@ -52,6 +53,7 @@
 				freeNm = list.get(i).getFreeNm();
 			%>
 			<tr>
+				<td><input type="checkbox" name="freeCk" value="<%=list.get(i).getFreeNm() %>"></td>
 				<td><%=totalCount - list.get(i).getRNum() + 1 %></td>
 				<td>
 					<a href="#" onclick="boardSelect('<%=freeNm %>')">
@@ -71,17 +73,17 @@
 			<%if(pv.getTotalCount() > 0) {%>
 			<ul class="pagination">
 				<%if(pv.getFirstPageNo() > pv.getPageSize()) { %>
-				<li><a href="freeBoard.do?pageNo=<%=pv.getFirstPageNo() - pv.getPageSize() %>">이전</a></li>
+				<li><a href="adminFreeBoard.do?pageNo=<%=pv.getFirstPageNo() - pv.getPageSize() %>">이전</a></li>
 				<%} %>
 				<%for(int pNo = pv.getFirstPageNo(); pNo <= pv.getLastPageNo(); pNo++){ %>
 				<li>
-					<a href="freeBoard.do?pageNo=<%=pNo %>">
+					<a href="adminFreeBoard.do?pageNo=<%=pNo %>">
 						<%=pNo %>
 					</a>
 				</li>
 				<%} %>
 				<%if(pv.getLastPageNo() < pv.getTotalPageCount()){ %>
-				<li><a href="freeBoard.do?pageNo=<%=pv.getFirstPageNo() + pv.getPageSize() %>">다음</a></li>
+				<li><a href="adminFreeBoard.do?pageNo=<%=pv.getFirstPageNo() + pv.getPageSize() %>">다음</a></li>
 			</ul>
 			<%}
 			} %>
@@ -95,13 +97,14 @@
 		<hr>
 		<!-- 등록 버튼  -->
 		<div id="btn" style="text-align: right">
+			<button type="button" id="deleteWrite" class="btn btn-success" onclick="deleteBoard()">삭제</button>
 			<button type="button" id="insertBtn" class="btn btn-success" onclick="insertBoard()">등록</button>
 		</div>
 		<form id="fm">
 			<input type="hidden" name="freeNm" id="freeNm">
 			<input type="hidden" name="flag" id="flag">
 			<input type="hidden" name="search" id="schInput2">
-</form>
+		</form>
 		</div>
 
 		<!-- 오른쪽 여백 -->
@@ -111,19 +114,32 @@
 
 </body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		<%if(session.getAttribute("userVO") == null){%>
-			$("#insertBtn").hide();
-		<%} else {%>
-			$("#insertBtn").show();
-		<%}%>
+	$("#AllCheck").click(function(){
+		// '전체선택' 체크박스가 체크 되어 있을때
+		if($(this).prop("checked")){
+			$(":checkbox").prop("checked", true);
+		} 
+		// '전체선택' 체크박스가 체크가 되어있지 않을때
+		else if($(this).prop("checked", false)){
+			$(":checkbox").prop("checked", false);
+		}
+	
+		// 체크박스가 전부 체크되어있으면 '전체선택' 체크
+		// 체크박스에 하나라도 체크되어있지 않으면 '전체선택' 체크해제
+		$(":checkbox").click(function(){
+			if($("[name=freeCk]").not(":checked").length == 0) {
+				$("#AllCheck").prop("checked", true);
+			} else if ($("[name=freeCk]").not(":checked").length > 0){
+				$("#AllCheck").prop("checked", false);
+			}
+		});
 	});
 	function boardSelect(freeNm){
 		document.getElementById("freeNm").value = freeNm;
 		document.getElementById("flag").value = "SEL";
 		var fm = document.getElementById("fm");
 		fm.method = "post";
-		fm.action = "freeBoard.do";
+		fm.action = "/Team_Sprout/admin/adminFreeBoard.do";
 		fm.submit();
 	}
 
@@ -131,7 +147,7 @@
 		document.getElementById("flag").value = "INS";
 		var fm = document.getElementById("fm");
 		fm.method = "post";
-		fm.action = "freeBoard.do";
+		fm.action = "/Team_Sprout/admin/adminFreeBoard.do";
 		fm.submit();
 	}
 	
@@ -141,7 +157,21 @@
 		
 		var fm = document.getElementById("fm");
 		fm.method = "post";
-		fm.action = "freeBoard.do";
+		fm.action = "/Team_Sprout/admin/adminFreeBoard.do";
+		fm.submit();
+	}
+	
+	function deleteBoard(){
+		var freeNms = "";
+		$("input[name=freeCk]:checked").each(function(){
+		    freeNms += "/" + this.value;
+		})
+		$("#freeNm").val(freeNms);
+		$("#flag").val("D2");
+		
+		var fm = document.getElementById("fm");
+		fm.method = "post";
+		fm.action = "/Team_Sprout/admin/adminFreeBoard.do";
 		fm.submit();
 	}
 </script>

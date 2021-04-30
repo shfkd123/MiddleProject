@@ -74,6 +74,15 @@ public interface IProjectDao {
 	 */
 	public int getAllProjectListCount(SqlMapClient smc) throws SQLException;
 
+	/**
+	 * 후원이 들어오면 후원금 및 후원자 증가
+	 * @param smc
+	 * @param pv
+	 * @return
+	 * @throws SQLException
+	 */
+	public int getDonation(SqlMapClient smc, ProjectVO pv) throws SQLException;
+	
 }
 
 

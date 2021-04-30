@@ -15,6 +15,7 @@
 	,NOTICE_DATE
 	,USER_ID
 	,ATCH_FILE_ID
+	,NOTICE_STATE
 
 	) VALUES(
 	NOTICE_BOARD_SEQ.NEXTVAL
@@ -23,6 +24,7 @@
 	,SYSDATE
 	,#noticeWriter#
 	,#atchFileId#
+	,'Y'
 	)
 </insert>
 
@@ -63,13 +65,16 @@
 
 <!-- 공지사항  검색 -->
 <select id="getsearchNoticeBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.NoticeBoardVO">
-	SELECT NOTICE_NM      noticeNm
-		 , NOTICE_TITLE   noticeTitle
-		 , NOTICE_CONTENT noticeContent
-		 , TO_CHAR(NOTICE_DATE, 'YYYY-MM-DD') noticeDate
-		 , USER_ID noticeWriter
-	FROM NOTICE_BOARD
-	WHERE NOTICE_TITLE LIKE '%' || #noticeTitle# || '%'
+	SELECT
+	    A.NOTICE_NM noticeNm,
+	    A.NOTICE_TITLE noticeTitle,
+	    A.NOTICE_CONTENT noticeContent,
+	    TO_CHAR(A.NOTICE_DATE,'YYYY-MM-DD') noticeDate,
+	    B.USER_NICKNAME noticeWriter
+		FROM
+		    NOTICE_BOARD A INNER JOIN TB_USER B ON (A.USER_ID = B.USER_ID)
+		WHERE  A.NOTICE_TITLE LIKE '%' || #noticeTitle# || '%'
+		AND    A.NOTICE_STATE = 'Y'
 </select>
 
 <!-- 해당번호에 해당하는 공지사항 조회 -->

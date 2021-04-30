@@ -68,12 +68,18 @@ public class FreeBoardHandler implements CommandHandler {
 				fv.setFreeContent(freeContent);
 				fv.setFreeWriter(userId);
 				
-				if((String)req.getParameter("attachFile") != "") {
-					FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
-					AtchFileVO atchFileVO = new AtchFileVO();
+				FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
+				
+				AtchFileVO atchFileVO = new AtchFileVO();
+				
+				atchFileVO.setAtchFileId(req.getParameter("atchFileId") == null ?
+						-1 : Long.parseLong(req.getParameter("atchFileId")));
+				
+				if(item != null && !item.getName().equals("")) {
 					
 					IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-					atchFileVO = fileService.saveAtchFile(item, userId);
+					
+					atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
 					
 					fv.setAtchFileId(atchFileVO.getAtchFileId());
 				}

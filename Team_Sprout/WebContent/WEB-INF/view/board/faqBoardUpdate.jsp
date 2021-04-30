@@ -128,7 +128,7 @@ div.col-sm-12 {
 	function upload(){
 		if(confirm("게시글을 수정 하시겠습니까?")){
 			alert("게시글 수정이 완료되었습니다.");
-			document.getElementById("fmNm").value = "<%=fbv.getBoardNm() %>";
+			document.getElementById("fmNm").value = "<%=fbv.getFaqNm() %>";
 			document.getElementById("fmTitle").value = $("#title").val();
 			document.getElementById("fmContent").value = $("#content").val();
 			document.getElementById("flag").value = "U";

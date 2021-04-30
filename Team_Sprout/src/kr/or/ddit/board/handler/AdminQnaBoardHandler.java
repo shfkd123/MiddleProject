@@ -11,8 +11,11 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.fileupload.FileItem;
 
 import kr.or.ddit.board.service.IQnaService;
+import kr.or.ddit.board.service.IReportService;
 import kr.or.ddit.board.service.QnaServiceImpl;
+import kr.or.ddit.board.service.ReportServiceImpl;
 import kr.or.ddit.board.vo.QnaBoardVO;
+import kr.or.ddit.board.vo.ReportBoardVO;
 import kr.or.ddit.boardComment.service.IQnaCmService;
 import kr.or.ddit.boardComment.service.QnaCmServiceImpl;
 import kr.or.ddit.boardComment.vo.QnaCmVO;
@@ -192,6 +195,21 @@ public class AdminQnaBoardHandler implements CommandHandler {
 			
 			List<QnaBoardVO> list = service.searchQnaBoard(str);
 			
+			// 모든 게시글 조회
+			int pageNo = 
+					req.getParameter("pageNo") == null ? 
+					1 : Integer.parseInt(req.getParameter("pageNo"));
+				
+			PagingVO pagingVO = new PagingVO();
+			
+			int totalCount = service.getAllQnaBoardListCount();
+			pagingVO.setTotalCount(totalCount);
+			pagingVO.setCurrentPageNo(pageNo);
+			pagingVO.setCountPerPage(15);
+			pagingVO.setPageSize(5);
+			
+			req.setAttribute("totalCount", totalCount);
+			req.setAttribute("pv", pagingVO);			
 			req.setAttribute("list", list);
 			
 			return "/WEB-INF/view/admin/adminQnaBoardList.jsp";

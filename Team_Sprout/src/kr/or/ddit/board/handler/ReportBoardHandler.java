@@ -9,14 +9,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.fileupload.FileItem;
 
-import kr.or.ddit.board.service.FaqServiceImpl;
-import kr.or.ddit.board.service.IFaqService;
-import kr.or.ddit.board.service.IQnaService;
 import kr.or.ddit.board.service.IReportService;
-import kr.or.ddit.board.service.QnaServiceImpl;
 import kr.or.ddit.board.service.ReportServiceImpl;
-import kr.or.ddit.board.vo.FaqBoardVO;
-import kr.or.ddit.board.vo.QnaBoardVO;
 import kr.or.ddit.board.vo.ReportBoardVO;
 import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
@@ -100,9 +94,17 @@ public class ReportBoardHandler implements CommandHandler {
 				return redirectUrl;
 			}
 			
-		} else if("U".equals(flag)) { // 게시글 수정
+} else if("U".equals(flag)) { // 게시글 수정
 			
 			String userId = uv.getUserId();
+
+			IReportService service = ReportServiceImpl.getInstance();
+			
+			ReportBoardVO rbv = new ReportBoardVO();
+			
+			rbv.setReportNm(req.getParameter("reportNm"));
+			rbv.setReportTitle(req.getParameter("reportTitle"));
+			rbv.setReportContent(req.getParameter("reportContent"));
 			
 			FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
 			
@@ -116,16 +118,9 @@ public class ReportBoardHandler implements CommandHandler {
 				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
 				
 				atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
+				
+				rbv.setAtchFileId(atchFileVO.getAtchFileId());
 			}
-			
-			IReportService service = ReportServiceImpl.getInstance();
-			
-			ReportBoardVO rbv = new ReportBoardVO();
-			
-			rbv.setReportNm(req.getParameter("reportNm"));
-			rbv.setReportTitle(req.getParameter("reportTitle"));
-			rbv.setReportContent(req.getParameter("reportContent"));
-			rbv.setAtchFileId(atchFileVO.getAtchFileId());
 			
 			int cnt = service.updateReportBoard(rbv);
 			

@@ -71,14 +71,19 @@ public class CommunityBoardDaoImpl implements ICommunityBoardDao {
 	}
 
 	@Override
-	public List<CommunityBoardVO> searchCommunityBoard(SqlMapClient smc, String str) throws SQLException {
-		return smc.queryForList("communityBoard.searchCommunityBoard", str);
+	public List<CommunityBoardVO> searchCommunityBoard(SqlMapClient smc, CommunityBoardVO cb) throws SQLException {
+		return smc.queryForList("communityBoard.searchCommunityBoard", cb);
 	}
 
 	@Override
 	public int getAllCommunityListCount(SqlMapClient smc) throws SQLException {
 		int cnt = (int)smc.queryForObject("communityBoard.getFaqAllCount");
 		return cnt;
+	}
+
+	@Override
+	public List<CommunityBoardVO> getPjCommunityBoard(SqlMapClient smc, String pjNm) throws SQLException {
+		return smc.queryForList("communityBoard.getPjCommunityBoard", pjNm );
 	}
 
 }

@@ -2,7 +2,6 @@
 <%@page import="kr.or.ddit.user.vo.UserVO"%>
 <%@page import="kr.or.ddit.comm.vo.AtchFileVO"%>
 <%@page import="java.util.List"%>
-<%@page import="kr.or.ddit.board.vo.QnaBoardVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/view/include/head.jsp"%>
@@ -35,6 +34,9 @@
 div.col-sm-12 {
 	margin: 0px;
 	padding: 0px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    width: 10px;
 }
 </style>
 </head>
@@ -80,6 +82,7 @@ div.col-sm-12 {
 				</tr>
 				<tr>
 					<th>내용</th>
+					<td colspan="3"><%=fbv.getFaqContent() %></td>
 				</tr>
 				<tr>
 					<th>첨부파일</th>
@@ -121,20 +124,20 @@ div.col-sm-12 {
 	</div>
 </body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$("#updateWrite").css("display", "none");
-		$("#deleteWrite").css("display", "none");
-		<%
-		if(uv != null){
-			if(!uv.getUserNickName().equals(fbv.getFaqWriter())){
-			%>
+$(document).ready(function(){
+	$("#updateWrite").css("display", "none");
+	$("#deleteWrite").css("display", "none");
+	<%
+	if(uv != null){
+		if(uv.getUserNickName().equals(fbv.getFaqWriter())){
+		%>
 			$("#updateWrite").css("display", "inline");
 			$("#deleteWrite").css("display", "inline");
-			<%
-			}
+		<%
 		}
-		%>
-	});
+	}
+	%>
+});
 	
 	function goList(){
 		location.href = "faqBoard.do";

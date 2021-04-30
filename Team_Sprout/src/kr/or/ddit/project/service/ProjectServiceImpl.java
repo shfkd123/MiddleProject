@@ -119,4 +119,15 @@ public class ProjectServiceImpl implements IProjectService{
 		}
 		return cnt;
 	}
+
+	@Override
+	public int getDonation(ProjectVO pv) {
+		int cnt = 0;
+		try {
+			cnt = projectDao.getDonation(smc, pv);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cnt;
+	}
 }

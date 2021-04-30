@@ -96,35 +96,16 @@
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a href="/Team_Sprout/html/main/main.jsp"><img
+				<a href="/Team_Sprout/main/main.do"><img
 					src="/Team_Sprout/images/logo.png" id="logoImg"
 					style="width: 100px; margin: 5px;"></a>
 			</div>
 			<div class="collapse navbar-collapse" id="myNavbar">
 				<ul class="nav navbar-nav">
-					<li class="dropdown"><a class="dropdown-toggle"
-						data-toggle="dropdown" href="#">프로젝트둘러보기 <span
-							class="glyphicon glyphicon-chevron-down"></span></a>
-						<ul class="dropdown-menu">
-							<li class="dropdown-header">전체프로젝트</li>
-							<li><a href="/Team_Sprout/project/projectBoard.do">조회 및 검색</a></li>
-							<li class="dropdown-header">카테고리별</li>
-							<li><a href="#">게임</a></li>
-							<li><a href="#">공연</a></li>
-							<li><a href="#">디자인</a></li>
-							<li><a href="#">만화</a></li>
-							<li><a href="#">예술</a></li>
-							<li><a href="#">공예</a></li>
-							<li><a href="#">사진</a></li>
-							<li><a href="#">영화</a></li>
-							<li><a href="#">음식</a></li>
-							<li><a href="#">책</a></li>
-							<li><a href="#">테크</a></li>
-							<li><a href="#">패션</a></li>
-						</ul></li>
+					<li><a href="/Team_Sprout/project/projectBoard.do">프로젝트 목록</a></li>
 
 					<li><a href="/Team_Sprout/html/board/prjGuideOrUplode.jsp"
-						class="a_title">프로젝트올리기</a></li>
+						class="a_title">프로젝트 올리기</a></li>
 					<li class="dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#">커뮤니티 <span
 							class="glyphicon glyphicon-chevron-down"></span></a>
@@ -132,7 +113,7 @@
 							<li><a href="/Team_Sprout/board/noticeBoard.do">공지사항</a></li>
 							<li><a href="/Team_Sprout/board/freeBoard.do"
 								class="a_title">자유커뮤니티</a></li>
-							<li><a href="/Team_Sprout/board/communityBoard.do">구매후기</a></li>
+<!-- 							<li><a href="/Team_Sprout/board/communityBoard.do">구매후기</a></li> -->
 							<li><a href="/Team_Sprout/board/faqBoard.do">FAQ</a></li>
 							<li><a href="/Team_Sprout/board/qnaBoard.do">Q&#38;A</a></li>
 							<li><a href="/Team_Sprout/board/reportBoard.do">신고</a></li>
@@ -159,10 +140,8 @@
 							<li><a href="/Team_Sprout/mypage/userInfo.do">회원정보</a></li>
 							<li><a href="/Team_Sprout/mypage/userPointHandler.do">포인트충전/환불</a></li>
 							<li><a href="/Team_Sprout/mypage/myOrder.do">후원현황</a></li>
-							<li><a href="#">관심프로젝트</a></li>
 							<li><a href="/Team_Sprout/user/selfmadeProject.do">내가 만든
 									프로젝트</a></li>
-							<li><a href="#">메세지</a></li>
 						</ul></li>
 
 					<li id="yeslog"><a href="#" onclick="LogOut()" class="btn-lg">

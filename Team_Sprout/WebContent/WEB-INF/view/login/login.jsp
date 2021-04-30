@@ -20,7 +20,7 @@
 			if("T".equals(chk)){
 			%>
 			alert("\'<%=uv.getUserName()%>\' 님 환영합니다");
-			location.href = "/Team_Sprout/html/main/main.jsp";
+			location.href = "/Team_Sprout/main/main.do";
 			<%
 			} else if ("F".equals(chk)){
 			%>
@@ -46,13 +46,13 @@
 				<input type="password" required name="userPw" id="userPw">
 				<label>비밀번호를 입력해주세요.</label>
 			</div>
-			<div class="content">
-				<div class="checkbox">
-			    	<input type="checkbox" id="remember-me">
-			    	<label for="remember-me">ID 저장</label>
-			  	</div>
-				<div class="pass-link"><a href="#">아이디를 잊어버리셨나요?</a></div>
-			</div>
+<!-- 			<div class="content"> -->
+<!-- 				<div class="checkbox"> -->
+<!-- 			    	<input type="checkbox" id="remember-me"> -->
+<!-- 			    	<label for="remember-me">ID 저장</label> -->
+<!-- 			  	</div> -->
+<!-- 				<div class="pass-link"><a href="#">아이디를 잊어버리셨나요?</a></div> -->
+<!-- 			</div> -->
 			<div class="field">
 			  <input type="submit" value="Login">
 			</div>

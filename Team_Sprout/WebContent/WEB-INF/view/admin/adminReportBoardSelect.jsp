@@ -11,6 +11,7 @@
 	List<AtchFileVO> atchFileList = (List<AtchFileVO>) request.getAttribute("atchFileList");
 
 	UserVO uv = (UserVO) session.getAttribute("userVO");
+
 %>
 <!DOCTYPE html>
 <html>
@@ -20,8 +21,9 @@
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/main.css">
 <link rel="stylesheet" href="/Team_Sprout/css/main/boardDetail.css">
+</style>
 </head>
-</head>
+
 <body>
 
 	<!-- 전체-->
@@ -98,22 +100,10 @@
 		
 	</div>
 </body>
-	<script type="text/javascript">
-	$(document).ready(function(){
-		$("#updateWrite").css("display", "none");
-		$("#deleteWrite").css("display", "none");
-		<%
-		if( uv != null){
-			if(uv.getUserNickName().equals(rbv.getReportWriter())){
-		%> 
-				$("#updateWrite").css("display", "inline");
-				$("#deleteWrite").css("display", "inline");
-			<%
-			}
-		}
-	%> 
-	});
-	
+<script type="text/javascript">
+
+
+
 	function goList(){
 		location.href = "adminReportBoard.do";
 	}

@@ -19,7 +19,7 @@ public class UserInfoDeleteHandler implements CommandHandler {
 		if(req.getMethod().equals("GET")) {
 			return VIEW_PAGE;
 		} else {
-			return "/html/main/main.jsp";
+			return "/main/main.do";
 		}
 	}
 

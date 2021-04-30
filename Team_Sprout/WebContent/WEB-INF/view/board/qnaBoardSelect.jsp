@@ -39,6 +39,9 @@ div.col-sm-12 {
 	margin: 0px;
 	padding: 0px;
 }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    width: 10px;
+}
 </style>
 </head>
 <body>
@@ -88,24 +91,13 @@ div.col-sm-12 {
 			if(atchFileList != null){
 				for(AtchFileVO atchFileVO : atchFileList){
 			%>
-				<img src='<%=atchFileVO.getImgUrl()%>' >
+				<img src='<%=atchFileVO.getImgUrl()%>' style="width: 100%;">
 			<%
 				}
 			}
 			 %>
 			</td>
-				<td colspan="3"><%=qbv.getQnaContent() %></td>
-				<td colspan="3" id="imgPrint"><%=qbv.getQnaContent() %>
-			<%if(atchFileList != null){
-				for(AtchFileVO atchFileVO : atchFileList){
-			%>
-			<img src='<%=atchFileVO.getImgUrl()%>' width="500px">
-			<%
-				}
-			}
-			 %>
-			</td>
-				</tr>
+
 				<tr>
 					<th>첨부파일</th>
 					<td colspan="3">
@@ -260,6 +252,12 @@ div.col-sm-12 {
 			<input type="hidden" id="cmType" name="qcType">
 			<input type="hidden" id="flagCm" name="flagCm">
 		</form>
+				<!-- 등록 수정 삭제 버튼  -->
+		<div id="btn" align="right">
+			<button type="button" class="btn btn-success" onclick="goList()">목록</button>
+			<button type="button" id="updateWrite" class="btn btn-success" onclick="updateBoard()">수정</button>
+			<button type="button" id="deleteWrite" class="btn btn-success" onclick="deleteBoard()">삭제</button>
+		</div>
 	</div>
 			
 		<!-- 오른쪽 여백 -->

@@ -95,13 +95,9 @@
 			 , A.FREE_TITLE    freeTitle
 			 , A.FREE_CONTENT  freeContent
 			 , A.FREE_DATE     freeDate
-			 , (
-			 	SELECT B.USER_NICKNAME 
-			 	FROM   TB_USER B
-			 	WHERE  B.USER_ID = A.USER_ID
-			 	)             freeWriter 
+			 , B.USER_NICKNAME freeWriter 
 			 , A.ATCH_FILE_ID atchFileId
-		FROM   FREE_BOARD A			
+		FROM   FREE_BOARD A INNER JOIN TB_USER B ON(A.USER_ID = B.USER_ID)	
 		WHERE  1=1
 		AND    A.FREE_STATE = 'Y'
 		AND    A.FREE_TITLE LIKE '%' || #freeTitle# || '%'

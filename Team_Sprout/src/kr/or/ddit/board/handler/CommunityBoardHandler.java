@@ -20,6 +20,12 @@ import kr.or.ddit.comm.handler.CommandHandler;
 import kr.or.ddit.comm.service.AtchFileServiceImpl;
 import kr.or.ddit.comm.service.IAtchFileService;
 import kr.or.ddit.comm.vo.AtchFileVO;
+import kr.or.ddit.project.service.IProjectService;
+import kr.or.ddit.project.service.ProjectServiceImpl;
+import kr.or.ddit.project.vo.ProjectVO;
+import kr.or.ddit.user.service.IOrderService;
+import kr.or.ddit.user.service.OrderServiceImpl;
+import kr.or.ddit.user.vo.OrderVO;
 import kr.or.ddit.user.vo.UserVO;
 import kr.or.ddit.util.FileUploadRequestWrapper;
 
@@ -60,10 +66,12 @@ public class CommunityBoardHandler implements CommandHandler {
 				
 				ICommunityService service = CommunityServiceImpl.getInstance();
 				
+				String pjNm = req.getParameter("pjNm");
 //				String pjName = req.getParameter("pjName");
 				String cbTitle = req.getParameter("cbTitle");
 				String cbContent = req.getParameter("cbContent");
 //				cbv.setPjName(pjName);
+				cbv.setPjNm(pjNm);
 				cbv.setCbTitle(cbTitle);
 				cbv.setCbContent(cbContent);
 				cbv.setCbWriter(userId);
@@ -79,7 +87,6 @@ public class CommunityBoardHandler implements CommandHandler {
 					cbv.setAtchFileId(atchFileVO.getAtchFileId());
 				}
 				
-				
 				int cnt = service.insertCommunityBoard(cbv);
 
 				String msg = "";
@@ -90,7 +97,7 @@ public class CommunityBoardHandler implements CommandHandler {
 					msg = "실패";
 				}
 				String redirectUrl = req.getContextPath() 
-						+ "/board/communityBoard.do?msg=" 
+						+ "/board/communityBoard.do?pjNm=" + pjNm + "&msg=" 
 						+ URLEncoder.encode(msg, "UTF-8");
 				return redirectUrl;
 			}
@@ -119,7 +126,6 @@ public class CommunityBoardHandler implements CommandHandler {
 						
 			cbv.setCbNm(req.getParameter("cbNm"));
 			//cbv.setCbTitle(req.getParameter("cbTitle"));
-			String pjName = req.getParameter("pjName");
 			cbv.setPjName(req.getParameter("pjName")); // 프로젝트 이름
 			cbv.setCbContent(req.getParameter("cbContent"));
 			cbv.setAtchFileId(atchFileVO.getAtchFileId());
@@ -133,7 +139,7 @@ public class CommunityBoardHandler implements CommandHandler {
 			}else {
 				msg = "실패";
 			}
-			String redirectUrl = req.getContextPath() + "/board/communityBoard.do?msg=" + URLEncoder.encode(msg, "UTF-8");
+			String redirectUrl = req.getContextPath() + "/board/communityBoard.do?pjNm=" + req.getParameter("pjNm") + "&msg=" + URLEncoder.encode(msg, "UTF-8");
 		
 			return redirectUrl;	
 		
@@ -160,8 +166,7 @@ public class CommunityBoardHandler implements CommandHandler {
 			
 			ICommunityService service = CommunityServiceImpl.getInstance();
 			
-			CommunityBoardVO cbv = new CommunityBoardVO();
-			
+			CommunityBoardVO cbv = service.getCommunityBoard(cbNm);
 			if(cbv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
 				AtchFileVO fileVO = new AtchFileVO();
 				
@@ -181,7 +186,7 @@ public class CommunityBoardHandler implements CommandHandler {
 			
 			List<CommunityCmVO> cmList = cmService.getAllCommunityCm(cbNm);
 			
-			req.setAttribute("cmList", cmList);
+			req.setAttribute("communityCmList", cmList);
 			
 			return "/WEB-INF/view/board/communityBoardSelect.jsp";
 			
@@ -192,7 +197,12 @@ public class CommunityBoardHandler implements CommandHandler {
 			
 			ICommunityService service = CommunityServiceImpl.getInstance();
 			
-			List<CommunityBoardVO> list = service.searchCommunityBoard(str);
+			CommunityBoardVO cb = new CommunityBoardVO();
+			cb.setPjNm(req.getParameter("pjNm"));
+			cb.setCbTitle(str);
+			cb.setCbWriter(str);
+			
+			List<CommunityBoardVO> list = service.searchCommunityBoard(cb);
 			
 			req.setAttribute("list", list);
 			
@@ -223,14 +233,8 @@ public class CommunityBoardHandler implements CommandHandler {
 		}
 		
 		// 모든 게시글 조회
-		CommunityBoardVO boardVO = new CommunityBoardVO();
-		
-		BeanUtils.populate(boardVO, req.getParameterMap());
-		
 		ICommunityService service = CommunityServiceImpl.getInstance();
-		
-		
-		List<CommunityBoardVO> list = service.getAllCommunityBoardList();
+		List<CommunityBoardVO> list = service.getPjCommunityBoard(req.getParameter("pjNm"));
 		
 		req.setAttribute("list", list);
 		

@@ -89,7 +89,7 @@ public class UserHandler implements CommandHandler {
 				
 				session.setAttribute("userVO", user);
 				
-				String redirectUrl = req.getContextPath() + "/html/main/main.jsp?" + URLEncoder.encode(msg, "UTF-8");
+				String redirectUrl = req.getContextPath() + "/main/main.do?" + URLEncoder.encode(msg, "UTF-8");
 				
 				return redirectUrl;
 			} else if("D".equals(flag)) { // 유저 삭제
@@ -105,7 +105,7 @@ public class UserHandler implements CommandHandler {
 				} else {
 					msg = "실패";
 				}
-				String redirectUrl = req.getContextPath() + "/html/main/main.jsp" + URLEncoder.encode(msg, "UTF-8");
+				String redirectUrl = req.getContextPath() + "/main/main.do?" + URLEncoder.encode(msg, "UTF-8");
 				
 				return redirectUrl;
 			}

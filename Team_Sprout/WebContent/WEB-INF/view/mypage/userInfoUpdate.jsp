@@ -5,6 +5,10 @@
 <!DOCTYPE html>
 <head>
 <title>회원정보 수정</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/Team_Sprout/js/common/myUtil.js"></script>
+<script src="/Team_Sprout/js/jquery-3.6.0.js"></script>
 <%
  uv = (UserVO)session.getAttribute("userVO");
 

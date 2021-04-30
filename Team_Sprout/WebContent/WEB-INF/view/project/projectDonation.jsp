@@ -76,6 +76,7 @@
 			<input type="hidden" id="pjName" name="pjName">
 			<input type="hidden" id="orderPrice" name="orderPrice">
 			<input type="hidden" id="poName" name="poName">
+			<input type="hidden" id="atchFileId" name="atchFileId">
 		</form>
 		<!-- 오른쪽 공백 2 -->
 		<div class="col-sm-2"></div>
@@ -90,16 +91,22 @@
 		if(!confirm("후원 하시겠습니까?")){
 			return;
 		}
-		alert("후원이 완료 되었습니다.");
-		$("#userId").val("<%=uv.getUserId() %>");
-		$("#pjNm").val("<%=pv.getPjNm() %>");
-		$("#pjName").val("<%=pv.getPjName() %>");
-		$("#orderPrice").val($("#selectMoney option:selected").val().split("/")[0]);
-		$("#poName").val($("#selectMoney option:selected").val().split("/")[1]);
-		var fm = document.getElementById("fm");
-		fm.method = "post";
-		fm.action = "/Team_Sprout/order/order.do";
-		fm.submit();
+		var userMoney = <%=uv.getUserMoney() %>;
+		if(userMoney < $("#selectMoney option:selected").val().split("/")[0]) {
+			alert("잔액이 부족합니다.");
+		}else{
+			alert("후원이 완료 되었습니다.");
+			$("#userId").val("<%=uv.getUserId() %>");
+			$("#pjNm").val("<%=pv.getPjNm() %>");
+			$("#pjName").val("<%=pv.getPjName() %>");
+			$("#orderPrice").val($("#selectMoney option:selected").val().split("/")[0]);
+			$("#poName").val($("#selectMoney option:selected").val().split("/")[1]);
+			$("#atchFileId").val(<%=pv.getAtchFileId() %>);
+			var fm = document.getElementById("fm");
+			fm.method = "post";
+			fm.action = "/Team_Sprout/order/order.do";
+			fm.submit();
+		}
 	}
 </script>
 <%@include file="/WEB-INF/view/include/footer.jsp"%>

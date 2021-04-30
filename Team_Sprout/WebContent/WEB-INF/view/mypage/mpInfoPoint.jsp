@@ -54,11 +54,12 @@ $(document).ready(function(){
 						</select>
 						
 					</div>
-						<iframe src="https://payapplite.com/l/uVNTy1" width="420" height="610" title="1000포인트" id="i1" style="display:none;"></iframe>
-						<iframe src="https://payapplite.com/l/UyFgSD" width="420" height="610" title="5000포인트" id="i2" style="display:none;"></iframe>
-						<iframe src="https://payapplite.com/l/Ld2YZQ" width="420" height="610" title="10000포인트" id="i3" style="display:none;"></iframe>
-						<iframe src="https://payapplite.com/l/yAMS13" width="420" height="610" title="30000포인트" id="i4" style="display:none;"></iframe>
-						<iframe src="https://payapplite.com/l/7Jgnt8" width="420" height="610" title="50000포인트" id="i5" style="display:none;"></iframe>		
+<!-- 						<iframe src="https://payapplite.com/l/uVNTy1" width="420" height="610" title="1000포인트" id="i1" style="display:none;"></iframe> -->
+<!-- 						<iframe src="https://payapplite.com/l/UyFgSD" width="420" height="610" title="5000포인트" id="i2" style="display:none;"></iframe> -->
+<!-- 						<iframe src="https://payapplite.com/l/Ld2YZQ" width="420" height="610" title="10000포인트" id="i3" style="display:none;"></iframe> -->
+<!-- 						<iframe src="https://payapplite.com/l/yAMS13" width="420" height="610" title="30000포인트" id="i4" style="display:none;"></iframe> -->
+<!-- 						<iframe src="https://payapplite.com/l/7Jgnt8" width="420" height="610" title="50000포인트" id="i5" style="display:none;"></iframe>		 -->
+						<h4 style="text-align: center;" id="userInputPoint" >  </h4>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
@@ -135,7 +136,8 @@ $(document).ready(function(){
 	
 </body>
 <script type="text/javascript">
-$(document).ready(function() {
+$(document).ready(function() { 
+	
 	  $('#pointSel').change(function() {
 	    var point = $('#pointSel option:selected').val();
 	    if (point == 1000) {

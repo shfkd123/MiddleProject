@@ -74,7 +74,7 @@
 function moveRegPage(){
 	<%if (session.getAttribute("userVO") == null) {%>
 	alert("회원만 프로젝트를 등록할 수 있습니다.");	
-	location.href = "/Team_Sprout/user/register.do";
+	location.href = "/Team_Sprout/user/signIn.do";
 <%} else {%>
 		document.getElementById("flag").value = "C";
 		

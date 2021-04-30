@@ -213,8 +213,8 @@
 			 , PJ_CONTENT      pjContent
 			 , PJ_PRICE_AMOUNT pjPriceAmount 
 			 , PJ_CONDITION    pjCondition
-			 , PJ_DDAY         pjDday
-			 , PJ_OPENDAY      pjOpenday
+			 , TO_CHAR(TO_DATE(PJ_DDAY), 'YYYYMMDD') pjDday
+			 , TO_CHAR(TO_DATE(PJ_OPENDAY), 'YYYYMMDD') pjOpenday
 			 , PJ_REWARD       pjReward
 			 , USER_ID         userId
 			 , ATCH_FILE_ID    atchFileId
@@ -222,11 +222,8 @@
 			 , PJ_ACNTBANK     pjAcntbank
 			 , PJ_ACNTNUM      pjAcntnum
 			 , PJ_ACNTHOLDER   pjAcntholder
-			 , (SELECT TO_DATE('21/05/15') - TRUNC(SYSDATE)
-				FROM DUAL)     pjExpDate
-			 , (SELECT NVL(ROUND((PJ_PRICE / PJ_PRICE_AMOUNT) * 100, 0), 0)
-			    FROM   PROJECT 
-			    WHERE  USER_ID = #userId#) pjPricePer
+			 , TO_DATE(PJ_DDAY) - TRUNC(SYSDATE) pjExpDate
+			 , NVL(ROUND((PJ_PRICE / PJ_PRICE_AMOUNT) * 100, 0), 0) pjPricePer
 		FROM   PROJECT
 		WHERE  USER_ID = #userId#
 	</select>

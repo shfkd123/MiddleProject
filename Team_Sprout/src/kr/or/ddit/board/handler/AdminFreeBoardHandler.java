@@ -37,7 +37,7 @@ public class AdminFreeBoardHandler implements CommandHandler {
 				return true;
 			}
 		}
-		if("D".equals(flag)) {
+		if("D".equals(flag) || ("D2").equals(flag)) {
 			return true;
 		}
 		return false;
@@ -199,8 +199,20 @@ public class AdminFreeBoardHandler implements CommandHandler {
 			
 			List<FreeBoardVO> list = service.searchFreeBoard(str);
 			
-			req.setAttribute("list", list);
+			int pageNo = req.getParameter("pageNo") == null ?
+					1 : Integer.parseInt(req.getParameter("pageNo"));
 			
+			PagingVO pv = new PagingVO();
+			
+			int totalCount = list.size();
+			pv.setTotalCount(totalCount);
+			pv.setCurrentPageNo(pageNo);
+			pv.setCountPerPage(10);
+			pv.setPageSize(5);
+			
+			req.setAttribute("pv", pv);
+			req.setAttribute("totalCount", totalCount);
+			req.setAttribute("list", list);
 			return "/WEB-INF/view/admin/adminFreeBoardList.jsp";
 		} else if("INS".equals(flag)) {
 			return "/WEB-INF/view/admin/adminFreeBoardInsert.jsp";
@@ -227,6 +239,19 @@ public class AdminFreeBoardHandler implements CommandHandler {
 			req.setAttribute("fv", fv);
 			
 			return "/WEB-INF/view/admin/adminFreeBoardUpdate.jsp";
+		} else if("D2".equals(flag)) {
+			String freeNm = req.getParameter("freeNm");
+			String[] freeNms = freeNm.split("/");
+			
+			IFreeService freeService = FreeServiceImpl.getInstance();
+			
+			FreeBoardVO fv = new FreeBoardVO();
+			for(int i = 0; i < freeNms.length; i++) {
+				fv.setFreeNm(freeNms[i]);
+				freeService.deleteFreeBoard(fv);
+			}			
+			String redirectUrl = req.getContextPath() + "/admin/adminFreeBoard.do";
+			return redirectUrl;
 		}
 		
 		// 모든 게시글 조회

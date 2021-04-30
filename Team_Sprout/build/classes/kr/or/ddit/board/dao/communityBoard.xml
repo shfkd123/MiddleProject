@@ -19,6 +19,23 @@
 		FROM   COMMUNITY_BOARD A INNER JOIN PROJECT B ON(A.PJ_NM = B.PJ_NM)
 		ORDER  BY 1 DESC
 	</select>
+	
+	<select id="getPjCommunityBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.CommunityBoardVO">
+		SELECT A.CB_NM     cbNm
+		        , B.PJ_NM      pjNm
+		         , A.CB_TITLE  cbTitle
+		         , A.CB_CONTENT cbContent
+		         , A.CB_DATE    cbDate
+		         , (            
+		             SELECT USER_NICKNAME 
+		             FROM   TB_USER
+		             WHERE  USER_ID = A.USER_ID
+		             )            cbWriter
+		         , A.ATCH_FILE_ID
+		FROM   COMMUNITY_BOARD A INNER JOIN PROJECT B ON(A.PJ_NM = B.PJ_NM)
+		WHERE  B.PJ_NM = #pjNm#
+		ORDER  BY 1 DESC
+	</select>
 <!-- 		SELECT A.CB_NM     cbNm
 			, A.PJ_NM      pjNm
 			, A.CB_TITLE   cbTitle
@@ -47,7 +64,7 @@
 			 	WHERE  USER_ID = A.USER_ID
 			 	)            cbWriter
 			, A.ATCH_FILE_ID atchFileId
-		FROM   COMMUNITY_BOARD
+		FROM   COMMUNITY_BOARD A
 		WHERE 1=1
 		AND A.CB_NM = #cbNm#
 	</select>
@@ -56,6 +73,7 @@
 	INSERT INTO COMMUNITY_BOARD(
 		CB_NM
 		,USER_ID
+		,PJ_NM
 		,CB_TITLE
 		,CB_CONTENT
 		,CB_DATE
@@ -64,6 +82,7 @@
 	VALUES (
 		COMMUNITY_BOARD_SEQ.NEXTVAL
 		, #cbWriter#
+		, #pjNm#
 		, #cbTitle#
 		, #cbContent#
 		, SYSDATE
@@ -85,7 +104,7 @@
 		WHERE  CB_NM = #cbNm#
 	</delete>
 	
-	<select id="searchCommunityBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.CommunityBoardVO">
+	<select id="searchCommunityBoard" parameterClass="kr.or.ddit.board.vo.CommunityBoardVO" resultClass="kr.or.ddit.board.vo.CommunityBoardVO">
 		SELECT A.CB_NM     cbNm
 			, A.PJ_NM      pjNm
 			, A.CB_TITLE   cbTitle
@@ -99,12 +118,13 @@
 			, A.ATCH_FILE_ID atchFileId
 		FROM   COMMUNITY_BOARD A
 		WHERE 1=1
-		AND A.CB_TITLE LIKE '%' || #cbTitle# || %
+		AND A.PJ_NM = #pjNm#
+		AND (A.CB_TITLE LIKE '%' || #cbTitle# || '%'
 		OR (
 			SELECT B.USER_NICKNAME 
 		 	FROM   TB_USER B
 		 	WHERE  B.USER_ID = A.USER_ID		
-			) LIKE '%' || #cbWriter# || '%'
+			) LIKE '%' || #cbWriter# || '%')
 	</select>
 
 </sqlMap>

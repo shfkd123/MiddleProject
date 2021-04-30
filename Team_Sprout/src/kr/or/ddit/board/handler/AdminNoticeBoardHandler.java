@@ -9,8 +9,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 
+import kr.or.ddit.board.service.FaqServiceImpl;
+import kr.or.ddit.board.service.IFaqService;
 import kr.or.ddit.board.service.INoticeService;
 import kr.or.ddit.board.service.NoticeServiceImpl;
+import kr.or.ddit.board.vo.FaqBoardVO;
 import kr.or.ddit.board.vo.NoticeBoardVO;
 import kr.or.ddit.boardComment.service.INoticeCmService;
 import kr.or.ddit.boardComment.service.NoticeCmServiceImpl;
@@ -54,7 +57,6 @@ public class AdminNoticeBoardHandler implements CommandHandler {
 			if(req.getMethod().equals("GET")) {
 				return "/WEB-INF/view/admin/adminNoticeBoardInsert.jsp";
 			} else {
-				String userId = uv.getUserId();
 				
 				NoticeBoardVO nv = new NoticeBoardVO();
 				
@@ -64,23 +66,18 @@ public class AdminNoticeBoardHandler implements CommandHandler {
 				String noticeContent = req.getParameter("noticeContent");
 				nv.setNoticeTitle(noticeTitle);
 				nv.setNoticeContent(noticeContent);
-				nv.setNoticeWriter(userId);
+				nv.setNoticeWriter(uv.getUserId());
 				
-				FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
-				
-				AtchFileVO atchFileVO = new AtchFileVO();
-				
-				atchFileVO.setAtchFileId(req.getParameter("atchFileId") == null ?
-						-1 : Long.parseLong(req.getParameter("atchFileId")));
-				
-				if(item != null && !item.getName().equals("")) {
+				if((String)req.getParameter("attachFile") == "") {
+					FileItem item = ((FileUploadRequestWrapper)req).getFileItem("atchFileId");
+					AtchFileVO atchFileVO = new AtchFileVO();
 					
 					IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-					
-					atchFileVO = fileService.saveAtchFile(item, userId); // 첨부파일 저장
+					atchFileVO = fileService.saveAtchFile(item, uv.getUserId());
 					
 					nv.setAtchFileId(atchFileVO.getAtchFileId());
 				}
+				
 				int cnt = service.insertNoticeBoard(nv);
 
 				String msg = "";
@@ -174,26 +171,26 @@ public class AdminNoticeBoardHandler implements CommandHandler {
 			req.setAttribute("nv", nv);
 
 			// 댓글 전부 보여줌
-			INoticeCmService cmService = NoticeCmServiceImpl.getInstance();
-			
-			List<NoticeCmVO> cmList = cmService.getNoticeCmListByNoticeNm(noticeNm);
-			
-			req.setAttribute("noticeCmList", cmList);
+//			INoticeCmService cmService = NoticeCmServiceImpl.getInstance();
+//			
+//			List<NoticeCmVO> cmList = cmService.getNoticeCmListByNoticeNm(noticeNm);
+//			
+//			req.setAttribute("noticeCmList", cmList);
 			
 			return "/WEB-INF/view/admin/adminNoticeBoardSelect.jsp";
 			
 		} else if("SCH".equals(flag)) { // 게시글 검색
-			String notice_title = req.getParameter("notice_title");
 			
-			// 1. 서비스 객체 생성하기
-			INoticeService noticeService = NoticeServiceImpl.getInstance();
-			NoticeBoardVO nv = new NoticeBoardVO();
+			String noticeTitle = "";
+
+			noticeTitle = req.getParameter("noticeTitle");
 			
-			//검색된 정보 조회
-			List<NoticeBoardVO> noticeList = noticeService.getSearchNoticeBoardList(notice_title);
+			INoticeService service = NoticeServiceImpl.getInstance();
 			
-			req.setAttribute("notice_title", notice_title);
-			req.setAttribute("noticeList", noticeList);
+			List<NoticeBoardVO> list = service.getSearchNoticeBoardList(noticeTitle);
+			
+			req.setAttribute("noticeTitle", noticeTitle);
+			req.setAttribute("list", list);
 			
 			return "/WEB-INF/view/admin/adminNoticeBoardList.jsp";
 		} else if("INS".equals(flag)) { // 게시글 등록하는 페이지로 이동
@@ -233,7 +230,7 @@ public class AdminNoticeBoardHandler implements CommandHandler {
 		pv.setCountPerPage(15);
 		pv.setPageSize(5);
 		
-		List<NoticeBoardVO> list = service.getNoticeBoardList(pv);
+		List<NoticeBoardVO> list = service.getAllNoticeBoard(pv);
 		
 		req.setAttribute("totalCount", totalCount);
 		req.setAttribute("list", list);

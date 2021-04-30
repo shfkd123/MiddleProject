@@ -38,6 +38,9 @@ div.col-sm-12 {
 	margin: 0px;
 	padding: 0px;
 }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    width: 10px;
+}
 </style>
 </head>
 <body><!-- 헤더 이미지 및 문구 -->
@@ -90,7 +93,7 @@ div.col-sm-12 {
 				%>
 				<img src='<%=atchFileVO.getImgUrl()%>' >
 				<%
-					}
+						}
 					}
 				%>
 				</td>
@@ -132,9 +135,9 @@ div.col-sm-12 {
 		<table class="table">
 			<thead>
 				<tr>
-					<th>작성자</th>
-					<th style="text-align: left;">댓글</th>
-					<th style="text-align: left;">작성일</th>
+					<th style="text-align: center;">작성자</th>
+					<th style="text-align: center;">댓글</th>
+					<th style="text-align: center;">작성일</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -149,11 +152,11 @@ div.col-sm-12 {
 				for(int i = 0; i < freeCmList.size(); i++){
 			%>
 			<tr>
-				<td style="text-align: left;">
+				<td style="text-align: center;">
 				<%=freeCmList.get(i).getFcWriter() %>
 				</td>
 				<td style="text-align: left;"><%=freeCmList.get(i).getFcContent() %></td>
-				<td><%=freeCmList.get(i).getFcDate() %>
+				<td style="text-align: center;"><%=freeCmList.get(i).getFcDate() %>
 					<%if(uv != null) {
 						if(uv.getUserNickName().equals(freeCmList.get(i).getFcWriter())){
 						%>
@@ -178,9 +181,13 @@ div.col-sm-12 {
 				}
 			}
 			%>
+			</tbody>
+		</table>
+		<hr>
+		<div align="center">
 			<!-- 페이징 처리 시작 -->
 			<%if(pv.getTotalCount() > 0) {%>
-			<tr align="center">
+			<tr>
 				<td>
 				<%if(pv.getFirstPageNo() > pv.getPageSize()) { %>
 				<a href="freeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pv.getFirstPageNo() - pv.getPageSize() %>">이전</a>
@@ -196,10 +203,8 @@ div.col-sm-12 {
 			</tr>
 			<%}
 			} %>
+		</div>
 		<!-- 페이징 처리 끝.. -->
-			</tbody>
-		</table>
-		<hr>
 		<!-- 댓글 작성  -->
 		<h4><b><span>댓글 작성</span></b></h4>
 		<table class="table">

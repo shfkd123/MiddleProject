@@ -20,8 +20,7 @@ public class ProjectVO {
 	private String pjExpDate;
 	private int pjPricePer;
 	private int pjFan;
-	
-	
+
 	public int getPjFan() {
 		return pjFan;
 	}

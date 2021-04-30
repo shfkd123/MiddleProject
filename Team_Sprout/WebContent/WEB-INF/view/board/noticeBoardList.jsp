@@ -28,10 +28,7 @@ div.col-sm-12 {
 </style>
 </head>
 <%
-	if (session != null && session.getAttribute("userVO") != null) {
-		uv = (UserVO) session.getAttribute("userVO");
-	}
-
+	uv = (UserVO) session.getAttribute("userVO");
 	PagingVO pv = (PagingVO)request.getAttribute("pv");
 %>
 <body>
@@ -138,11 +135,11 @@ div.col-sm-12 {
 </body>
 <script type="text/javascript">
 	$(document).ready(function() {
-<%if (session.getAttribute("userVO") == null) {%>
-	$("#insertBtn").hide();
-<%} else {%>
-	$("#insertBtn").show();
-<%}%>
+	<%if (uv != null && uv.getAdminCk().equals("Y")) {%>
+		$("#insertBtn").show();
+	<%} else {%>
+		$("#insertBtn").hide();
+	<%}%>
 	});
 	function boardSelect(noticeNm) {
 		document.getElementById("noticeNm").value = noticeNm;

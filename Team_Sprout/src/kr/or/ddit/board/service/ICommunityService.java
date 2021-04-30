@@ -14,7 +14,13 @@ public interface ICommunityService {
 	 */
 	List<CommunityBoardVO> getAllCommunityBoardList();
 	
-
+	/**
+	 * 한 프로젝트의 게시글 조회
+	 * @param pjNm
+	 * @return
+	 */
+	List<CommunityBoardVO> getPjCommunityBoard(String pjNm);
+	
 	/**
 	 * 게시글 선택 조회
 	 * @param cbNm
@@ -54,7 +60,7 @@ public interface ICommunityService {
 	 * @param cbTitle
 	 * @return
 	 */
-	public List<CommunityBoardVO> searchCommunityBoard(String str);
+	public List<CommunityBoardVO> searchCommunityBoard(CommunityBoardVO cb);
 
 	
 	/**

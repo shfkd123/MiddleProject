@@ -52,15 +52,20 @@
 		<%
 		} else {
 			for(int i = 0; i < orderList.size(); i++){
+				if(i % 4 == 0){
 			%>
 			<!-- 왼쪽 공백 2 -->
 			<div class="col-sm-2"></div>
-			
+			<div class="col-sm-12">
+			<!-- 왼쪽 공백 2 -->
+			<div class="col-sm-2"></div>
+			<%} %>
 			<!-- 항목들 -->
 			<div class="col-sm-2">
 				<p>후원일 <%=orderList.get(i).getOrderTime() %></p>
-				<img src="/images/img1.jpg" class="img-rounded" style="width: 100%"
-					alt="Image">
+				<img
+				src="<%=request.getContextPath()%>/filedownload.do?fileId=<%=orderList.get(i).getAtchFileId()%>&fileSn=1"
+				class="img-rounded" style="width: 100%; alt="Image">
 				<h4>
 					<a href="/Team_Sprout/project/projectBoard.do?flag=SEL&pjNm=<%=orderList.get(i).getPjNm() %>">
 						<%=orderList.get(i).getPjName() %>
@@ -74,7 +79,9 @@
 					<h4>주문상태</h4>
 					<p><%=orderList.get(i).getOrderState() %></p>
 				</div>
-				<button type="button" class="btn btn-success btn-lg" id="payBtn">후원취소</button>
+				<div align="center">
+					<button type="button" class="btn btn-success btn-lg" onclick="review('<%=orderList.get(i).getPjNm() %>')" id="payBtn">리뷰작성</button>
+				</div>
 			</div>
 			<%	
 			}
@@ -84,7 +91,11 @@
 	<!-- 여백 2-->	
 	<div class="col-sm-2"></div>
 	</div>
-
+<script type="text/javascript">
+	function review(pjNm){
+		location.href = "/Team_Sprout/board/communityBoard.do?pjNm=" + pjNm;
+	}
+</script>
 </body>
 <%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

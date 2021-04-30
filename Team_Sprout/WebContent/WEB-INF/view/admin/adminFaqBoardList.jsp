@@ -13,7 +13,7 @@
 <meta charset="utf-8">
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/main.css">
-<link rel="stylesheet" href="/Team_Sprout/css/main/board.css">
+<link rel="stylesheet" href="/Team_Sprout/css/main/adminBoard.css">
 </head>
 <%
 	if (session != null && session.getAttribute("userVO") != null) {
@@ -32,12 +32,13 @@
 		<!-- 게시판 -->
 		<div class="col-sm-8">
 		<h4>
-				<b>FAQ</b>
-			</h4>
+		<b>FAQ</b>
+		</h4>
 		<br><br>
 		<table class="table table-hover">
 			<thead>
 				<tr>
+					<th><input type="checkbox" ></th>
 					<th>번호</th>
 					<th>제목</th>
 					<th>작성자</th>
@@ -52,6 +53,7 @@
 				String faqNm = list.get(i).getFaqNm();
 			%>
 			<tr>
+				<td><input type="checkbox"></td>
 				<td><%=totalCount - list.get(i).getrNum() + 1 %></td>
 				<td>
 					<a href="#" onclick="boardSelect('<%=faqNm %>')">
@@ -102,6 +104,7 @@
 		<hr>
 		<!-- 등록 버튼  -->
 		<div id="btn" style="text-align: right">
+			<button type="button" id="deleteWrite" class="btn btn-success" onclick="deleteBoard()">삭제</button>
 			<button type="button" class="btn btn-success" id="insertBtn" onclick="insertBoard()">등록</button>
 		</div>
 		<form id="fm">
@@ -117,13 +120,13 @@
 
 </body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		<%if(session.getAttribute("userVO") == null){ %>
-			$("#insertBtn").hide();
-		<%} else {%>
-			$("#insertBtn").show();
-		<%}%>
-	});
+// 	$(document).ready(function(){
+<%-- 		<%if(session.getAttribute("userVO") == null){ %> --%>
+// 			$("#insertBtn").hide();
+<%-- 		<%} else {%> --%>
+// 			$("#insertBtn").show();
+<%-- 		<%}%> --%>
+// 	});
 	function boardSelect(faqNm){
 		document.getElementById("faqNm").value = faqNm;
 		document.getElementById("flag").value = "SEL";

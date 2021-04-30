@@ -8,16 +8,16 @@
 
 <!-- 댓글 전체 출력 -->
 <select id="getAllCommunityCm" resultClass="kr.or.ddit.boardComment.vo.CommunityCmVO" parameterClass="String">
-	SELECT A.CC_NM       ccNm
-	      , A.CC_CONTENT ccContent
-	      , A.CC_DATE    ccDate
-	      , A.CC_TYPE    ccType
-	      , A.CB_NM      cbNm
-	      , B.USER_NICKNAME ccWriter
-	FROM COMMUNITY_COMMENT A INNER JOIN TB_USER B
-							ON(A.USER_ID = B.USER_ID)
-	WHERE A.CC_NM = #cbNm#
-	ORDER BY 1 DESC
+	SELECT A.CC_NM       ccNm                           
+	      , A.CC_CONTENT ccContent                      
+	      , A.CC_DATE    ccDate                         
+	      , A.CC_TYPE    ccType                         
+	      , A.CB_NM      cbNm                           
+	      , B.USER_NICKNAME ccWriter                    
+	FROM COMMUNITY_COMMENT A INNER JOIN TB_USER B       
+							ON(A.USER_ID = B.USER_ID)   
+	WHERE A.CB_NM = #cbNm#                              
+	ORDER BY 1 DESC                                     
 	
 </select>
 
@@ -32,7 +32,7 @@
 	    ,  USER_ID
 	)
 	VALUES (
-		QNA_BOARD_COMMENT_SEQ.NEXTVAL
+		COMMUNITY_BOARD_COMMENT_SEQ.NEXTVAL
 	    , #ccContent#
 	    , SYSDATE
 	    , 'N'

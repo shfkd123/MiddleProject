@@ -13,7 +13,7 @@
 <title>후기게시판</title>
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/main.css">
-<link rel="stylesheet" href="/Team_Sprout/css/main/board.css">
+<link rel="stylesheet" href="/Team_Sprout/css/main/adminBoard.css">
 </head>
 <%
 
@@ -38,6 +38,7 @@
 		<table class="table table-hover">
 			<thead>
 				<tr>
+					<th><input type="checkbox" id="AllCheck"></th>
 					<th>번호</th>
 					<th>프로젝트 이름</th>
 					<th>작성자</th>
@@ -52,6 +53,7 @@
 				String cbNm = list.get(i).getCbNm();
 			%>
 			<tr>
+				<td><input type="checkbox"></td>
 				<td><%=list.size() - i %></td>
 				<td>
 					<a href="#" onclick="boardSelect('<%=cbNm %>')">
@@ -91,6 +93,7 @@
 		<hr>
 		<!-- 등록 버튼  -->
 		<div id="btn" style="text-align: right">
+			<button type="button" id="deleteWrite" class="btn btn-success" onclick="deleteBoard()">삭제</button>
 			<button type="button" class="btn btn-success" id="insertBtn" onclick="insertBoard()">등록</button>
 		</div>
 		<form id="fm">
@@ -107,13 +110,35 @@
 
 </body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		<%if(session.getAttribute("userVO") == null){ %>
-			$("#insertBtn").hide();
-		<%} else {%>
-			$("#insertBtn").show();
-		<%}%>
+// 	$(document).ready(function(){
+<%-- 		<%if(session.getAttribute("userVO") == null){ %> --%>
+// 			$("#insertBtn").hide();
+<%-- 		<%} else {%> --%>
+// 			$("#insertBtn").show();
+<%-- 		<%}%> --%>
+// 	});
+
+	$("#AllCheck").click(function(){
+		// '전체선택' 체크박스가 체크 되어 있을때
+		if($(this).prop("checked")){
+			$(":checkbox").prop("checked", true);
+		} 
+		// '전체선택' 체크박스가 체크가 되어있지 않을때
+		else if($(this).prop("checked", false)){
+			$(":checkbox").prop("checked", false);
+		}
+	
+		// 체크박스가 전부 체크되어있으면 '전체선택' 체크
+		// 체크박스에 하나라도 체크되어있지 않으면 '전체선택' 체크해제
+		$(":checkbox").click(function(){
+			if($("[name=freeCk]").not(":checked").length == 0) {
+				$("#AllCheck").prop("checked", true);
+			} else if ($("[name=freeCk]").not(":checked").length > 0){
+				$("#AllCheck").prop("checked", false);
+			}
+		});
 	});
+	
 	function boardSelect(cbNm){
 		document.getElementById("cbNm").value = cbNm;
 		document.getElementById("flag").value = "SEL";
@@ -134,6 +159,20 @@
 	function searchBoard() {
 		document.getElementById("flag").value = "SCH";
 		document.getElementById("schInput2").value = $("#schInput").val();
+		
+		var fm = document.getElementById("fm");
+		fm.method = "post";
+		fm.action = "adminCommunityBoard.do";
+		fm.submit();
+	}
+	
+	function deleteBoard(){
+		var cbNms = "";
+		$("input[name=freeCk]:checked").each(function(){
+			cbNms += "/" + this.value;
+		})
+		$("#cbNm").val(cbNms);
+		$("#flag").val("D2");
 		
 		var fm = document.getElementById("fm");
 		fm.method = "post";

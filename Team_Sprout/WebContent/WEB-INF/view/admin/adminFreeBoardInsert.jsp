@@ -117,7 +117,7 @@
 			document.getElementById("flag").value = "C";
 			var fm = document.getElementById("fm");
 			fm.method = "post";
-			fm.action = "freeBoard.do";
+			fm.action = "adminFreeBoard.do";
 			fm.submit();
 		} else {
 			return;
@@ -129,7 +129,7 @@
 			alert("목록으로 돌아갑니다.");
 			var fm = document.getElementById("fm");
 			fm.method = "post";
-			fm.action = "freeBoard.do";
+			fm.action = "adminFreeBoard.do";
 			fm.submit();
 		} else {
 			return;

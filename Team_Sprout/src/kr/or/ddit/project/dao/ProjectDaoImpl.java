@@ -63,4 +63,9 @@ public class ProjectDaoImpl implements IProjectDao {
 		int cnt = (int)smc.queryForObject("project.getProjectAllCount");
 		return cnt;
 	}
+
+	@Override
+	public int getDonation(SqlMapClient smc, ProjectVO pv) throws SQLException {
+		return smc.update("project.getDonation", pv);
+	}
 }

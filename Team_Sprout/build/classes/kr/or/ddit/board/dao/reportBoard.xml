@@ -81,7 +81,7 @@
 		UPDATE  REPORT_BOARD
 		SET	    REPORT_TITLE   = #reportTitle#
 			   ,REPORT_CONTENT = #reportContent#
-			   ,TO_CHAR(REPORT_DATE, 'YYYY-MM-DD')    = SYSDATE
+			   ,REPORT_DATE    = SYSDATE
 			   ,ATCH_FILE_ID = #atchFileId#            
 		WHERE   REPORT_NM = #reportNm#
 	</update>
@@ -93,24 +93,16 @@
 	</delete>
 	
 	<select id="searchReportBoard" parameterClass="String" resultClass="kr.or.ddit.board.vo.ReportBoardVO">
-	SELECT A.REPORT_NM            reportNm
-		 , A.REPORT_TITLE         reportTitle
-		 , A.REPORT_CONTENT       reportContent
-		 , TO_CHAR(A.REPORT_DATE, 'YYYY-MM-DD') reportDate
-		 , ( 
-			 SELECT B.USER_NICKNAME
-			 FROM TB_USER B
-			 WHERE B.USER_ID = A.USER_ID
-		   )				reportWriter
-		  , A.ATCH_FILE_ID atchFileId  					     
-	FROM  REPORT_BOARD A
-	WHERE 1=1
-	AND   A.REPORT_STATE = 'Y'
-	AND   A.REPORT_TITLE LIKE '%' || #reportTitle# || '%'
-	OR    (
-			SELECT B.USER_NICKNAME
-			FROM   TB_USER B
-			WHERE  B.USER_ID = A.USER_ID
-			) LIKE '%' || #reportWriter# || '%'
+		SELECT
+	    A.REPORT_NM reportNm,
+	    A.REPORT_TITLE reportTitle,
+	    A.REPORT_CONTENT reportContent,
+	    TO_CHAR(A.REPORT_DATE,'YYYY-MM-DD') reportDate,
+	    B.USER_NICKNAME reportWriter
+		FROM
+		    REPORT_BOARD A INNER JOIN TB_USER B ON (A.USER_ID = B.USER_ID)
+		WHERE  A.REPORT_TITLE LIKE '%' || #reportTitle# || '%'
+		AND    A.REPORT_STATE = 'Y'
+		OR B.USER_NICKNAME LIKE '%' || #reportWriter# || '%'
 	</select>
 </sqlMap>

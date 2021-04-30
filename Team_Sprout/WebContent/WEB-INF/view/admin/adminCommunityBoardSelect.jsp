@@ -1,3 +1,4 @@
+
 <%@page import="kr.or.ddit.boardComment.vo.CommunityCmVO"%>
 <%@page import="kr.or.ddit.board.vo.CommunityBoardVO"%>
 <%@page import="kr.or.ddit.user.vo.UserVO"%>
@@ -28,8 +29,17 @@
 </style>
 </head>
 <body>
-	<!-- 테이블 -->
-	<div class="container">
+	<!-- 전체-->
+	<div class="col-sm-12">
+
+		<!-- 왼쪽 여백 -->
+		<div class="col-sm-2"></div>
+
+		<!-- 게시판 -->
+		<div class="col-sm-8">
+					<h4>
+				<b>신고 게시판</b>
+			</h4>
 		<table class="table">
 			<thead>
 				<tr id="head">
@@ -204,20 +214,20 @@
 		</form>
 	</div>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$("#updateWrite").css("display", "none");
-		$("#deleteWrite").css("display", "none");
-		<%
-		if(uv != null){
-			if(uv.getUserNickName().equals(cbv.getCbWriter())){
-			%>
-				$("#updateWrite").css("display", "inline");
-				$("#deleteWrite").css("display", "inline");
-			<%
-			}
-		}
-		%>
-	});
+// 	$(document).ready(function(){
+// 		$("#updateWrite").css("display", "none");
+// 		$("#deleteWrite").css("display", "none");
+<%-- 		<% --%>
+// 		if(uv != null){
+// 			if(uv.getUserNickName().equals(cbv.getCbWriter())){
+<%-- 			%> --%>
+// 				$("#updateWrite").css("display", "inline");
+// 				$("#deleteWrite").css("display", "inline");
+<%-- 			<% --%>
+// 			}
+// 		}
+<%-- 		%> --%>
+// 	});
 	
 	function goList(){
 		location.href = "adminCommunityBoard.do";

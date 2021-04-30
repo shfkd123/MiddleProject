@@ -48,6 +48,9 @@ div.col-sm-12 {
 	margin: 0px;
 	padding: 0px;
 }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    width: 10px;
+}
 </style>
 </head>
 <body>
@@ -70,6 +73,7 @@ div.col-sm-12 {
 
 		<!-- 게시판 -->
 		<div class="col-sm-8">
+			<br><br>
 			<table class="table">
 			<thead>
 				<tr id="head">

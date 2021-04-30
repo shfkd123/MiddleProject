@@ -6,6 +6,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/view/include/head.jsp"%>
+
+<%
+String pjNm = request.getParameter("pjNm");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,7 +67,7 @@ div.col-sm-12 {
 			<thead>
 				<tr>
 					<th>번호</th>
-					<th>프로젝트 이름</th>
+					<th>제목</th>
 					<th>작성자</th>
 					<th>날짜</th>
 				</tr>
@@ -97,16 +101,6 @@ div.col-sm-12 {
 			%>
 			</tbody>
 		</table>
-		<!-- 페이지 이동 -->
-		<div class="text-center">
-			<ul class="pagination">
-				<li><a href="">1</a></li>
-				<li><a href="">2</a></li>
-				<li><a href="">3</a></li>
-				<li><a href="">4</a></li>
-				<li><a href="">5</a></li>
-			</ul>
-		</div>
 		<!-- 검색 창 -->
 		<div class="text-center">
 			<input type="text" id="schInput" placeholder="제목 혹은 작성자">
@@ -119,8 +113,9 @@ div.col-sm-12 {
 		</div>
 		<form id="fm">
 			<input type="hidden" name="cbNm" id="cbNm">
-			<input type="hidden" name="flag" id="flag">
 			<input type="hidden" id="schInput2" name="search">
+			<input type="hidden" name="flag" id="flag">
+			<input type="hidden" name="pjNm" id="pjNm" value="<%=pjNm%>">
 		</form>
 		</div>
 
@@ -148,9 +143,9 @@ div.col-sm-12 {
 	}
 
 	function insertBoard(){
-		document.getElementById("flag").value = "INS";
+		document.getElementById("flag").value = "C";
 		var fm = document.getElementById("fm");
-		fm.method = "post";
+		fm.method = "get";
 		fm.action = "communityBoard.do";
 		fm.submit();
 	}
@@ -165,4 +160,5 @@ div.col-sm-12 {
 		fm.submit();
 	}
 </script>
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

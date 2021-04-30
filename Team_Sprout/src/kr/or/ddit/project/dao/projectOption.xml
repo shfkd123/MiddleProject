@@ -11,6 +11,7 @@
 				,PO_CONTENT    poContent
 				,PO_ADD_PRICE  poAddPrice
 				,PJ_NM         pjNm
+				,ATCH_FILE_ID  atchFileId
 		FROM  PROJECT_OPTION
 		ORDER BY 1 DESC				
 	</select>
@@ -20,7 +21,8 @@
 				,PO_NAME       poName    
 				,PO_CONTENT    poContent 
 				,PO_ADD_PRICE  poAddPrice
-				,PJ_NM         pjNm      
+				,PJ_NM         pjNm 
+				,ATCH_FILE_ID  atchFileId     
 		FROM  PROJECT_OPTION	
 		WHERE  1=1
 		AND    PJ_NM = #pjNm#
@@ -33,12 +35,14 @@
 			,PO_CONTENT
 			,PO_ADD_PRICE
 			,PJ_NM
+			,ATCH_FILE_ID
 	    ) VALUES (
 		    PROJECT_OPTION_SEQ.NEXTVAL
 	    	,#poName#
 	    	,#poContent#
 	    	,#poAddPrice#
 	    	,#pjNm#
+	    	,#atchFileId#
 	    )
 	</insert>
 	                                                             

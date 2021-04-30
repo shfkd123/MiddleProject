@@ -109,8 +109,8 @@ $(document).ready(function(){
 					$("#spNickNameUse").text("\'" + userNickName + "\' 사용 가능");
 					$("#spNickNameUse").show();
 					nickName = userNickName;
-				} else if(data.cnt == 1) {
-					$("#spNickNameCk").hide();
+				} else if(data.cnt > 1) {
+					$("#spNickNameCk").show();
 					$("#spNickNameReq").hide();
 					$("#spNickNameUse").hide();
 					$("#userNickName").focus();

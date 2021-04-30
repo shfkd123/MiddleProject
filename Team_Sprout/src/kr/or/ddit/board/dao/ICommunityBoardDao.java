@@ -21,6 +21,15 @@ public interface ICommunityBoardDao {
 	public List<CommunityBoardVO> getAllCommunityBoard(SqlMapClient smc) throws SQLException; 
 
 	/**
+	 * 한 프로젝트의 리뷰게시판 조회
+	 * @param smc
+	 * @param pjNm
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<CommunityBoardVO> getPjCommunityBoard(SqlMapClient smc, String pjNm) throws SQLException;
+  	
+	/**
 	 * 리뷰게시판 클릭 하나 조회
 	 * @param smc
 	 * @param cbNm
@@ -66,7 +75,7 @@ public interface ICommunityBoardDao {
 	 * @return
 	 * @throws SQLException
 	 */
-	List<CommunityBoardVO> searchCommunityBoard(SqlMapClient smc, String str) throws SQLException;
+	List<CommunityBoardVO> searchCommunityBoard(SqlMapClient smc, CommunityBoardVO cb) throws SQLException;
 	
 	/**
 	 * 전체 게시판 카운트

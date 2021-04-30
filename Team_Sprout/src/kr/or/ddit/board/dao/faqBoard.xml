@@ -79,12 +79,12 @@
 </insert>
 
 <update id="updateFaqBoard" parameterClass="kr.or.ddit.board.vo.FaqBoardVO">
-	UPDATE FAQ_BOARD
-	SET  FAQ_TITLE = #faqTitle#
-	    , FAQ_CONTENT = #faqContent#
-	    , FAQ_DATE = SYSDATE
-	    , ATCH_FILE_ID = #atchFileId#
-	WHERE FAQ_NM = #faqNm#
+		UPDATE  FAQ_BOARD
+		SET	    FAQ_TITLE   = #faqTitle#
+			   ,FAQ_CONTENT = #faqContent#
+			   ,FAQ_DATE    = SYSDATE
+			   ,ATCH_FILE_ID = #atchFileId#            
+		WHERE   FAQ_NM = #faqNm#
 
 </update>
 

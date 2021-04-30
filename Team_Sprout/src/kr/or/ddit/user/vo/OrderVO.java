@@ -12,6 +12,7 @@ public class OrderVO {
 	private String pjContent; // 프로젝트 내용
 	private String pjCondition; // 프로젝트상태(심사중 || 후원중 || 완료)
 	private String poName; // 프로젝트 옵션
+	private long atchFileId = -1;
 	
 	public String getPjName() {
 		return pjName;
@@ -78,6 +79,12 @@ public class OrderVO {
 	}
 	public void setPoName(String poName) {
 		this.poName = poName;
+	}
+	public long getAtchFileId() {
+		return atchFileId;
+	}
+	public void setAtchFileId(long atchFileId) {
+		this.atchFileId = atchFileId;
 	}
 	
 }

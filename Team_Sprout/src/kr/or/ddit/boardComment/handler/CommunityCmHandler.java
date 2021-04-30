@@ -30,17 +30,16 @@ public class CommunityCmHandler implements CommandHandler{
 		String flag = (String) req.getParameter("flagCm");
 		
 		HttpSession session = req.getSession();
+		UserVO uv = (UserVO) session.getAttribute("userVO");
 		
 		ICommunityCmService service = CommunityCmServiceImpl.getInstance();
 		ICommunityService boardService = CommunityServiceImpl.getInstance();
 		
 		if("C".equals(flag)) { // 댓글 작성
-			UserVO uv = (UserVO) session.getAttribute("userVO");
 			String userId = uv.getUserId();
 			
 			CommunityBoardVO cbv = new CommunityBoardVO();
 			cbv.setCbNm(req.getParameter("ccNm"));
-			cbv = boardService.getCommunityBoard(req.getParameter("ccNm"));
 			cbv = boardService.getCommunityBoard(req.getParameter("ccNm"));
 			
 			req.setAttribute("cbv", cbv);
@@ -94,7 +93,7 @@ public class CommunityCmHandler implements CommandHandler{
 			
 			CommunityCmVO ccv = new CommunityCmVO();
 			ccv.setCcContent(req.getParameter("ccContent"));
-			ccv.setCcNm(req.getParameter("ccNm"));
+			ccv.setCcNm(req.getParameter("ccNmCm"));
 			ccv.setCbNm(req.getParameter("ccNm"));
 			
 			service.updateCommunityCm(ccv);
@@ -112,7 +111,7 @@ public class CommunityCmHandler implements CommandHandler{
 			cbv.setCbNm(req.getParameter("ccNm"));
 			cbv = boardService.getCommunityBoard(req.getParameter("ccNm"));
 			
-			ccv.setCcNm(req.getParameter("ccNm"));
+			ccv.setCcNm(req.getParameter("ccNmCm"));
 			ccv.setCbNm(req.getParameter("ccNm"));
 			
 			service.deleteCommunityCm(ccv);
@@ -137,7 +136,5 @@ public class CommunityCmHandler implements CommandHandler{
 		}
 		return "/WEB-INF/view/board/communityBoardSelect.jsp";
 	}
-	
-	
 
 }

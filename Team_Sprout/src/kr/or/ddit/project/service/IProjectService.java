@@ -2,6 +2,8 @@ package kr.or.ddit.project.service;
 
 import java.util.List;
 
+import com.ibatis.sqlmap.client.SqlMapClient;
+
 import kr.or.ddit.project.vo.ProjectVO;
 
 public interface IProjectService {
@@ -57,5 +59,10 @@ public interface IProjectService {
 	 */
 	public int getAllProjectListCount();
 
-
+	/**
+	 * 후원금과 후원자 증가
+	 * @param pv
+	 * @return
+	 */
+	public int getDonation(ProjectVO pv);
 	}

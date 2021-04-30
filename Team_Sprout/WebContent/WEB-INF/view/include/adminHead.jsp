@@ -14,7 +14,7 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">SPORUT ADMIN PAGE</a>
+      <a class="navbar-brand" href="/Team_Sprout/html/admin/adminMain.jsp">SPORUT ADMIN PAGE</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">Home</a></li>
@@ -28,8 +28,6 @@
           <li><a href="/Team_Sprout/admin/adminReportBoard.do">신고</a></li>
         </ul>
       </li>
-      <li><a href="#">회원관리</a></li>
-      <li><a href="#">프로젝트승인관리</a></li>
     </ul>
   </div>
 </nav>

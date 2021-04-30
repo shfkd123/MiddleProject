@@ -7,6 +7,7 @@ public class ProjectOptionVO {
 	private String poContent;
 	private long poAddPrice;
 	private long pjNm;
+	private long atchFileId = -1;
 	
 	public long getPoNm() {
 		return poNm;
@@ -37,5 +38,11 @@ public class ProjectOptionVO {
 	}
 	public void setPjNm(long pjNm) {
 		this.pjNm = pjNm;
+	}
+	public long getAtchFileId() {
+		return atchFileId;
+	}
+	public void setAtchFileId(long atchFileId) {
+		this.atchFileId = atchFileId;
 	}
 }

@@ -25,7 +25,7 @@ public class LogOutHandler implements CommandHandler {
 			
 			session.invalidate();
 			
-			String redirectUrl = req.getContextPath() + "/html/main/main.jsp";
+			String redirectUrl = req.getContextPath() + "/main/main.do";
 			
 			return redirectUrl;
 		}

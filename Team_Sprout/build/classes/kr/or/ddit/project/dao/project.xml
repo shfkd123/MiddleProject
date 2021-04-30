@@ -26,7 +26,34 @@
 				,A.PJ_ACNTBANK      pjAcntBank
 				,A.PJ_ACNTNUM       pjAcntNum
 				,A.PJ_ACNTHOLDER    pjAcntHolder
-		FROM  PROJECT A		
+				,TO_DATE(PJ_DDAY) - TRUNC(SYSDATE) pjExpDate
+				,NVL(ROUND((PJ_PRICE / PJ_PRICE_AMOUNT) * 100, 0), 0) pjPricePer
+		FROM  PROJECT A	
+		ORDER BY 1 DESC	
+	</select>
+	
+		<select id="getAllProjectPass" parameterClass="kr.or.ddit.project.vo.ProjectVO" resultClass="kr.or.ddit.project.vo.ProjectVO">
+		SELECT   A.PJ_NM            pjNm
+				,A.PJ_TYPE          pjType
+				,A.PJ_NAME          pjName
+				,A.PJ_CONTENT       pjContent
+				,A.PJ_PRICE_AMOUNT  pjPriceAmount
+				,A.PJ_CONDITION     pjCondition
+				,TO_CHAR(A.PJ_DDAY, 'YYYY-MM-DD')          pjDday
+				,A.PJ_OPENDAY       pjOpenday
+				,A.PJ_REWARD        pjReward
+				,(
+				 	SELECT USER_NICKNAME 
+				 	FROM   TB_USER
+				 	WHERE  USER_ID = A.USER_ID
+			 	)                   pjWriter
+				,NVL(ATCH_FILE_ID, 0)       atchFileId
+				,A.PJ_CATEGORY      pjCategory
+				,A.PJ_ACNTBANK      pjAcntBank
+				,A.PJ_ACNTNUM       pjAcntNum
+				,A.PJ_ACNTHOLDER    pjAcntHolder
+		FROM  PROJECT A	
+		WHERE PJ_CONDITION = '통과'	
 	</select>
 
 	<select id="getProject" parameterClass="long" resultClass="kr.or.ddit.project.vo.ProjectVO">
@@ -49,6 +76,8 @@
 				,A.PJ_ACNTBANK      pjAcntBank
 				,A.PJ_ACNTNUM       pjAcntNum
 				,A.PJ_ACNTHOLDER    pjAcntHolder
+				,TO_DATE(PJ_DDAY) - TRUNC(SYSDATE) pjExpDate
+				,NVL(ROUND((PJ_PRICE / PJ_PRICE_AMOUNT) * 100, 0), 0) pjPricePer
 				,NVL(A.PJ_PRICE, 0) pjPrice
 				,NVL(A.PJ_FAN, 0)   pjFan
 		FROM  PROJECT A		
@@ -75,7 +104,9 @@
 	        , PJ_CATEGORY
 	        , PJ_ACNTBANK
 	        , PJ_ACNTNUM
-	        , PJ_ACNTHOLDER       
+	        , PJ_ACNTHOLDER 
+	        , PJ_PRICE  
+	        , PJ_FAN    
 	        ) 
 	    VALUES (
 	        #pjNm# 
@@ -92,7 +123,9 @@
 	        , #pjCategory#
 	        , #pjAcntBank#
 	        , #pjAcntNum#
-	        , #pjAcntHolder#     
+	        , #pjAcntHolder#    
+	        , 0
+	        , 0 
 	    )
 	</insert>
 	
@@ -117,9 +150,12 @@
 				,A.PJ_ACNTBANK      pjAcntBank
 				,A.PJ_ACNTNUM       pjAcntNum
 				,A.PJ_ACNTHOLDER    pjAcntHolder
+				,TO_DATE(PJ_DDAY) - TRUNC(SYSDATE) pjExpDate
+				,NVL(ROUND((PJ_PRICE / PJ_PRICE_AMOUNT) * 100, 0), 0) pjPricePer
 		FROM   PROJECT A INNER JOIN TB_USER B ON(A.USER_ID = B.USER_ID)
         WHERE 1=1
 		AND     A.PJ_NAME LIKE '%' || #pjName# || '%'  
+		ORDER BY 1 DESC	
 	
 	</select>
 	
@@ -139,11 +175,21 @@
 				,A.PJ_ACNTBANK      pjAcntBank
 				,A.PJ_ACNTNUM       pjAcntNum
 				,A.PJ_ACNTHOLDER    pjAcntHolder
+				,TO_DATE(PJ_DDAY) - TRUNC(SYSDATE) pjExpDate
+				,NVL(ROUND((PJ_PRICE / PJ_PRICE_AMOUNT) * 100, 0), 0) pjPricePer
 		FROM   PROJECT A INNER JOIN TB_USER B ON(A.USER_ID = B.USER_ID)
         WHERE 1=1
-		AND     A.PJ_CATEGORY LIKE '%' || #pjCategory# || '%'  
+		AND     A.PJ_CATEGORY = #pjCategory#  
+		ORDER BY 1 DESC	
 	
 	</select>                    
+
+	<update id="getDonation" parameterClass="kr.or.ddit.project.vo.ProjectVO">
+		UPDATE PROJECT
+		SET    PJ_PRICE = PJ_PRICE + #pjPrice#
+			 , PJ_FAN = PJ_FAN + 1
+		WHERE  PJ_NM = #pjNm#
+	</update>
 
 	<select id="getProjectAllCount" resultClass="int">
 		SELECT COUNT(*)

@@ -12,7 +12,7 @@
 <title>QnA 게시판</title>
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/main.css">
-<link rel="stylesheet" href="/Team_Sprout/css/main/board.css">
+<link rel="stylesheet" href="/Team_Sprout/css/main/adminBoard.css">
 
 </head>
 <%
@@ -36,6 +36,7 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
+						<th><input type="checkbox"></th>
 						<th>번호</th>
 						<th>제목</th>
 						<th>작성자</th>
@@ -50,6 +51,7 @@
 							String qnaNm = list.get(i).getQnaNm();
 					%>
 					<tr>
+						<td><input type="checkbox"></td>
 						<td><%=totalCount - list.get(i).getrNum() + 1 %></td>
 						<td><a href="#" onclick="boardSelect('<%=qnaNm%>')"> <%=list.get(i).getQnaTitle()%>
 						</a></td>
@@ -91,8 +93,9 @@
 			<hr>
 			<!-- 등록 버튼  -->
 			<div id="btn" style="text-align: right">
-				<button type="button" class="btn btn-success" id="insertBtn"
-					onclick="insertBoard()">등록</button>
+				<button type="button" id="deleteWrite" class="btn btn-success" onclick="deleteBoard()">삭제</button>
+				<button type="button" class="btn btn-success" id="insertBtn" onclick="insertBoard()">등록</button>
+				
 			</div>
 			<form id="fm">
 				<input type="hidden" name="qnaNm" id="qnaNm"> <input
@@ -107,13 +110,13 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$(document).ready(function() {
-<%if (session.getAttribute("userVO") == null) {%>
-	$("#insertBtn").hide();
-<%} else {%>
-	$("#insertBtn").show();
-<%}%>
-	});
+// 	$(document).ready(function() {
+<%-- <%if (session.getAttribute("userVO") == null) {%> --%>
+// 	$("#insertBtn").hide();
+<%-- <%} else {%> --%>
+// 	$("#insertBtn").show();
+<%-- <%}%> --%>
+// 	});
 	function boardSelect(qnaNm) {
 		document.getElementById("qnaNm").value = qnaNm;
 		document.getElementById("flag").value = "SEL";
@@ -140,5 +143,6 @@
 		fm.action = "adminQnaBoard.do";
 		fm.submit();
 	}
+	
 </script>
 </html>

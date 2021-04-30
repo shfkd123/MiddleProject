@@ -2,7 +2,6 @@
 <%@page import="kr.or.ddit.user.vo.UserVO"%>
 <%@page import="kr.or.ddit.comm.vo.AtchFileVO"%>
 <%@page import="java.util.List"%>
-<%@page import="kr.or.ddit.board.vo.QnaBoardVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="/WEB-INF/view/include/adminHead.jsp"%>
@@ -23,22 +22,9 @@
 <title>상세조회</title>
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/main.css">
-<link rel="stylesheet" href="/Team_Sprout/css/main/boardDetail.css">
+<link rel="stylesheet" href="/Team_Sprout/css/main/adminBoard.css">
 </head>
 <body>
-<!-- 헤더 이미지 및 문구 -->
-	<div class="col-sm-12">
-		<div id="menu_title">
-			<p>
-			
-			<br><br><br>
-				<h3><b>F & Q</b></h3>
-				<br>
-				* 자주 묻는 질문
-			</p>
-		</div>
-	</div>
-	<!-- 전체-->
 	<div class="col-sm-12">
 
 		<!-- 왼쪽 여백 -->
@@ -110,20 +96,20 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$("#updateWrite").css("display", "none");
-		$("#deleteWrite").css("display", "none");
-		<%
-		if(uv != null){
-			if(!uv.getUserNickName().equals(fbv.getFaqWriter())){
-			%>
-			$("#updateWrite").css("display", "inline");
-			$("#deleteWrite").css("display", "inline");
-			<%
-			}
-		}
-		%>
-	});
+// 	$(document).ready(function(){
+// 		$("#updateWrite").css("display", "none");
+// 		$("#deleteWrite").css("display", "none");
+<%-- 		<% --%>
+// 		if(uv != null){
+// 			if(!uv.getUserNickName().equals(fbv.getFaqWriter())){
+<%-- 			%> --%>
+// 			$("#updateWrite").css("display", "inline");
+// 			$("#deleteWrite").css("display", "inline");
+<%-- 			<% --%>
+// 			}
+// 		}
+<%-- 		%> --%>
+// 	});
 	
 	function goList(){
 		location.href = "adminFaqBoard.do";

@@ -111,7 +111,7 @@
 			document.getElementById("flag").value = "U";
 			var fm = document.getElementById("fm");
 			fm.method = "post";
-			fm.action = "freeBoard.do";
+			fm.action = "adminFreeBoard.do";
 			fm.submit();
 		} else {
 			return;

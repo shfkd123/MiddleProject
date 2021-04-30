@@ -16,6 +16,7 @@
 			,ORDER_TIME
 			,ORDER_PRICE
 			,PO_NAME
+			,ATCH_FILE_ID
 		)
 		VALUES (
 			TB_ORDER_SEQ.NEXTVAL
@@ -26,6 +27,7 @@
 			,SYSDATE
 			,#orderPrice#
 			,#poName#
+			,#atchFileId#
 		)
 	</insert>
 	
@@ -40,6 +42,7 @@
 			 , ORDER_TIME   orderTime
 			 , ORDER_PRICE  orderPrice
 			 , PO_NAME      poName
+			 , ATCH_FILE_ID atchFileId
 		FROM   TB_ORDER     
 		WHERE  USER_ID = #userId#
 	</select>
@@ -54,6 +57,7 @@
 			 , ORDER_TIME   orderTime
 			 , ORDER_PRICE  orderPrice
 			 , PO_NAME      poName
+			 , ATCH_FILE_ID atchFileId
 		FROM   TB_ORDER
 		WHERE  PJ_NM = #pjNm#
 	</select>

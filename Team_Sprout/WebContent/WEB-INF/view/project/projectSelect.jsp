@@ -5,6 +5,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/WEB-INF/view/include/head.jsp"%>
 <%
 	ProjectVO pv = (ProjectVO)request.getAttribute("pv");
 
@@ -12,33 +13,58 @@
 	
 	List<ProjectOptionVO> listOption = (List<ProjectOptionVO>)request.getAttribute("listOption");
 		
-	UserVO uv = (UserVO)session.getAttribute("userVO");
+	 uv = (UserVO)session.getAttribute("userVO");
 	
 	long pjNm = pv.getPjNm();
 
 %>    
 <!DOCTYPE html>
-<html lang="en">
 <head>
 <title>Bootstrap Example</title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap"
-	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link href="https://fonts.googleapis.com/css?family=Lato"
-	rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Montserrat"
-	rel="stylesheet" type="text/css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="/Team_Sprout/css/main/main.css">
 <link rel="stylesheet" type="text/css"
 	href="/Team_Sprout/css/main/prjDetail.css">
+	<style type="text/css">
+	div.col-sm-3 {
+	background-color: #fafafa;
+	border: 1px solid #efefef;
+	padding: 20px;
+}
+#thumImg {
+width: 100%;
+}
+div.col-sm-5 {
+padding-top: 0px;
+padding-bottom: 0px;
+}
+div.col-sm-6 {
+		background-color: #fafafa;
+	border: 1px solid #efefef;
+	padding: 20px;
+}
+#btnDona {
+	text-align: right;
+}
+div#a_head.col-sm-8{
+	padding: 0px;
+}
+div#myNavbar.collapse.navbar-collapse{
+padding: 0px;
+}
+#pjCategory {
+		background-color: #fafafa;
+	border: 1px solid #efefef;
+	text-align: center;
+	padding: 10px;
+}
+.pColor {
+	font-weight: bolder;
+	color: #40a75f;
+}
+	</style>
+	</head>
 <body>
 	<!-- 프로젝트 제목 -->
 	<div class="col-sm-12">
@@ -49,10 +75,8 @@
 		<!-- 제목 -->
 		<div class="col-sm-8" id="divCategory">
 			<br>
-			<br> <span id="pjCategory" name=""pjCategory""><%=pv.getPjCategory() %></span>
+			<br> <span id="pjCategory" name="pjCategory"><%=pv.getPjCategory() %></span>
 			<h2><%=pv.getPjName() %></h2>
-			<br>
-			<h4><%=pv.getPjNm() %></h4>
 		</div>
 
 		<!-- 오른쪽 공백 2 -->
@@ -71,7 +95,7 @@
 					if (atchFileList != null) {
 						for (AtchFileVO atchFileVO : atchFileList) {
 				%>
-				<img src='<%=atchFileVO.getImgUrl()%>' >
+				<img src='<%=atchFileVO.getImgUrl()%>' id="thumImg">
 				<%
 					}
 					}
@@ -81,31 +105,35 @@
 		<div class="col-sm-3">
 			<p>목표금액</p>
 			<h3>
-				<p><%=pv.getPjPriceAmount() %>원</p>
+				<p class="pColor"><%=pv.getPjPriceAmount() %>원</p>
 			</h3>
 			<p>모인금액</p>
 			<h3>
-				<p><%=pv.getPjPrice() %>원</p>
+				<p class="pColor"><%=pv.getPjPrice() %>원</p>
 			</h3>
 			<br>
 			<p>프로젝트 마감일</p>
 			<h3>
-				<p><%=pv.getPjDday() %></p>
+				<p id="Yujin" class="pColor"><%=pv.getPjDday() %></p>
 			</h3>
 			<br>
 			<p>후원자</p>
 			<h3>
-				<p><%=pv.getPjFan() %>명</p>
+				<p class="pColor"><%=pv.getPjFan() %>명</p>
 			</h3>
 			<br>
 			<br>
 			<br>
-			<button type="button" class="btn btn-default btn-lg" onclick="goDonation()">후원하기</button>
+			<div id="btnDona">
+			<button type="button" class="btn btn-success btn-lg" onclick="goDonation()" id="donate">후원하기</button>
+			</div>
+			
 		</div>
 
 		<!-- 오른쪽 공백 2 -->
 		<div class="col-sm-2"></div>
 	</div>
+
 
 
 	<!-- 프로젝트 옵션 / 상세 설명 -->
@@ -117,11 +145,11 @@
 		<div class="col-sm-2">
 		<% for(int i = 0; i < listOption.size(); i++){%>
 			<div id="divOption">
-				<p>옵션<%=i+1 %></p><br><br>
-				<p><%=listOption.get(i).getPoName() %><br>
-				<h4><%=listOption.get(i).getPoAddPrice() %></h4><br>
-				<span><%=listOption.get(i).getPoContent() %></span>
-			</div>
+				<h3><p class="pColor">옵션<%=i+1 %></p></h3><br><br>
+				<p>리워드  :<br> <h3><%=listOption.get(i).getPoName() %></h3></p><br>
+				<p>리워드 금액  : <h3><%=listOption.get(i).getPoAddPrice() %></h3></p><br>
+				<span>리워드 내용 :<br> <%=listOption.get(i).getPoContent() %></p><br>
+			</div><br>
 			<%
 		}
 			%>
@@ -129,7 +157,7 @@
 		</div>
 		<!-- 상세 설명 -->
 		<div class="col-sm-6">
-			<h3>프로젝트 소개</h3>
+			<h3><p class="pColor">프로젝트 소개</p></h3>
 			<p><%=pv.getPjContent() %></p>
 		</div>
 
@@ -137,16 +165,30 @@
 		<div class="col-sm-2"></div>
 	</div>
 
-
-	<!-- top -->
-	<a style="display: scroll; position: fixed; bottom: 40px; right: 40px;"
-		href="#" title="top"><img src="/images/topbutton.png"
-		width="40px"></a>
 	<form id="fm">
 		<input type="hidden" name="pjNm" id="pjNm">
 		<input type="hidden" name="flag" id="flag">
 	</form>	
 <script type="text/javascript">
+$(document).ready(function(){
+
+
+	var yujin = $('#Yujin').text();
+	console.log(yujin);
+
+	var sdt = new Date(yujin);
+	var edt = new Date();
+	var dateDiff = Math.ceil((edt.getTime()-sdt.getTime())/(1000*3600*24));
+	console.log("sdt = " + sdt);
+	console.log(edt);
+	console.log(dateDiff);
+	if(dateDiff > 1){
+		$("#donate").css("display", "none");
+		
+	}
+
+
+});
 function optionSelect(pjNm){
 	document.getElementById("pjNm").value = pjNm;
 	document.getElementById("flag").value = "OPT";
@@ -157,12 +199,30 @@ function optionSelect(pjNm){
 }
 
 function goDonation(){
+	<%if (session.getAttribute("userVO") == null) {%>
+	alert("회원만 후원하실 수 있습니다.");	
+	location.href = "/Team_Sprout/user/signIn.do";
+<%} else {%>
 	document.getElementById("pjNm").value = "<%=pv.getPjNm() %>";
 	var fm = document.getElementById("fm");
 	fm.method = "post";
 	fm.action = "donation.do";
 	fm.submit();
+	<%}%>
 }
+
+
+<%-- 
+function goDonation(){
+	document.getElementById("pjNm").value = "<%=pv.getPjNm() %>";
+	var fm = document.getElementById("fm");
+	fm.method = "post";
+	fm.action = "donation.do";
+	fm.submit();
+} --%>
+
+
 </script>	
 </body>
+<%@include file="/WEB-INF/view/include/footer.jsp"%>
 </html>

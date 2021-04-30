@@ -33,6 +33,9 @@ div.col-sm-12 {
 	margin: 0px;
 	padding: 0px;
 }
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    width: 10px;
+}
 </style>
 </head>
 <body>
@@ -100,8 +103,8 @@ div.col-sm-12 {
 				</tbody>
 			</table>
 			<form id="fm" enctype="multipart/form-data">
-				<input type="hidden" name="reportNm" id="reportNm"> <input
-					type="hidden" name="flag" id="flag">
+				<input type="hidden" name="reportNm" id="reportNm">
+				<input type="hidden" name="flag" id="flag">
 			</form>
 			<hr>
 			<!-- 등록 수정 삭제 버튼  -->

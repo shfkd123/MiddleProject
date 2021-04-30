@@ -161,15 +161,15 @@
 			<tr align="center">
 				<td>
 				<%if(pv.getFirstPageNo() > pv.getPageSize()) { %>
-				<a href="freeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pv.getFirstPageNo() - pv.getPageSize() %>">이전</a>
+				<a href="adminFreeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pv.getFirstPageNo() - pv.getPageSize() %>">이전</a>
 				<%} %>
 				<%for(int pNo = pv.getFirstPageNo(); pNo <= pv.getLastPageNo(); pNo++){ %>
-					<a href="freeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pNo %>">
+					<a href="adminFreeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pNo %>">
 						<%=pNo %>
 					</a>
 				<%} %>
 				<%if(pv.getLastPageNo() < pv.getTotalPageCount()){ %>
-				<a href="freeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pv.getFirstPageNo() + pv.getPageSize() %>">다음</a>
+				<a href="adminFreeBoardComment.do?freeNm=<%=fv.getFreeNm() %>&pageNo=<%=pv.getFirstPageNo() + pv.getPageSize() %>">다음</a>
 				<td>
 			</tr>
 			<%}
@@ -254,30 +254,30 @@
 	</div>
 </body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$("#updateWrite").css("display", "none");
-		$("#deleteWrite").css("display", "none");
-		<%
-		if(uv != null){
-			if(uv.getUserNickName().equals(fv.getFreeWriter())){
-			%>
-			$("#updateWrite").css("display", "inline");
-			$("#deleteWrite").css("display", "inline");
-			<%
-			}
-		}
-		%>
-	});
+// 	$(document).ready(function(){
+// 		$("#updateWrite").css("display", "none");
+// 		$("#deleteWrite").css("display", "none");
+<%-- 		<% --%>
+// 		if(uv != null){
+// 			if(uv.getUserNickName().equals(fv.getFreeWriter())){
+<%-- 			%> --%>
+// 			$("#updateWrite").css("display", "inline");
+// 			$("#deleteWrite").css("display", "inline");
+<%-- 			<% --%>
+// 			}
+// 		}
+<%-- 		%> --%>
+// 	});
 	
 	function goList(){
-		location.href = "freeBoard.do";
+		location.href = "adminFreeBoard.do";
 	}
 	function updateBoard(){
 		document.getElementById("freeNm").value = "<%=fv.getFreeNm() %>";
 		document.getElementById("flag").value = "UPD";
 		var fm = document.getElementById("fm");
 		fm.method = "post";
-		fm.action = "freeBoard.do";
+		fm.action = "adminFreeBoard.do";
 		fm.submit();
 	}
 	function deleteBoard(){
@@ -287,7 +287,7 @@
 			document.getElementById("flag").value = "D";
 			var fm = document.getElementById("fm");
 			fm.method = "post";
-			fm.action = "freeBoard.do";
+			fm.action = "adminFreeBoard.do";
 			fm.submit();
 		} else {
 			return;
@@ -309,7 +309,7 @@
 		document.getElementById("flagCm").value = "C";
 		var fmCm = document.getElementById("fmCm");
 		fmCm.method = "post";
-		fmCm.action = "freeBoardComment.do";
+		fmCm.action = "adminFreeBoardComment.do";
 		fmCm.submit();
 	}
 	
@@ -328,7 +328,7 @@
 			document.getElementById("flagCm").value = "U";
 			var fm = document.getElementById("fmCm");
 			fmCm.method = "post";
-			fmCm.action = "freeBoardComment.do";
+			fmCm.action = "adminFreeBoardComment.do";
 			fmCm.submit();
 		}
 		return;
@@ -347,7 +347,7 @@
 			document.getElementById("flagCm").value = "D";
 			var fmCm = document.getElementById("fmCm");
 			fmCm.method = "post";
-			fmCm.action = "freeBoardComment.do";
+			fmCm.action = "adminFreeBoardComment.do";
 			fmCm.submit();
 		}
 		return;

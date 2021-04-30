@@ -135,7 +135,7 @@ input#pjAcntNum.form-control {
 			<h3>
 				<b>프로젝트 올리기</b>
 			</h3>
-			<form id="pj" enctype="multipart/form-data" method="post">
+			<form id="pj" enctype="multipart/form-data">
 				<div class="form-group">
 					<br>
 					<br>
@@ -203,13 +203,13 @@ input#pjAcntNum.form-control {
 					<div id="option">
 						<h4><p><b>필수 옵션<b></p></h4>
 						<label>리워드명 </label><br> <input type="text"
-							class="form-control" id='poName' name='poName'><br>
+							class="form-control" name='poName'><br>
 						<br>
 						<label>내용 </label><br> <input type="text"
-							class="form-control" id='poContent' name='poContent'><br>
+							class="form-control" name='poContent'><br>
 						<br> <br>
 						<label>후원금액 </label><br> <input type="text"
-							class="form-control" id='poAddPrice' name='poAddPrice'>원<br>
+							class="form-control" name='poAddPrice'>원<br>
 						<br>
 					</div>
 
@@ -256,13 +256,14 @@ input#pjAcntNum.form-control {
 					<label>계좌번호</label><br> <input type="text"
 						class="form-control" id="pjAcntNum" name="pjAcntNum"> <br>
 					<br> <input type="hidden" name="pjCondition" id="pjCondition"
-						value="심사중"> <input type="hidden" name="flag" id="flag">
+						value="심사중"> 
+						<input type="hidden" name="flag" id="flag">
 				</div>
 
 
 				<!-- 신청하기 버튼 -->
 				<div id="btnDiv">
-					<button type="button" class="btn btn-success" onclick="upload()">신청하기</button>
+					<button type="button" class="btn btn-success" onclick="upload()">등록하기</button>
 					<button type="button" class="btn btn-success" onclick="cancel()">취소하기</button>
 				</div>
 			</form>
@@ -275,7 +276,6 @@ input#pjAcntNum.form-control {
 <script type="text/javascript">
 	function upload() {
 		if (confirm("프로젝트를 등록 하시겠습니까?")) {
-			alert("프로젝트 심사요청이 완료되었습니다. 심사는 영업일 기준 4일에서 10일 정도 소요됩니다.");
 			document.getElementById("flag").value = "C";
 			var pj = document.getElementById("pj");
 			pj.method = "post";

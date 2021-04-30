@@ -35,11 +35,10 @@ public class ProjectHandler implements CommandHandler{
 	@Override
 	public boolean isRedirect(HttpServletRequest req) {
 		String flag = (String)req.getParameter("flag");
-		
 		if("C".equals(flag) || "U".equals(flag)) {
 			if(req.getMethod().equals("GET")) { 
 				return false;
-			}else { 
+			} else { 
 				return true;
 			}
 		}
@@ -82,7 +81,6 @@ public class ProjectHandler implements CommandHandler{
 				}
 				
 				long newPjNm = service.insertProject(pv);		
-				System.out.println(">>>>>>>>"+newPjNm);
 				/*프로젝트 옵션 전송*/
 				String[] poName = req.getParameterValues("poName");
 				String[] poAddPrice = req.getParameterValues("poAddPrice");
@@ -94,21 +92,12 @@ public class ProjectHandler implements CommandHandler{
 					pov.setPjNm(newPjNm);
 					pov.setPoName(poName[i]);
 					pov.setPoAddPrice(Long.parseLong(poAddPrice[i]));
-					pov.setPoContent(poContent[i]);
+					pov.setPoContent(poContent[i]);	
+					pov.setAtchFileId(atchFileVO.getAtchFileId());
 					
 					serviceOption.insertProjectOption(pov);
 				}
-				
-				String msg = "";
-				if(newPjNm > 0 ) {
-					msg = "성공";
-				} else {
-					msg = "실패";
-				}
-				String redirectUrl = req.getContextPath() 
-						+ "/project/projectBoard.do?msg="
-						+ URLEncoder.encode(msg, "UTF-8");
-				return redirectUrl;
+				return req.getContextPath()	+ "/project/projectBoard.do";
 			}
 			
 		}  else if("D".equals(flag)) { // 프로젝트 삭제
@@ -147,8 +136,6 @@ public class ProjectHandler implements CommandHandler{
 			pv = service.getProject(pjNm);
 			
 			List<ProjectOptionVO> list = serviceOption.getProjectOption(pov);
-			
-			req.setAttribute("listOption", list);
 			
 			if(pv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
 				AtchFileVO fileVO = new AtchFileVO();
@@ -202,19 +189,20 @@ public class ProjectHandler implements CommandHandler{
 			
 			req.setAttribute("list", list);	
 			
-			ProjectVO pv = new ProjectVO();
-			
-			if(pv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
-				AtchFileVO fileVO = new AtchFileVO();
-				
-				fileVO.setAtchFileId(pv.getAtchFileId());
-				
-				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
-				
-				List<AtchFileVO> atchFileList = fileService.getAtchFileList(fileVO);
-				
-				req.setAttribute("atchFileList", atchFileList);
-			}
+//			ProjectVO pv = new ProjectVO();
+//			pv = service.getProject(Long.parseLong(req.getParameter("pjNm")));
+//			
+//			if(pv.getAtchFileId() > 0) { // 첨부파일이 존재할 때
+//				AtchFileVO fileVO = new AtchFileVO();
+//				
+//				fileVO.setAtchFileId(pv.getAtchFileId());
+//				
+//				IAtchFileService fileService = AtchFileServiceImpl.getInstance();
+//				
+//				List<AtchFileVO> atchFileList = fileService.getAtchFileList(fileVO);
+//				
+//				req.setAttribute("atchFileList", atchFileList);
+//			}
 			
 			return "/WEB-INF/view/project/projectList.jsp";
 		} else if("OPT".equals(flag)) { // 리워드 선택

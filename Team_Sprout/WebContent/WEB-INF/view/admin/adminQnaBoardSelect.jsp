@@ -222,20 +222,20 @@
 	</div>
 	</body>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$("#updateWrite").css("display", "none");
-		$("#deleteWrite").css("display", "none");
-		<%
-		if(uv != null){
-			if(uv.getUserNickName().equals(qbv.getQnaWriter())){
-			%>
-				$("#updateWrite").css("display", "inline");
-				$("#deleteWrite").css("display", "inline");
-			<%
-			}
-		}
-		%>
-	});
+// 	$(document).ready(function(){
+// 		$("#updateWrite").css("display", "none");
+// 		$("#deleteWrite").css("display", "none");
+<%-- 		<% --%>
+// 		if(uv != null){
+// 			if(uv.getUserNickName().equals(qbv.getQnaWriter())){
+<%-- 			%> --%>
+// 				$("#updateWrite").css("display", "inline");
+// 				$("#deleteWrite").css("display", "inline");
+<%-- 			<% --%>
+// 			}
+// 		}
+<%-- 		%> --%>
+// 	});
 	
 	function goList(){
 		location.href = "adminQnaBoard.do";

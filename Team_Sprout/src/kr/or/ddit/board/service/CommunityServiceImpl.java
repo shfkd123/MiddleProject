@@ -97,11 +97,11 @@ public class CommunityServiceImpl implements ICommunityService{
 	}
 
 	@Override
-	public List<CommunityBoardVO> searchCommunityBoard(String str) {
+	public List<CommunityBoardVO> searchCommunityBoard(CommunityBoardVO cb) {
 		List<CommunityBoardVO> list = new ArrayList<>();
 		
 		try {
-			list = CommunityBoardDao.searchCommunityBoard(smc, str);
+			list = CommunityBoardDao.searchCommunityBoard(smc, cb);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -117,6 +117,17 @@ public class CommunityServiceImpl implements ICommunityService{
 			ex.printStackTrace();
 		}
 		return cnt;
+	}
+
+	@Override
+	public List<CommunityBoardVO> getPjCommunityBoard(String pjNm) {
+		List<CommunityBoardVO> list = null;
+		try {
+			list = CommunityBoardDao.getPjCommunityBoard(smc, pjNm);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 }
